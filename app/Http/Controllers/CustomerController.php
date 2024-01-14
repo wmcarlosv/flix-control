@@ -14,7 +14,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $title = "Customer";
+        $title = "Customers";
 
         $columns = [
             [
@@ -88,7 +88,7 @@ class CustomerController extends Controller
      */
     public function edit(string $id)
     {
-        $title = "Edit Customers";
+        $title = "Edit Customer";
         $type = "edit";
         $data = Customer::findorfail($id);
         return view('admin.customers.add-edit', compact('title','type','data'));
