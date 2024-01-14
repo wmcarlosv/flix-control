@@ -53,7 +53,7 @@ class CustomerController extends Controller
     {
         $request->validate([
             'name'=>'required',
-
+            'phone'=>'required|numeric'
         ]);
 
         $element = new Customer();
@@ -97,6 +97,7 @@ class CustomerController extends Controller
     {
         $request->validate([
             'name'=>'required',
+            'phone'=>'required|numeric'
         ]);
 
         $element = Customer::findorfail($id);
