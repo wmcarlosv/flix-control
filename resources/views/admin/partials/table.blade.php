@@ -35,11 +35,20 @@
 
                   		@case('relation')
                   			@php
+                  				$format = "plain";
                   				$relation = $col['data']['relation'];
-                  				$key = $col['data']['key']
+                  				$key = $col['data']['key'];
+                  				if(array_key_exists("format",$col['data'])){
+                  					$format = $col['data']['format'];
+                  				}
                   			@endphp
 
-                  			{{$d->$relation->$key}}
+                  			@if($format == 'plain')
+                  				{{$d->$relation->$key}}
+                  			@else
+                  				{!!$d->$relation->$key!!}
+                  			@endif
+                  			
                   		@break
 
                   		@case('date')

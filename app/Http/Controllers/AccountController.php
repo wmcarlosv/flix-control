@@ -19,16 +19,13 @@ class AccountController extends Controller
 
         $columns = [
             [
-                'title'=>'ID',
-                'key'=>'id'
-            ],
-            [
                 'title'=>'Servicio',
                 'key'=>'service_id',
                 'type'=>'relation',
                 'data'=>[
                     'relation'=>'service',
-                    'key'=>'name'
+                    'key'=>'image_name',
+                    'format'=>'html'
                 ]
             ],
             [
@@ -36,20 +33,15 @@ class AccountController extends Controller
                 'key'=>'email'
             ],
             [
-                'title'=>'Expiracion',
+                'title'=>'Contraseña',
+                'key'=>'password'
+            ],
+            [
+                'title'=>'Facturacion',
                 'key'=>'dateto',
                 'type'=>'date',
                 'data'=>[
-                    'format'=>'d-m-Y'
-                ]
-            ],
-            [
-                'title'=>'Estado',
-                'key'=>'status',
-                'type'=>'replace_text',
-                'data' => [
-                    '1'=>'Active',
-                    '0'=>'Inactive'
+                    'format'=>'d/m/Y'
                 ]
             ]
         ];

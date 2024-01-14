@@ -33,7 +33,7 @@
                         </div>
                         <div class="form-group">
                             <label for="">Contraseña del Email:</label>
-                            <input type="password" class="form-control @error('passwordemail') is-invalid @enderror" value="{{ @$data->passwordemail }}" name="passwordemail" />
+                            <input type="text" class="form-control @error('passwordemail') is-invalid @enderror" value="{{ @$data->passwordemail }}" name="passwordemail" />
                             @error('passwordemail')
                                <span class="error invalid-feedback">{{ $message }}</span>
                             @enderror
@@ -41,13 +41,13 @@
 
                         <div class="form-group">
                             <label for="">Contraseña de la Cuenta:</label>
-                            <input type="password" class="form-control @error('password') is-invalid @enderror" value="{{ @$data->password }}" name="password" />
+                            <input type="text" class="form-control @error('password') is-invalid @enderror" value="{{ @$data->password }}" name="password" />
                             @error('password')
                                <span class="error invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label for="">Expiracion:</label>
+                            <label for="">Facturacion:</label>
                             <input type="date" class="form-control @error('dateto') is-invalid @enderror" value="{{ @$data->dateto }}" name="dateto" />
                             @error('dateto')
                                <span class="error invalid-feedback">{{ $message }}</span>

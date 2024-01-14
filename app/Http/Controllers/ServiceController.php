@@ -16,10 +16,6 @@ class ServiceController extends Controller
 
         $columns = [
             [
-                'title'=>'ID',
-                'key'=>'id'
-            ],
-            [
                 'title'=>'Nombre',
                 'key'=>'name'
             ],
