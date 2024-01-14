@@ -44,6 +44,11 @@ class AppServiceProvider extends ServiceProvider
                     'icon'=>'fas fa-tv',
                     'route'=>'services.index'
                 ],
+                [
+                    'text'=>'Customers',
+                    'icon'=>'fas fa-tv',
+                    'route'=>'customers.index'
+                ],
             );
         
         });
