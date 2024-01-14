@@ -42,7 +42,12 @@ class AppServiceProvider extends ServiceProvider
                             'route' => 'profile'
                         ]
                     ]
-                ]
+                ],
+                [
+                    'text'=>'Services',
+                    'icon'=>'fas fa-tv',
+                    'route'=>'services.index'
+                ],
             );
         
         });

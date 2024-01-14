@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ServiceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +24,7 @@ Auth::routes();
 Route::group(['prefix'=>'admin', 'middleware'=>['auth']], function(){
     Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
     Route::resource('users', UserController::class);
+    Route::resource('services', ServiceController::class);
     Route::get('profile', [UserController::class, 'profile'])->name('profile');
     Route::put('update-profile', [UserController::class, 'update_profile'])->name('update_profile');
     Route::put('update-password', [UserController::class, 'update_password'])->name('update_password');
