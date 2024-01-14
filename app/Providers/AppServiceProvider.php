@@ -54,6 +54,11 @@ class AppServiceProvider extends ServiceProvider
                     'icon'=>'fas fa-piggy-bank',
                     'route'=>'accounts.index'
                 ],
+                [
+                    'text'=>'Movimientos',
+                    'icon'=>'fas fa-calculator',
+                    'route'=>'movements.index'
+                ],
             );
         
         });

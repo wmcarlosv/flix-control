@@ -5,6 +5,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ServiceController; 
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\MovementController;
+
 
 
 /*
@@ -30,6 +32,7 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth']], function(){
     Route::resource('services', ServiceController::class);
     Route::resource('customers', CustomerController::class);
     Route::resource('accounts', AccountController::class);
+    Route::resource('movements', MovementController::class);
     Route::get('profile', [UserController::class, 'profile'])->name('profile');
     Route::put('update-profile', [UserController::class, 'update_profile'])->name('update_profile');
     Route::put('update-password', [UserController::class, 'update_password'])->name('update_password');

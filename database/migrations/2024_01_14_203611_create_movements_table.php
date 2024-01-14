@@ -11,16 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('accounts', function (Blueprint $table) {
+        Schema::create('movements', function (Blueprint $table) {
             $table->id();
-            $table->string('email');
-            $table->string('passwordemail')->nullable();
-            $table->string('password')->nullable();
-            $table->date('dateto')->nullable();
-            $table->boolean('status')->default(true)->nullable();
+            $table->enum('type', ['input', 'output'])->default('input');
+            $table->string('description');
+            $table->date('datemovement');
+            $table->float('amount');
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('service_id');
-            $table->foreign('service_id')->references('id')->on('services');
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
@@ -31,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('accounts');
+        Schema::dropIfExists('movements');
     }
 };
