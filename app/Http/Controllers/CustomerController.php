@@ -3,16 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Service;
+use App\Models\Customer;
 use Session;
-use Storage;
 use Auth;
 
-class ServiceController extends Controller
+class CustomerController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
-        $title = "Services";
+        $title = "Customer";
 
         $columns = [
             [
@@ -24,46 +26,44 @@ class ServiceController extends Controller
                 'key'=>'name'
             ],
             [
-                'title'=>'Cover',
-                'key'=>'cover',
-                'type'=>'img'
+                'title'=>'Email',
+                'key'=>'email',
             ],
             [
-                'title'=>'Profiles',
-                'key'=>'profiles'
+                'title'=>'Phone',
+                'key'=>'phone'
             ],
-            [
-                'title'=>'Link',
-                'key'=>'link'
-            ]
         ];
 
-        $data = Service::all();
+        $data = Customer::all();
 
-        return view('admin.services.browse', compact('title','columns', 'data'));
+        return view('admin.customers.browse', compact('title','columns', 'data'));
     }
+
+    /**
+     * Show the form for creating a new resource.
+     */
     public function create()
     {
-        $title = "New Service";
+        $title = "New Customer";
         $type = "new";
-        return view('admin.services.add-edit', compact('title','type'));
+        return view('admin.customers.add-edit', compact('title','type'));
     }
 
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
         $request->validate([
             'name'=>'required',
-            'profiles'=>'required',
+
         ]);
 
-        $element = new Service();
+        $element = new Customer();
         $element->name = $request->name;
-        if($request->hasFile("cover")){
-            $element->cover = $request->cover->store("public/services/covers");
-        }
-        $element->profiles = $request->profiles;
-        $element->link = $request->link;
-
+        $element->email = $request->email;
+        $element->phone = $request->phone;
         $element->user_id = Auth::user()->id;
 
         if($element->save()){
@@ -72,37 +72,41 @@ class ServiceController extends Controller
             Session::flash('error', 'Error Inserting The Record!!');
         }
 
-        return redirect()->route('services.index');
+        return redirect()->route('customers.index');
     }
 
+    /**
+     * Display the specified resource.
+     */
     public function show(string $id)
     {
-
+        //
     }
 
+    /**
+     * Show the form for editing the specified resource.
+     */
     public function edit(string $id)
     {
-        $title = "Edit Services";
+        $title = "Edit Customers";
         $type = "edit";
-        $data = Service::findorfail($id);
-        return view('admin.services.add-edit', compact('title','type','data'));
+        $data = Customer::findorfail($id);
+        return view('admin.customers.add-edit', compact('title','type','data'));
     }
 
+    /**
+     * Update the specified resource in storage.
+     */
     public function update(Request $request, string $id)
     {
         $request->validate([
             'name'=>'required',
-            'profiles'=>'required'
         ]);
 
-        $element = Service::findorfail($id);
+        $element = Customer::findorfail($id);
         $element->name = $request->name;
-        if($request->hasFile("cover")){
-            Storage::delete($element->cover);
-            $element->cover = $request->cover->store("public/services/covers");
-        }
-        $element->profiles = $request->profiles;
-        $element->link = $request->link;
+        $element->email = $request->email;
+        $element->phone = $request->phone;
 
         if($element->update()){
             Session::flash('success', 'Record Update Successfully!!');
@@ -110,20 +114,22 @@ class ServiceController extends Controller
             Session::flash('error', 'Error Updating The Record!!');
         }
 
-        return redirect()->route('services.index');
+        return redirect()->route('customers.index');
     }
 
+    /**
+     * Remove the specified resource from storage.
+     */
     public function destroy(string $id)
     {
-        $element = Service::findorfail($id);
-        Storage::delete($element->cover);
+        $element = Customer::findorfail($id);
+
         if($element->delete()){
             Session::flash('success', 'Record Deleted Successfully!!');
         }else{
             Session::flash('error', 'Error Deleting The Record!!');
         }
 
-        return redirect()->route('services.index');
+        return redirect()->route('customers.index');
     }
-
 }
