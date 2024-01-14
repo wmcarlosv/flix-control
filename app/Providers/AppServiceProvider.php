@@ -30,18 +30,14 @@ class AppServiceProvider extends ServiceProvider
                     'route'=>'dashboard'
                 ],
                 [
-                    'text'=>'Settings',
-                    'icon'=>'fas fa-list',
-                    'submenu'=>[
-                        [
-                            'text'=>'Users',
-                            'route'=>'users.index'
-                        ],
-                        [
-                            'text' => 'Profile',
-                            'route' => 'profile'
-                        ]
-                    ]
+                    'text' => 'Profile',
+                    'icon' => 'fas fa-user',
+                    'route' => 'profile'
+                ],
+                [
+                    'text'=>'Users',
+                    'icon'=>'fas fa-users',
+                    'route'=>'users.index'
                 ],
                 [
                     'text'=>'Services',
