@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Service;
 use Session;
 use Storage;
+use Auth;
 
 class ServiceController extends Controller
 {
@@ -24,7 +25,8 @@ class ServiceController extends Controller
             ],
             [
                 'title'=>'Cover',
-                'key'=>'cover'
+                'key'=>'cover',
+                'type'=>'img'
             ],
             [
                 'title'=>'Profiles',
@@ -61,6 +63,8 @@ class ServiceController extends Controller
         }
         $element->profiles = $request->profiles;
         $element->link = $request->link;
+
+        $element->user_id = Auth::user()->id;
 
         if($element->save()){
             Session::flash('success', 'Record Inserted Successfully!!');

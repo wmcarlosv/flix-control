@@ -21,6 +21,10 @@
                         <div class="form-group">
                             <label for="">Cover:</label>
                             <input type="file" class="form-control @error('cover') is-invalid @enderror" value="{{ @$data->cover }}" name="cover" />
+                            @if($type == 'edit')
+                            <br />
+                            <img src="{{asset(str_replace('public','storage',@$data->cover))}}" class="img-thumbnail" style="width:200px; height:200px;" alt="{{@$data->name}}">
+                            @endif
                             @error('cover')
                                <span class="error invalid-feedback">{{ $message }}</span>
                             @enderror

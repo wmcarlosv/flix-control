@@ -14,8 +14,22 @@
 				@foreach($columns as $col)
 				@php
 					$key = $col['key'];
+					$type = "text";
+					if(array_key_exists("type", $col)){
+						$type = $col['type'];
+					}
 				@endphp
-                  <td>{{ $d->$key }}</td>
+                  <td>
+                  	@switch($type)
+                  		@case('text')
+                  			{{$d->$key}}
+                  		@break
+
+                  		@case('img')
+                  			<img src="{{ asset(str_replace('public','storage',$d->$key)) }}" class="img-thumbnail" style="width:100px; height: 100px;" alt="image">
+                  		@break
+                  	@endswitch
+                  </td>
 				@endforeach
 				<td>
 					@include('admin.partials.actions',[ 'route'=>$route, 'id' => $d->id ])
