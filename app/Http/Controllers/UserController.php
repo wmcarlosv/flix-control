@@ -14,7 +14,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $title = "Users";
+        $title = "Usuarios";
 
         $columns = [
             [
@@ -22,7 +22,7 @@ class UserController extends Controller
                 'key'=>'id'
             ],
             [
-                'title'=>'Name',
+                'title'=>'Nombre',
                 'key'=>'name'
             ],
             [
@@ -30,7 +30,7 @@ class UserController extends Controller
                 'key'=>'email'
             ],
             [
-                'title'=>'Role',
+                'title'=>'Rol',
                 'key'=>'role',
                 'type'=>'replace_text',
                 'data' => [
@@ -39,16 +39,16 @@ class UserController extends Controller
                 ]
             ],
             [
-                'title'=>'Active',
+                'title'=>'Activo',
                 'key'=>'is_active',
                 'type'=>'replace_text',
                 'data' => [
-                    '1'=>'Yes',
+                    '1'=>'Si',
                     '0'=>'No'
                 ]
             ],
             [
-                'title'=>'Date To',
+                'title'=>'Expiracion',
                 'key'=>'date_to'
             ]
         ];
@@ -63,7 +63,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $title = "New User";
+        $title = "Nuevo Usuario";
         $type = "new";
         return view('admin.users.add-edit', compact('title','type'));
     }
@@ -108,7 +108,7 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        $title = "Edit User";
+        $title = "Editar Usuario";
         $type = "edit";
         $data = User::findorfail($id);
         return view('admin.users.add-edit', compact('title','type','data'));
@@ -155,7 +155,7 @@ class UserController extends Controller
     }
 
     public function profile(){
-        $title = "Profile";
+        $title = "Perfil";
 
         return view('admin.users.profile',compact('title'));
     }

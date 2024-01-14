@@ -14,7 +14,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $title = "Customers";
+        $title = "Clientes";
 
         $columns = [
             [
@@ -22,7 +22,7 @@ class CustomerController extends Controller
                 'key'=>'id'
             ],
             [
-                'title'=>'Name',
+                'title'=>'Nombre',
                 'key'=>'name'
             ],
             [
@@ -30,7 +30,7 @@ class CustomerController extends Controller
                 'key'=>'email',
             ],
             [
-                'title'=>'Phone',
+                'title'=>'Telefono',
                 'key'=>'phone'
             ],
         ];
@@ -45,7 +45,7 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        $title = "New Customer";
+        $title = "Nuevo Cliente";
         $type = "new";
         return view('admin.customers.add-edit', compact('title','type'));
     }
@@ -88,7 +88,7 @@ class CustomerController extends Controller
      */
     public function edit(string $id)
     {
-        $title = "Edit Customer";
+        $title = "Editar Cliente";
         $type = "edit";
         $data = Customer::findorfail($id);
         return view('admin.customers.add-edit', compact('title','type','data'));

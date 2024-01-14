@@ -12,14 +12,14 @@
                 @include('admin.partials.form', ['element'=>'services', 'type'=>$type, 'id'=>@$data->id])
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="">Name:</label>
+                            <label for="">Nombre:</label>
                             <input type="text" class="form-control @error('name') is-invalid @enderror" value="{{ @$data->name }}" name="name" />
                             @error('name')
                                <span class="error invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label for="">Cover:</label>
+                            <label for="">Portada:</label>
                             <input type="file" class="form-control @error('cover') is-invalid @enderror" value="{{ @$data->cover }}" name="cover" />
                             @if($type == 'edit')
                             <br />
@@ -31,7 +31,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="">Profile:</label>
+                            <label for="">Perfiles Permitidos:</label>
                             <input type="number" class="form-control @error('profiles') is-invalid @enderror" value="{{ @$data->profiles }}" name="profiles" />
                             @error('profiles')
                                <span class="error invalid-feedback">{{ $message }}</span>
@@ -39,7 +39,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="">Link:</label>
+                            <label for="">Enlace:</label>
                             <input type="text" class="form-control @error('link') is-invalid @enderror" value="{{ @$data->link }}" name="link" />
                             @error('link')
                                <span class="error invalid-feedback">{{ $message }}</span>
@@ -53,23 +53,4 @@
             </div>
         </div>
     </div>
-@stop
-
-@section('js')
-    <!-- <script>
-        $(document).ready(function(){
-            $("#view-password").click(function(){
-                let view = $(this).attr("data-view");
-                if(view == 'n'){
-                    $("input[name='password']").attr("type","text");
-                    $(this).attr("data-view","y");
-                    $(this).html('<i class="fas fa-lock-open"></i>');
-                }else{
-                    $("input[name='password']").attr("type","password");
-                    $(this).attr("data-view","n");
-                    $(this).html('<i class="fas fa-lock"></i>');
-                }
-            });
-        }); -->
-    </script>
 @stop

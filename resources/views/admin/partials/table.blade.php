@@ -1,4 +1,4 @@
-<a href="{{ route($route.'.create') }}" class="btn btn-success"><i class="fas fa-plus"></i> New</a>
+<a href="{{ route($route.'.create') }}" class="btn btn-success"><i class="fas fa-plus"></i> Nuevo</a>
 <br />
 <br />
 <table class="table table-striped table-bordered data-table">
@@ -31,6 +31,19 @@
 
                   		@case('replace_text')
                   			{{$col['data'][$d->$key]}}
+                  		@break
+
+                  		@case('relation')
+                  			@php
+                  				$relation = $col['data']['relation'];
+                  				$key = $col['data']['key']
+                  			@endphp
+
+                  			{{$d->$relation->$key}}
+                  		@break
+
+                  		@case('date')
+                  			{{ date($col['data']['format'], strtotime($d->$key)) }}
                   		@break
                   	@endswitch
                   </td>

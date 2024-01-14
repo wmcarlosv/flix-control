@@ -36,7 +36,7 @@
 
         <div class="card card-success">
             <div class="card-header">
-                <h2><i class="fas fa-key"></i> Change Password</h2>
+                <h2><i class="fas fa-key"></i> Actualizar Contraseña</h2>
             </div>
             <form action="{{ route('update_password') }}" method="POST">
                 @method('PUT')

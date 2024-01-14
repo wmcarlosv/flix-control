@@ -12,7 +12,7 @@
                 @include('admin.partials.form', ['element'=>'users', 'type'=>$type, 'id'=>@$data->id])
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="">Name:</label>
+                            <label for="">Nombre:</label>
                             <input type="text" class="form-control @error('name') is-invalid @enderror" value="{{ @$data->name }}" name="name" />
                             @error('name')
                                <span class="error invalid-feedback">{{ $message }}</span>
@@ -27,7 +27,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="">Role:</label>
+                            <label for="">Rol:</label>
                             <select class="form-control @error('role') is-invalid @enderror" name="role">
                                 <option value="super_admin">Super Admin</option>
                                 <option value="admin" @if(@$data->role == 'admin') selected='selected' @endif>Admin</option>
@@ -36,20 +36,21 @@
                                <span class="error invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>
+                        @if($type=='edit')
+                            <div class="form-group">
+                                <label for="">Activo:</label>
+                                <select class="form-control @error('is_active') is-invalid @enderror" name="is_active">
+                                    <option value="1">Yes</option>
+                                    <option value="0" @if(@$data->is_active == 0) selected='selected' @endif>No</option>
+                                </select>
+                                @error('is_active')
+                                   <span class="error invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        @endif
 
                         <div class="form-group">
-                            <label for="">Active:</label>
-                            <select class="form-control @error('is_active') is-invalid @enderror" name="is_active">
-                                <option value="1">Yes</option>
-                                <option value="0" @if(@$data->is_active == 0) selected='selected' @endif>No</option>
-                            </select>
-                            @error('is_active')
-                               <span class="error invalid-feedback">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-                        <div class="form-group">
-                            <label for="">Date To:</label>
+                            <label for="">Expiracion:</label>
                             <input type="date" class="form-control @error('date_to') is-invalid @enderror" value="{{ @$data->date_to }}" name="date_to" />
                             @error('date_to')
                                <span class="error invalid-feedback">{{ $message }}</span>
@@ -59,7 +60,7 @@
                         @if($type=='new')
                             <div class="input-group">
                                 <!--<label for="">Password:</label>-->
-                                <input type="password" class="form-control @error('password') is-invalid @enderror" placeholder="password" value="{{ @$data->password }}" name="password" />
+                                <input type="password" class="form-control @error('password') is-invalid @enderror" placeholder="Contraseña" value="{{ @$data->password }}" name="password" />
                         
                                 <div class="input-group-append">
                                     <button class="btn btn-success" type="button" id="view-password" data-view="n"><i class="fas fa-lock"></i></button>

@@ -12,7 +12,7 @@ class ServiceController extends Controller
 {
     public function index()
     {
-        $title = "Services";
+        $title = "Servicios";
 
         $columns = [
             [
@@ -20,20 +20,20 @@ class ServiceController extends Controller
                 'key'=>'id'
             ],
             [
-                'title'=>'Name',
+                'title'=>'Nombre',
                 'key'=>'name'
             ],
             [
-                'title'=>'Cover',
+                'title'=>'Portada',
                 'key'=>'cover',
                 'type'=>'img'
             ],
             [
-                'title'=>'Profiles',
+                'title'=>'Perfiles Permitidos',
                 'key'=>'profiles'
             ],
             [
-                'title'=>'Link',
+                'title'=>'Enlace',
                 'key'=>'link'
             ]
         ];
@@ -44,7 +44,7 @@ class ServiceController extends Controller
     }
     public function create()
     {
-        $title = "New Service";
+        $title = "Nuevo Servicio";
         $type = "new";
         return view('admin.services.add-edit', compact('title','type'));
     }
@@ -82,7 +82,7 @@ class ServiceController extends Controller
 
     public function edit(string $id)
     {
-        $title = "Edit Services";
+        $title = "Editar Servicio";
         $type = "edit";
         $data = Service::findorfail($id);
         return view('admin.services.add-edit', compact('title','type','data'));

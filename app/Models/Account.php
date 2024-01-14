@@ -11,4 +11,7 @@ class Account extends Model
 
     protected $table = 'accounts';
 
+    public function service(){
+        return $this->belongsTo('App\Models\Service');
+    }
 }

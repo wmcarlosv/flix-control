@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Account;
 use Session;
 use Auth;
-
+use App\Models\Service;
 
 class AccountController extends Controller
 {
@@ -15,7 +15,7 @@ class AccountController extends Controller
      */
     public function index()
     {
-        $title = "Accounts";
+        $title = "Cuentas";
 
         $columns = [
             [
@@ -23,32 +23,33 @@ class AccountController extends Controller
                 'key'=>'id'
             ],
             [
+                'title'=>'Servicio',
+                'key'=>'service_id',
+                'type'=>'relation',
+                'data'=>[
+                    'relation'=>'service',
+                    'key'=>'name'
+                ]
+            ],
+            [
                 'title'=>'Email',
                 'key'=>'email'
             ],
             [
-                'title'=>'Password Email',
-                'key'=>'passwordemail',
+                'title'=>'Expiracion',
+                'key'=>'dateto',
+                'type'=>'date',
+                'data'=>[
+                    'format'=>'d-m-Y'
+                ]
             ],
             [
-                'title'=>'Password',
-                'key'=>'password'
-            ],
-            [
-                'title'=>'Date To',
-                'key'=>'dateto'
-            ],
-            [
-                'title'=>'Service',
-                'key'=>'service_id'
-            ],
-            [
-                'title'=>'Status',
+                'title'=>'Estado',
                 'key'=>'status',
                 'type'=>'replace_text',
                 'data' => [
-                    '1'=>'true',
-                    '0'=>'false'
+                    '1'=>'Active',
+                    '0'=>'Inactive'
                 ]
             ]
         ];
@@ -65,7 +66,8 @@ class AccountController extends Controller
     {
         $title = "New Account";
         $type = "new";
-        return view('admin.accounts.add-edit', compact('title','type'));
+        $services = Service::all();
+        return view('admin.accounts.add-edit', compact('title','type','services'));
     }
 
     /**
@@ -84,7 +86,6 @@ class AccountController extends Controller
         $element->password = $request->password;
         $element->dateto = $request->dateto;
         $element->service_id = $request->service_id;
-        $element->status = $request->status;
 
         $element->user_id = Auth::user()->id;
 
@@ -113,7 +114,8 @@ class AccountController extends Controller
         $title = "Edit Account";
         $type = "edit";
         $data = Account::findorfail($id);
-        return view('admin.accounts.add-edit', compact('title','type','data'));
+        $services = Service::all();
+        return view('admin.accounts.add-edit', compact('title','type','data','services'));
     }
 
     /**
@@ -132,7 +134,6 @@ class AccountController extends Controller
         $element->password = $request->password;
         $element->dateto = $request->dateto;
         $element->service_id = $request->service_id;
-        $element->status = $request->status;
 
         if($element->update()){
             Session::flash('success', 'Record Update Successfully!!');

@@ -12,7 +12,7 @@
                 @include('admin.partials.form', ['element'=>'customers', 'type'=>$type, 'id'=>@$data->id])
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="">Name:</label>
+                            <label for="">Nombre:</label>
                             <input type="text" class="form-control @error('name') is-invalid @enderror" value="{{ @$data->name }}" name="name" />
                             @error('name')
                                <span class="error invalid-feedback">{{ $message }}</span>
@@ -27,7 +27,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="">Phone:</label>
+                            <label for="">Telefono:</label>
                             <input type="text" class="form-control @error('phone') is-invalid @enderror" value="{{ @$data->phone }}" name="phone" />
                             @error('phone')
                                <span class="error invalid-feedback">{{ $message }}</span>
