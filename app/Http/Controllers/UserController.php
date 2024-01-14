@@ -44,8 +44,12 @@ class UserController extends Controller
                 ]
             ],
             [
-                'title'=>'Expiracion',
-                'key'=>'date_to'
+                'title'=>'Facturacion',
+                'key'=>'date_to',
+                'type'=>'date',
+                'data'=>[
+                    'format'=>'d/m/Y'
+                ]
             ]
         ];
 

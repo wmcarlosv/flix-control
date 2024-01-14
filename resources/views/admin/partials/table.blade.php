@@ -52,7 +52,9 @@
                   		@break
 
                   		@case('date')
-                  			{{ date($col['data']['format'], strtotime($d->$key)) }}
+                  			@if(!empty($d->$key))
+                  				{{ date($col['data']['format'], strtotime($d->$key)) }}
+                  			@endif
                   		@break
                   	@endswitch
                   </td>
