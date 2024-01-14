@@ -46,7 +46,7 @@ class AppServiceProvider extends ServiceProvider
                 ],
                 [
                     'text'=>'Customers',
-                    'icon'=>'fas fa-tv',
+                    'icon'=>'fas fa-walking',
                     'route'=>'customers.index'
                 ],
             );

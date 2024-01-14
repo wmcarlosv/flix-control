@@ -7,7 +7,7 @@
         <div class="col-md-12">
             <div class="card card-success">
                 <div class="card-header">
-                    <h2><i class="fas fa-user"></i> {{ $title }}</h2>
+                    <h2><i class="fas fa-walking"></i> {{ $title }}</h2>
                 </div>
                 @include('admin.partials.form', ['element'=>'customers', 'type'=>$type, 'id'=>@$data->id])
                     <div class="card-body">
