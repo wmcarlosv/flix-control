@@ -29,10 +29,29 @@
                         <div class="form-group">
                             <label for="">Role:</label>
                             <select class="form-control @error('role') is-invalid @enderror" name="role">
-                                <option value="admin">Admin</option>
-                                <option value="operator" @if(@$data->role == 'operator') selected='selected' @endif>Operator</option>
+                                <option value="super_admin">Super Admin</option>
+                                <option value="admin" @if(@$data->role == 'admin') selected='selected' @endif>Admin</option>
                             </select>
                             @error('role')
+                               <span class="error invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Active:</label>
+                            <select class="form-control @error('is_active') is-invalid @enderror" name="is_active">
+                                <option value="1">Yes</option>
+                                <option value="0" @if(@$data->is_active == 0) selected='selected' @endif>No</option>
+                            </select>
+                            @error('is_active')
+                               <span class="error invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Date To:</label>
+                            <input type="date" class="form-control @error('date_to') is-invalid @enderror" value="{{ @$data->date_to }}" name="date_to" />
+                            @error('date_to')
                                <span class="error invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>

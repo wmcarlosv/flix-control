@@ -28,6 +28,10 @@
                   		@case('img')
                   			<img src="{{ asset(str_replace('public','storage',$d->$key)) }}" class="img-thumbnail" style="width:100px; height: 100px;" alt="image">
                   		@break
+
+                  		@case('replace_text')
+                  			{{$col['data'][$d->$key]}}
+                  		@break
                   	@endswitch
                   </td>
 				@endforeach

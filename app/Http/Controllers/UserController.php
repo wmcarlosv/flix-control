@@ -28,6 +28,28 @@ class UserController extends Controller
             [
                 'title'=>'Email',
                 'key'=>'email'
+            ],
+            [
+                'title'=>'Role',
+                'key'=>'role',
+                'type'=>'replace_text',
+                'data' => [
+                    'super_admin'=>'Super Admin',
+                    'admin'=>'Admin'
+                ]
+            ],
+            [
+                'title'=>'Active',
+                'key'=>'is_active',
+                'type'=>'replace_text',
+                'data' => [
+                    '1'=>'Yes',
+                    '0'=>'No'
+                ]
+            ],
+            [
+                'title'=>'Date To',
+                'key'=>'date_to'
             ]
         ];
 
@@ -61,6 +83,8 @@ class UserController extends Controller
         $element->name = $request->name;
         $element->email = $request->email;
         $element->password = bcrypt($request->password);
+        $element->is_active = $request->is_active;
+        $element->date_to = $request->date_to;
 
         if($element->save()){
             Session::flash('success', 'Record Inserted Successfully!!');
@@ -103,6 +127,8 @@ class UserController extends Controller
         $element = User::findorfail($id);
         $element->name = $request->name;
         $element->email = $request->email;
+        $element->is_active = $request->is_active;
+        $element->date_to = $request->date_to;
 
         if($element->update()){
             Session::flash('success', 'Record Update Successfully!!');
