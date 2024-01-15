@@ -54,9 +54,9 @@ class SettingController extends Controller
         $data->updated_at = date('Y-m-d H:i:s');
 
         if($data->save()){
-            Session::flash('success', 'Record Inserted Successfully!!');
+            Session::flash('success', 'Registro Insertado con Exito!!');
         }else{
-            Session::flash('error', 'Error Inserting The Record!!');
+            Session::flash('error', 'Ocurrio un error al tratar de insertar el Registro!!');
         }
 
         return redirect()->route('settings.index');

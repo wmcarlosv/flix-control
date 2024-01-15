@@ -87,9 +87,9 @@ class UserController extends Controller
         $element->date_to = $request->date_to;
 
         if($element->save()){
-            Session::flash('success', 'Record Inserted Successfully!!');
+            Session::flash('success', 'Registro Insertado con Exito!!');
         }else{
-            Session::flash('error', 'Error Inserting The Record!!');
+            Session::flash('error', 'Ocurrio un error al tratar de insertar el Registro!!');
         }
 
         return redirect()->route('users.index');
@@ -131,9 +131,9 @@ class UserController extends Controller
         $element->date_to = $request->date_to;
 
         if($element->update()){
-            Session::flash('success', 'Record Update Successfully!!');
+            Session::flash('success', 'Registro Actualizado con Exito!!');
         }else{
-            Session::flash('error', 'Error Updating The Record!!');
+            Session::flash('error', 'Ocurrio un error al tratara de Actualizar el Registro!!');
         }
 
         return redirect()->route('users.index');
@@ -146,9 +146,9 @@ class UserController extends Controller
     {
         $element = User::findorfail($id);
         if($element->delete()){
-            Session::flash('success', 'Record Deleted Successfully!!');
+            Session::flash('success', 'Registro Eliminado con Exito!!');
         }else{
-            Session::flash('error', 'Error Deleting The Record!!');
+            Session::flash('error', 'Ocurrio un error al tratar de Eliminar el Registro!!');
         }
 
         return redirect()->route('users.index');
@@ -171,9 +171,9 @@ class UserController extends Controller
         $user->email = $request->email;
 
         if($user->update()){
-            Session::flash('success','Record Insert Successfully!!');
+            Session::flash('success','Registro Actualizado con Exito!!');
         }else{
-            Session::flash('error', 'Error Inserting The Record!!');
+            Session::flash('error', 'Ocurrio un error al tratar de insertar el Registro!!');
         }
 
         return redirect()->route('profile');
@@ -189,9 +189,9 @@ class UserController extends Controller
         $user->password = bcrypt($request->password);
 
         if($user->update()){
-            Session::flash('success','Password Changed Successfully!!');
+            Session::flash('success','Contraseña Actualizada con Exito!!');
         }else{
-            Session::flash('error', 'Error Changing The Passsword!!');
+            Session::flash('error', 'Ocurrio un error al tratar de Actualizar la Contraseña!!');
         }
 
         return redirect()->route('profile');

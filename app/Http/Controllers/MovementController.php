@@ -81,9 +81,9 @@ class MovementController extends Controller
         $element->user_id = Auth::user()->id;
 
         if($element->save()){
-            Session::flash('success', 'Record Inserted Successfully!!');
+            Session::flash('success', 'Registro Insertado con Exito!!');
         }else{
-            Session::flash('error', 'Error Inserting The Record!!');
+            Session::flash('error', 'Ocurrio un error al tratar de insertar el Registro!!');
         }
 
         return redirect()->route('movements.index');
@@ -128,9 +128,9 @@ class MovementController extends Controller
         $element->user_id = Auth::user()->id;
 
         if($element->update()){
-            Session::flash('success', 'Record Update Successfully!!');
+            Session::flash('success', 'Registro Actualizado con Exito!!');
         }else{
-            Session::flash('error', 'Error Updating The Record!!');
+            Session::flash('error', 'Ocurrio un error al tratara de Actualizar el Registro!!');
         }
 
         return redirect()->route('movements.index');
@@ -143,9 +143,9 @@ class MovementController extends Controller
     {
         $element = Movement::findorfail($id);
         if($element->delete()){
-            Session::flash('success', 'Record Deleted Successfully!!');
+            Session::flash('success', 'Registro Eliminado con Exito!!');
         }else{
-            Session::flash('error', 'Error Deleting The Record!!');
+            Session::flash('error', 'Ocurrio un error al tratar de Eliminar el Registro!!');
         }
 
         return redirect()->route('movements.index');
