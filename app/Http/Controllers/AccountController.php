@@ -56,7 +56,7 @@ class AccountController extends Controller
      */
     public function create()
     {
-        $title = "New Account";
+        $title = "Nueva Cuenta";
         $type = "new";
         $services = Service::all();
         return view('admin.accounts.add-edit', compact('title','type','services'));
@@ -103,7 +103,7 @@ class AccountController extends Controller
      */
     public function edit(string $id)
     {
-        $title = "Edit Account";
+        $title = "Editar Cuenta";
         $type = "edit";
         $data = Account::findorfail($id);
         $services = Service::all();
