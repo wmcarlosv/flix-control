@@ -34,10 +34,14 @@ class MovementController extends Controller
             [
                 'title'=>'Fecha del Movimiento',
                 'key'=>'datemovement',
+                'type'=>'date',
+                'data'=>[
+                    'format'=>'d/m/Y'
+                ]
             ],
             [
                 'title'=>'Monto',
-                'key'=>'amount'
+                'key'=>'format_amount'
             ],
         ];
 

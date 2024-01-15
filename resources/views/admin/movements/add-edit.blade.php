@@ -15,7 +15,7 @@
                             <label for="">Tipo:</label>
                             <select class="form-control @error('role') is-invalid @enderror" name="type">
                                 <option value="input">Entrada</option>
-                                <option value="output">Salida</option>
+                                <option value="output" @if(@$data->type == 'output') selected='selected' @endif>Salida</option>
                             </select>
                             @error('type')
                                <span class="error invalid-feedback">{{ $message }}</span>

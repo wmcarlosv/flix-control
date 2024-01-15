@@ -6,6 +6,7 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\MovementController;
+use App\Http\Controllers\SettingController;
 
 
 
@@ -36,4 +37,6 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth']], function(){
     Route::get('profile', [UserController::class, 'profile'])->name('profile');
     Route::put('update-profile', [UserController::class, 'update_profile'])->name('update_profile');
     Route::put('update-password', [UserController::class, 'update_password'])->name('update_password');
+    Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::put('settings', [SettingController::class, 'update'])->name('settings.update');
 });
