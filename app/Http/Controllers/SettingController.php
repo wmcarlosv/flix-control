@@ -51,6 +51,8 @@ class SettingController extends Controller
         $data->expiration_template = $request->expiration_template;
         $data->customer_data_template = $request->customer_data_template;
 
+        $data->updated_at = date('Y-m-d H:i:s');
+
         if($data->save()){
             Session::flash('success', 'Record Inserted Successfully!!');
         }else{
