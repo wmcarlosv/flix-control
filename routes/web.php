@@ -7,6 +7,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\MovementController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\SubscriptionController;
 
 
 
@@ -33,7 +34,11 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth']], function(){
     Route::resource('services', ServiceController::class);
     Route::resource('customers', CustomerController::class);
     Route::resource('accounts', AccountController::class);
+    Route::post('accounts/extend', [AccountController::class, 'extend_account'])->name('extend_account');
     Route::resource('movements', MovementController::class);
+    Route::post('subscriptions/store', [SubscriptionController::class, 'store'])->name('subscriptions.store');
+    Route::post('subscriptions/update', [SubscriptionController::class, 'update_data'])->name('subscriptions.update_data');
+    Route::post('subscriptions/extends', [SubscriptionController::class, 'extends'])->name('subscriptions.extends');
     Route::get('profile', [UserController::class, 'profile'])->name('profile');
     Route::put('update-profile', [UserController::class, 'update_profile'])->name('update_profile');
     Route::put('update-password', [UserController::class, 'update_password'])->name('update_password');

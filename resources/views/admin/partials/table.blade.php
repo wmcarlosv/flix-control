@@ -56,6 +56,10 @@
                   				{{ date($col['data']['format'], strtotime($d->$key)) }}
                   			@endif
                   		@break
+
+                  		@case('html')
+                  			{!!$d->$key!!}
+                  		@break
                   	@endswitch
                   </td>
 				@endforeach

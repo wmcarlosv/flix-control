@@ -7,6 +7,8 @@ use App\Models\Account;
 use Session;
 use Auth;
 use App\Models\Service;
+use App\Models\Customer;
+use App\Models\Movement;
 
 class AccountController extends Controller
 {
@@ -33,6 +35,11 @@ class AccountController extends Controller
                 'key'=>'email'
             ],
             [
+                'title'=>'Perfiles',
+                'key'=>'list_profiles',
+                'type'=>'html'
+            ],
+            [
                 'title'=>'Contraseña',
                 'key'=>'password'
             ],
@@ -47,8 +54,8 @@ class AccountController extends Controller
         ];
 
         $data = Account::all();
-
-        return view('admin.accounts.browse', compact('title','columns', 'data'));
+        $customers = Customer::all();
+        return view('admin.accounts.browse', compact('title','columns', 'data','customers'));
     }
 
     /**
@@ -82,6 +89,15 @@ class AccountController extends Controller
         $element->user_id = Auth::user()->id;
 
         if($element->save()){
+
+            $mvd = [
+                'type'=>'output',
+                'description'=>'Creacion de Cuenta '.$element->service->name,
+                'amount'=>$request->amount
+            ];
+
+            Movement::createMovement($mvd);
+
             Session::flash('success', 'Registro Insertado con Exito!!');
         }else{
             Session::flash('error', 'Ocurrio un error al tratar de insertar el Registro!!');
@@ -149,5 +165,34 @@ class AccountController extends Controller
         }
 
         return redirect()->route('accounts.index');
+    }
+
+    public function extend_account(Request $request){
+        $account = Account::findorfail($request->id);
+        $account->dateto = $request->date_to;
+
+        if($account->update()){
+
+            $mvd = [
+                'type'=>'output',
+                'description'=>'Se extendio la membresia de la cuenta '.$account->email.' del servicio de '.$account->service->name,
+                'amount'=>$request->amount
+            ];
+
+            Movement::createMovement($mvd);
+            
+            $data = [
+                'type'=>'success',
+                'message'=>'Cuenta Extendida con Exito!!',
+                'account'=>$account
+            ];
+        }else{
+            $data = [
+                'type'=>'error',
+                'message'=>'Ocurrio un error al tratar de extender la Cuenta!!'
+            ];
+        }
+
+        return response()->json($data);
     }
 }

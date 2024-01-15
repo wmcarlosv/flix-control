@@ -13,7 +13,7 @@
               <span class="info-box-icon"><i class="fas fa-sort-numeric-up"></i></span>
               <div class="info-box-content">
                 <span class="info-box-text">Ingresos</span>
-                <span class="info-box-number">0</span>
+                <span class="info-box-number">$ {{number_format($input,2,',','.')}}</span>
               </div>
             </div>
         </div>
@@ -22,7 +22,7 @@
               <span class="info-box-icon"><i class="fas fa-sort-numeric-down-alt"></i></span>
               <div class="info-box-content">
                 <span class="info-box-text">Gastos</span>
-                <span class="info-box-number">0</span>
+                <span class="info-box-number">$ {{number_format($output,2,',','.')}}</span>
               </div>
             </div>
         </div>
@@ -32,7 +32,7 @@
               <span class="info-box-icon"><i class="far fa-money-bill-alt"></i></span>
               <div class="info-box-content">
                 <span class="info-box-text">Balance</span>
-                <span class="info-box-number">0</span>
+                <span class="info-box-number">$ {{number_format($balance,2,',','.')}}</span>
               </div>
             </div>
         </div>
@@ -53,7 +53,20 @@
                         <th>Fecha</th>
                     </thead>
                     <tbody>
-                        
+                        @foreach($movements as $mv)
+                        <tr>
+                            <td>
+                                @if($mv->type == 'input')
+                                    Entrada
+                                @else
+                                    Salida
+                                @endif
+                            </td>
+                            <td>{{$mv->description}}</td>
+                            <td>$ {{number_format($mv->amount,2,',','.')}}</td>
+                            <td>{{date('d-m-Y', strtotime($mv->datemovement))}}</td>
+                        </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
