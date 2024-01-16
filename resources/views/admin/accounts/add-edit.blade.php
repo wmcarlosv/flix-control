@@ -54,7 +54,7 @@
                         @endif
                         <div class="form-group">
                             <label for="">Facturacion:</label>
-                            <input type="date" readonly class="form-control @error('dateto') is-invalid @enderror" value="{{ @$data->dateto }}" name="dateto" />
+                            <input type="date" @if($type=='edit') readonly @endif class="form-control @error('dateto') is-invalid @enderror" value="{{ @$data->dateto }}" name="dateto" />
                             @error('dateto')
                                <span class="error invalid-feedback">{{ $message }}</span>
                             @enderror
@@ -63,6 +63,12 @@
                                 <a href="#" class="btn btn-success" id="open-modal-extend">Extender Facturacion</a>
                             @endif
                         </div>
+                        @if($type == 'edit')
+                            <div class="form-group">
+                                <label for="">Dias Restanates:</label>
+                                <input type="text" class="form-control" id="last_days" readonly value="{{ @$data->last_days }}" />
+                            </div>
+                        @endif
                     </div>
                     <div class="card-footer">
                         @include('admin.partials.buttons',['cancelRoute'=>'accounts.index'])
@@ -129,6 +135,7 @@
                     if(extend_amount && extend_date_to){
                         $.post("{{route('extend_account')}}", { id: '{{@$data->id}}', amount: extend_amount, date_to: extend_date_to}, function(response){
                             let data = response;
+                            console.log(data);
                             Swal.fire({
                                 title:"Notificacion",
                                 text: data.message,
@@ -136,6 +143,7 @@
                             });
 
                             $("input[name='dateto']").val(data.account.dateto);
+                            $("#last_days").val(data.account.last_days);
                             $("#extend_amount, #extend_date_to").val("");
                             $("#modal-extend").modal('hide');
                         });

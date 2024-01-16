@@ -113,6 +113,10 @@
                         <label for="">Facturacion:</label>
                         <input type="date" readonly class="form-control" id="edit_date_to" />
                     </div>
+                    <div class="form-group">
+                        <label for="">Dias Restantes:</label>
+                        <input type="text" class="form-control" readonly id="last_days" />
+                    </div>
                     <button type="button" class="btn btn-success" id="save-edit-subscription"><i class="fas fa-save"></i> Actualizar</button>
                 </div>
                 
@@ -216,11 +220,12 @@
                 $("#edit_pin").val(data.pin);
                 $("#edit_date_to").val(data.date_to);
                 $("#extend_edit_date_to").val(data.date_to);
+                $("#last_days").val(data.last_days);
                 $("#modal-edit").modal('show');
             });
 
             $(".close-edit-subscription").click(function(){
-                $("#edit_service_id, #edit_account_id, #edit_customer_id, #edit_amount, #edit_date_to, #edit_profile, #edit_pin, #edit_active_free_profile").val("");
+                $("#edit_service_id, #edit_account_id, #edit_customer_id, #edit_amount, #edit_date_to, #edit_profile, #edit_pin, #edit_active_free_profile, #last_days").val("");
                 $("#modal-edit").modal('hide');
             });
 
@@ -248,7 +253,7 @@
 
                             $("#"+$("#edit_active_free_profile").val()).removeClass("btn-info").addClass("btn-success").attr("data-subscription", JSON.stringify(data.subscription));
 
-                            $("#edit_subscription_id, #edit_customer_id, #edit_date_to, #edit_profile, #edit_pin, #edit_active_free_profile").val("");
+                            $("#edit_subscription_id, #edit_customer_id, #edit_date_to, #edit_profile, #edit_pin, #edit_active_free_profile, #last_days").val("");
                             $("#modal-edit").modal('hide');
                         });
                 }else{
@@ -278,7 +283,7 @@
 
                         $("#"+$("#edit_active_free_profile").val()).removeClass("btn-info").addClass("btn-success").attr("data-subscription", JSON.stringify(data.subscription));
 
-                        $("#edit_subscription_id, #edit_customer_id, #edit_date_to, #edit_profile, #edit_pin, #edit_active_free_profile, #extend_amount, #extend_date_to").val("");
+                        $("#edit_subscription_id, #edit_customer_id, #edit_date_to, #edit_profile, #edit_pin, #edit_active_free_profile, #extend_amount, #extend_date_to, #last_days").val("");
                         $("#modal-edit").modal('hide');
                     });
                 }else{

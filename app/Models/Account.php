@@ -12,6 +12,8 @@ class Account extends Model
 
     protected $table = 'accounts';
 
+    protected $appends = ['last_days'];
+
     public function service(){
         return $this->belongsTo('App\Models\Service');
     }
@@ -27,8 +29,16 @@ class Account extends Model
         );
     }
 
+    public function lastDays(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => $this->getDays()
+        );
+    }
+
     public function getAccountList(){
         $subcount = $this->subscriptions;
+        #dd($subcount);
         $totals = ($this->service->profiles - $this->subscriptions->count());
         $html = "<div>";
 
@@ -47,5 +57,16 @@ class Account extends Model
         $html.="</div>";
 
         return $html;
+    }
+
+    public function getDays(){
+        $now = time();
+        $your_date = strtotime($this->dateto);
+        $datediff =  $your_date - $now;
+        $total = round($datediff / (60 * 60 * 24));
+        if($total == 0){
+            $total = 0;
+        }
+        return $total;
     }
 }

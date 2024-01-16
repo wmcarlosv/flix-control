@@ -50,6 +50,10 @@ class AccountController extends Controller
                 'data'=>[
                     'format'=>'d/m/Y'
                 ]
+            ],
+            [
+                'title'=>'Dias Restantes',
+                'key'=>'last_days'
             ]
         ];
 
