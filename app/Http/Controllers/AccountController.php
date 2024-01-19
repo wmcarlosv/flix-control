@@ -172,7 +172,7 @@ class AccountController extends Controller
     }
 
     public function extend_account(Request $request){
-        $account = Account::findorfail($request->id);
+        $account = Account::findorfail($request->id); 
         $account->dateto = $request->date_to;
 
         if($account->update()){

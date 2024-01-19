@@ -40,37 +40,118 @@
 
     <div class="row">
         <div class="col-md-12">
-            <div class="card">
-            <div class="card-header">
-                <h3>Ultimos Movimientos</h3>
+
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" id="last_movements-tab" data-toggle="tab" href="#last_movements" role="tab" aria-controls="last_movements"
+                  aria-selected="true">Ultimos Movimientos</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="expirations_subscriptions-tab" data-toggle="tab" href="#expirations_subscriptions" role="tab" aria-controls="expirations_subscriptions"
+                  aria-selected="false">Subscripciones por Vencer</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="expirations_accounts-tab" data-toggle="tab" href="#expirations_accounts" role="tab" aria-controls="expirations_accounts"
+                  aria-selected="false">Cuentas por Vencer</a>
+              </li>
+            </ul>
+
+            <div class="tab-content" id="myTabContent">
+
+                <div class="tab-pane fade show active" id="last_movements" role="tabpanel" aria-labelledby="last_movements-tab">
+                     <div class="card">
+                        <div class="card-body">
+                            <table class="table table-bordered table-striped" id="table-last_movements">
+                                <thead>
+                                    <th>#</th>
+                                    <th>Tipo</th>
+                                    <th>Descripcion</th>
+                                    <th>Monto</th>
+                                    <th>Fecha</th>
+                                </thead>
+                                <tbody>
+                                    @foreach($movements as $mv)
+                                    <tr>
+                                        <td>{{$mv->id}}</td>
+                                        <td>
+                                            @if($mv->type == 'input')
+                                                Entrada
+                                            @else
+                                                Salida
+                                            @endif
+                                        </td>
+                                        <td>{{$mv->description}}</td>
+                                        <td>$ {{number_format($mv->amount,2,',','.')}}</td>
+                                        <td>{{date('d-m-Y', strtotime($mv->datemovement))}}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div> 
+                </div>
+
+                <div class="tab-pane fade" id="expirations_subscriptions" role="tabpanel" aria-labelledby="expirations_subscriptions-tab">
+                    <div class="card">
+                        <div class="card-body">
+                          <table class="table table-bordered table-striped" id="table-expirations_subscriptions">
+                               <thead>
+                                   <th>Servicio</th>
+                                   <th>Cuenta (email)</th>
+                                   <th>Cliente</th>
+                                   <th>Dias Restantes</th>
+                                   <th>Acciones</th>
+                               </thead>
+                               <tbody>
+                                   @if($expirations_subscriptions)
+                                    @foreach($expirations_subscriptions as $es)
+                                        <tr>
+                                            <td>
+                                                @if($es->service->cover)
+                                                <img src="{{asset(str_replace('public','storage',$es->service->cover))}}" class="img-thumbnail" style="width:75px; height:75px;">@endif {{$es->service->name}}        
+                                            </td>
+                                            <td>{{$es->account->email}}</td>
+                                            <td>{{$es->customer->name}}</td>
+                                            <td>{{$es->last_days}}</td>
+                                            <td></td>
+                                        </tr>
+                                    @endforeach
+                                   @endif
+                               </tbody>
+                           </table>  
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="expirations_accounts" role="tabpanel" aria-labelledby="expirations_accounts-tab">
+                    <div class="card">
+                        <div class="card-body">
+                            <table class="table table-bordered table-striped" id="table-expirations_accounts">
+                                <thead>
+                                    <th>Sercicio</th>
+                                    <th>Cuenta (Email)</th>
+                                    <th>Dias Restantes</th>
+                                </thead>
+                                <tbody>
+                                     @if($accounts)
+                                        @foreach($accounts as $acc)
+                                            <tr>
+                                                <td>
+                                                    @if($es->service->cover)
+                                                    <img src="{{asset(str_replace('public','storage',$acc->service->cover))}}" class="img-thumbnail" style="width:75px; height:75px;">@endif {{$acc->service->name}}        
+                                                </td>
+                                                <td><a target="_blank" href="{{route('accounts.edit',$acc->id)}}">{{$acc->email}}</a></td>
+                                                <td>{{$acc->last_days}}</td>
+                                            </tr>
+                                        @endforeach
+                                     @endif
+                                </tbody>
+                            </table>  
+                        </div>
+                    </div>
+                </div>
+
             </div>
-            <div class="card-body">
-                <table class="table table-bordered table-striped">
-                    <thead>
-                        <th>Tipo</th>
-                        <th>Descripcion</th>
-                        <th>Monto</th>
-                        <th>Fecha</th>
-                    </thead>
-                    <tbody>
-                        @foreach($movements as $mv)
-                        <tr>
-                            <td>
-                                @if($mv->type == 'input')
-                                    Entrada
-                                @else
-                                    Salida
-                                @endif
-                            </td>
-                            <td>{{$mv->description}}</td>
-                            <td>$ {{number_format($mv->amount,2,',','.')}}</td>
-                            <td>{{date('d-m-Y', strtotime($mv->datemovement))}}</td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
         </div>
     </div>
 @stop
@@ -78,7 +159,9 @@
 @section('js')
     <script>
         $(document).ready(function(){
-            $("table").DataTable();
+            $("#table-last_movements").DataTable({ order: [[0, 'desc']] });
+            $("#table-expirations_subscriptions").DataTable({ order: [[3, 'asc']] });
+            $("#table-expirations_accounts").DataTable({ order: [[2, 'asc']] });
         });
     </script>
 @stop

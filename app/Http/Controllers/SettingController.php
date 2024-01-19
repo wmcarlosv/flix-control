@@ -50,7 +50,9 @@ class SettingController extends Controller
 
         $data->expiration_template = $request->expiration_template;
         $data->customer_data_template = $request->customer_data_template;
-
+        $data->expiration_days_subscriptions = $request->expiration_days_subscriptions;
+        $data->expiration_days_accounts = $request->expiration_days_accounts;
+        
         $data->updated_at = date('Y-m-d H:i:s');
 
         if($data->save()){

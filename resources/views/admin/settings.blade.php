@@ -51,7 +51,7 @@
                     </div>
                     <div class="form-group">
                         <label for="">Template para Notificar Expiracion de Cuenta:</label>
-                        <textarea class="form-control @error('expiration_template') is-invalid @enderror" name="expiration_template">{{@$data->expiration_template}}</textarea>
+                        <textarea class="form-control @error('expiration_template') is-invalid @enderror" style="height: 200px;" name="expiration_template">{{@$data->expiration_template}}</textarea>
                         @error('expiration_template') 
                             <span class="error invalid-feedback">{{ $message }}</span> 
                         @enderror
@@ -59,8 +59,22 @@
 
                     <div class="form-group">
                         <label for="">Template para enviar datos a Cliente:</label>
-                        <textarea class="form-control @error('customer_data_template') is-invalid @enderror" name="customer_data_template">{{@$data->customer_data_template}}</textarea>
+                        <textarea class="form-control @error('customer_data_template') is-invalid @enderror" style="height: 200px;" name="customer_data_template">{{@$data->customer_data_template}}</textarea>
                         @error('customer_data_template') 
+                            <span class="error invalid-feedback">{{ $message }}</span> 
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="">Dias de aviso para Expiration de Subscripcion:</label>
+                        <input type="text" class="form-control @error('expiration_days_subscriptions') is-invalid @enderror" name="expiration_days_subscriptions" value="{{@$data->expiration_days_subscriptions}}">
+                        @error('expiration_days_subscriptions') 
+                            <span class="error invalid-feedback">{{ $message }}</span> 
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="">Dias de aviso para Expiration de Cuentas:</label>
+                        <input type="text" class="form-control @error('expiration_days_accounts') is-invalid @enderror" name="expiration_days_accounts" value="{{@$data->expiration_days_accounts}}">
+                        @error('expiration_days_accounts') 
                             <span class="error invalid-feedback">{{ $message }}</span> 
                         @enderror
                     </div>
