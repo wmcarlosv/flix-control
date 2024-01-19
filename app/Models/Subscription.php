@@ -38,6 +38,10 @@ class Subscription extends Model
         $datediff =  $your_date - $now;
         $total = round($datediff / (60 * 60 * 24));
         if($total == 0){
+            $total = 1;
+        }
+
+        if($total < 0){
             $total = 0;
         }
         return $total;

@@ -51,6 +51,16 @@
                     </div>
                     <div class="form-group">
                         <label for="">Template para Notificar Expiracion de Cuenta:</label>
+                        <p><span class="label label-success">Variables que puedes Usar:</span></p>
+                        <p>
+                            <a href="#" class="btn btn-info variable">#servicio</a>
+                            <a href="#" class="btn btn-info variable">#cliente</a>
+                            <a href="#" class="btn btn-info variable">#cuenta</a>
+                            <a href="#" class="btn btn-info variable">#facturacion</a>
+                            <a href="#" class="btn btn-info variable">#dias</a>
+                            <a href="#" class="btn btn-info variable">#perfil</a>
+                            <a href="#" class="btn btn-info variable">#pin</a>
+                        </p>
                         <textarea class="form-control @error('expiration_template') is-invalid @enderror" style="height: 200px;" name="expiration_template">{{@$data->expiration_template}}</textarea>
                         @error('expiration_template') 
                             <span class="error invalid-feedback">{{ $message }}</span> 
@@ -59,6 +69,16 @@
 
                     <div class="form-group">
                         <label for="">Template para enviar datos a Cliente:</label>
+                        <p><span class="label label-success">Variables que puedes Usar:</span></p>
+                        <p>
+                            <a href="#" class="btn btn-info variable">#servicio</a>
+                            <a href="#" class="btn btn-info variable">#cliente</a>
+                            <a href="#" class="btn btn-info variable">#cuenta</a>
+                            <a href="#" class="btn btn-info variable">#facturacion</a>
+                            <a href="#" class="btn btn-info variable">#dias</a>
+                            <a href="#" class="btn btn-info variable">#perfil</a>
+                            <a href="#" class="btn btn-info variable">#pin</a>
+                        </p>
                         <textarea class="form-control @error('customer_data_template') is-invalid @enderror" style="height: 200px;" name="customer_data_template">{{@$data->customer_data_template}}</textarea>
                         @error('customer_data_template') 
                             <span class="error invalid-feedback">{{ $message }}</span> 

@@ -8,6 +8,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\MovementController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\HomeController;
 
 
 
@@ -44,4 +45,6 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth']], function(){
     Route::put('update-password', [UserController::class, 'update_password'])->name('update_password');
     Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
     Route::put('settings', [SettingController::class, 'update'])->name('settings.update');
+    Route::get('get-expiration-message/{id}', [HomeController::class, 'getExpirationTemplate'])->name('get_expiration_template');
+    Route::get('get-data-message/{id}', [HomeController::class, 'getCustomerData'])->name('get_data_message');
 });

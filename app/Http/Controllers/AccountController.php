@@ -9,6 +9,7 @@ use Auth;
 use App\Models\Service;
 use App\Models\Customer;
 use App\Models\Movement;
+use App\Models\Setting;
 
 class AccountController extends Controller
 {
@@ -57,9 +58,10 @@ class AccountController extends Controller
             ]
         ];
 
+        $setting = Setting::first();
         $data = Account::all();
         $customers = Customer::all();
-        return view('admin.accounts.browse', compact('title','columns', 'data','customers'));
+        return view('admin.accounts.browse', compact('title','columns', 'data','customers','setting'));
     }
 
     /**

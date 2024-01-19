@@ -7,6 +7,7 @@ use App\Models\Movement;
 use App\Models\Subscription;
 use App\Models\Setting;
 use App\Models\Account;
+use App\Models\Customer;
 use DB;
 
 class HomeController extends Controller
@@ -16,8 +17,12 @@ class HomeController extends Controller
      *
      * @return void
      */
+
+    private $variables = [];
+
     public function __construct()
     {
+        $this->variables = ['#servicio','#cliente','#cuenta','#facturacion','#dias','#perfil','#pin'];
         $this->middleware('auth');
     }
 
@@ -31,6 +36,7 @@ class HomeController extends Controller
         $movements = Movement::orderBy('id','Desc')->limit(100)->get();
         $movements_sum = Movement::all();
         $setting = Setting::first();
+        $customers = Customer::all();
         $expirations_subscriptions = null;
         $accounts = null;
         $index = 0;
@@ -84,6 +90,128 @@ class HomeController extends Controller
 
         $balance = ($input-$output);
 
-        return view('admin.dashboard', compact('movements','input','output','balance','expirations_subscriptions','accounts'));
+        return view('admin.dashboard', compact('movements','input','output','balance','expirations_subscriptions','accounts','customers'));
+    }
+
+    public function getExpirationTemplate($id){
+        $subscription = Subscription::findorfail($id);
+        $settings = Setting::first();
+        $text = "";
+        $data = [];
+        if($settings){
+            if($settings->expiration_template){
+                $text = $settings->expiration_template;
+                foreach($this->variables as $variable){
+                    $temporal = "";
+                    switch($variable){
+                        case '#servicio':
+                            $temporal = str_replace($variable,$subscription->service->name, $text);
+                            $text = $temporal;
+                        break;
+                        case '#cliente':
+                            $temporal = str_replace($variable,$subscription->customer->name, $text);
+                            $text = $temporal;
+                        break;
+                        case '#cuenta':
+                            $temporal = str_replace($variable,$subscription->account->email, $text);
+                            $text = $temporal;
+                        break;
+                        case '#facturacion':
+                            $temporal = str_replace($variable,date('d/m/Y',strtotime($subscription->date_to)), $text);
+                            $text = $temporal;
+                        break;
+                        case '#dias':
+                            $temporal = str_replace($variable,$subscription->last_days, $text);
+                            $text = $temporal;
+                        break;
+                        case '#perfil':
+                            $temporal = str_replace($variable,$subscription->profile, $text);
+                            $text = $temporal;
+                        break;
+                        case '#pin':
+                            $temporal = str_replace($variable,$subscription->pin, $text);
+                            $text = $temporal;
+                        break;
+                    }
+                }
+                $data = [
+                    'success'=>true,
+                    'message'=>$text
+                ];
+            }else{
+                $data = [
+                    'success'=>false,
+                    'message'=>'El template de expiracion esta vacio, debes agregar el mensaje de expiracion de subscripcion!!'
+                ];
+            }
+        }else{
+            $data = [
+                'success'=>false,
+                'message'=>'no tienes configuracion disponile, por favor ve al menu de confiuracion e ingresala!!'
+            ];
+        }
+
+        return response()->json($data);
+    }
+
+    public function getCustomerData($id){
+        $subscription = Subscription::findorfail($id);
+        $settings = Setting::first();
+        $text = "";
+        $data = [];
+        if($settings){
+            if($settings->customer_data_template){
+                $text = $settings->customer_data_template;
+                foreach($this->variables as $variable){
+                    $temporal = "";
+                    switch($variable){
+                        case '#servicio':
+                            $temporal = str_replace($variable,$subscription->service->name, $text);
+                            $text = $temporal;
+                        break;
+                        case '#cliente':
+                            $temporal = str_replace($variable,$subscription->customer->name, $text);
+                            $text = $temporal;
+                        break;
+                        case '#cuenta':
+                            $temporal = str_replace($variable,$subscription->account->email, $text);
+                            $text = $temporal;
+                        break;
+                        case '#facturacion':
+                            $temporal = str_replace($variable,date('d/m/Y',strtotime($subscription->date_to)), $text);
+                            $text = $temporal;
+                        break;
+                        case '#dias':
+                            $temporal = str_replace($variable,$subscription->last_days, $text);
+                            $text = $temporal;
+                        break;
+                        case '#perfil':
+                            $temporal = str_replace($variable,$subscription->profile, $text);
+                            $text = $temporal;
+                        break;
+                        case '#pin':
+                            $temporal = str_replace($variable,$subscription->pin, $text);
+                            $text = $temporal;
+                        break;
+                    }
+                }
+                $data = [
+                    'success'=>true,
+                    'message'=>$text
+                ];
+            }else{
+                $data = [
+                    'success'=>false,
+                    'message'=>'El template de datos de cliente esta vacio, debes agregar el mensaje de datos del cliente!!'
+                ];
+            }
+        }else{
+            $data = [
+                'success'=>false,
+                'message'=>'no tienes configuracion disponile, por favor ve al menu de confiuracion e ingresala!!'
+            ];
+        }
+
+        return response()->json($data);
     }
 }
