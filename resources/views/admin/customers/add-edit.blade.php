@@ -28,7 +28,10 @@
 
                         <div class="form-group">
                             <label for="">Telefono:</label>
-                            <input type="text" class="form-control @error('phone') is-invalid @enderror" value="{{ @$data->phone }}" name="phone" />
+                            <div class="alert alert-primary" role="alert">
+                                Es importante que el numero comienzo con el simbolo "+"
+                            </div>
+                            <input type="text" placeholder="+584160000000"class="form-control @error('phone') is-invalid @enderror" value="{{ @$data->phone }}" name="phone" />
                             @error('phone')
                                <span class="error invalid-feedback">{{ $message }}</span>
                             @enderror
