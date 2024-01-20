@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Setting;
+use App\Scopes\ByUserScope;
 
 class Account extends Model
 {
@@ -16,6 +17,11 @@ class Account extends Model
     protected $appends = ['last_days'];
 
     private $settings;
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new ByUserScope);
+    }
 
     public function __construct(){
         $data = Setting::first();

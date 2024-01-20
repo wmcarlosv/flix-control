@@ -184,7 +184,7 @@
                             }
                         }
 
-                        $("#"+$("#active_free_profile").val()).attr("class","modal-edit btn "+addClass).addClass(addClass).attr("data-subscription", JSON.stringify(data.subscription)).removeClass('modal-new').addClass('modal-edit');
+                        $("#"+$("#active_free_profile").val()).attr("class","modal-edit btn "+addClass).addClass(addClass).attr("data-subscription", JSON.stringify(data.subscription)).removeClass('modal-new').addClass('modal-edit').attr("data-customer",JSON.stringify(data.subscription.customer));
 
                         $("#service_id, #account_id, #customer_id, #amount, #date_to, #profile, #pin, #active_free_profile").val("");
                         $("#modal-new").modal('hide');
@@ -255,7 +255,7 @@
                                 }
                             }
 
-                            $("#"+$("#edit_active_free_profile").val()).attr("class","modal-edit btn "+addClass).addClass(addClass).attr("data-subscription", JSON.stringify(data.subscription));
+                            $("#"+$("#edit_active_free_profile").val()).attr("class","modal-edit btn "+addClass).addClass(addClass).attr("data-subscription", JSON.stringify(data.subscription)).attr("data-customer",JSON.stringify(data.subscription.customer));;
 
                             $("#edit_subscription_id, #edit_customer_id, #edit_date_to, #edit_profile, #edit_pin, #edit_active_free_profile, #last_days").val("");
                             $("#modal-edit").modal('hide');

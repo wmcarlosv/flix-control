@@ -5,12 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use App\Scopes\ByUserScope;
+use Auth;
 
 class Service extends Model
 {
     use HasFactory;
 
     protected $table = 'services';
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new ByUserScope);
+    }
 
     public function imageName(): Attribute
     {

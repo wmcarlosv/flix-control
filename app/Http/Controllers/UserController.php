@@ -83,8 +83,8 @@ class UserController extends Controller
         $element->name = $request->name;
         $element->email = $request->email;
         $element->password = bcrypt($request->password);
-        $element->is_active = $request->is_active;
         $element->date_to = $request->date_to;
+        $element->role = $request->role;
 
         if($element->save()){
             Session::flash('success', 'Registro Insertado con Exito!!');
@@ -129,6 +129,7 @@ class UserController extends Controller
         $element->email = $request->email;
         $element->is_active = $request->is_active;
         $element->date_to = $request->date_to;
+        $element->role = $request->role;
 
         if($element->update()){
             Session::flash('success', 'Registro Actualizado con Exito!!');

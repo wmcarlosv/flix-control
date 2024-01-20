@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use App\Scopes\ByUserScope;
 use Auth;
 
 class Movement extends Model
@@ -12,6 +13,11 @@ class Movement extends Model
     use HasFactory;
 
     protected $table = 'movements';
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new ByUserScope);
+    }
 
     public function formatAmount(): Attribute
     {

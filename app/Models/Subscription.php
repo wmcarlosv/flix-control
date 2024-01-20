@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use App\Scopes\ByUserScope;
 
 class Subscription extends Model
 {
@@ -12,6 +13,11 @@ class Subscription extends Model
 
     protected $table = 'subscriptions';
     protected $appends = ['last_days'];
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new ByUserScope);
+    }
 
     public function lastDays(): Attribute
     {
