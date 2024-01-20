@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('account_id');
             $table->unsignedBigInteger('customer_id');
             $table->string('profile')->nullable();
-            $table->string('pin')->nullabe();
+            $table->string('pin')->nullable();
             $table->date('date_to');
             $table->boolean('status')->default(true);
             $table->timestamps();

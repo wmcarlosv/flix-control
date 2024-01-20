@@ -68,7 +68,7 @@ class Account extends Model
                 $class = "btn-danger";
                 $title = "Vencida";
             }
-            $html.="<a href='#' class='modal-edit btn ".$class."' id='sub_".$sa->id."' data-subscription='".json_encode($sa)."' title='".$title."'><i class='fas fa-user'></i></a> ";
+            $html.="<a href='#' class='modal-edit btn ".$class."' id='sub_".$sa->id."' data-customer='".json_encode($sa->customer)."' data-subscription='".json_encode($sa)."' title='".$title."'><i class='fas fa-user'></i></a> ";
         }
 
         for($i=0;$i<$totals;$i++){

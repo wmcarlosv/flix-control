@@ -20,7 +20,7 @@
           </li>
         </ul>
 
-        <div class="tab-content" id="myTabContent">
+        <div class="tab-content" id="myTabContentEdit">
 
             <div class="tab-pane fade show active" id="sub-data" role="tabpanel" aria-labelledby="sud-data-tab">
                <input type="hidden" id="edit_active_free_profile">
@@ -51,6 +51,8 @@
                     <input type="text" class="form-control" readonly id="last_days" />
                 </div>
                 <button type="button" class="btn btn-success" id="save-edit-subscription"><i class="fas fa-save"></i> Actualizar</button>
+                <a href="#" class="btn btn-info copy-data" id="copy_button" title="Copiar Informacion de Subscripcion"><i class="fas fa-copy"></i></a>
+                <a href="#" class="btn btn-success send-by-whatsapp" id="send-by-whatsapp" title="Notificar por Whatsapp"><i class="fab fa-whatsapp"></i></a>
             </div>
             
             <div class="tab-pane fade" id="extend" role="tabpanel" aria-labelledby="extend-tab">

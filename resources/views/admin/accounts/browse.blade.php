@@ -81,6 +81,56 @@
                 }
             });
 
+            $("#copy_button").click(function(){
+                let id = $(this).attr("data-id");
+                $.get("get-data-message/"+id, function(response){
+                    let data = response;
+                    if(data.success){
+                        copyToClipboard(data.message);
+                        Swal.fire({
+                            title: "Notificacion",
+                            text: "Se han copiado los datos correctamente!!",
+                            icon: "success",
+                            position: "top-end",
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    }else{
+                        Swal.fire({
+                            title: "Notificacion",
+                            text: data.messasge,
+                            icon: "error"
+                        });
+                    }
+                });
+            });
+
+            $("#send-by-whatsapp").click(function(){
+                let id = $(this).attr("data-id");
+                let phone = $(this).attr("data-number");
+                $.get("get-data-message/"+id, function(response){
+                    let data = response;
+                    if(data.success){
+                        let link = "https://wa.me/"+phone+"?text="+data.message;
+                        window.open(link, "_blank");
+                    }else{
+                        Swal.fire({
+                            title: "Notificacion",
+                            text: data.messasge,
+                            icon: "error"
+                        });
+                    }
+                });
+            });
+
+            function copyToClipboard(text) {
+                var $temp = $("<textarea></textarea>");
+                $("#myTabContentEdit").append($temp);
+                $temp.val(text).select();
+                document.execCommand('copy');
+                $temp.remove();
+            }
+
             $("body").on('click','a.modal-new', function(){
                 let ids = $(this).attr("data-ids").split(",");
                 $("#service_id").val(ids[0]);
@@ -152,7 +202,11 @@
 
             $("body").on('click','a.modal-edit', function(){
                 let data = JSON.parse($(this).attr("data-subscription"));
+                let data_customer = JSON.parse($(this).attr("data-customer"));
                 $("#edit_subscription_id").val(data.id);
+                $("#copy_button").attr("data-id",data.id);
+                $("#send-by-whatsapp").attr("data-id",data.id);
+                $("#send-by-whatsapp").attr("data-number",data_customer.phone);
                 $("#edit_active_free_profile").val($(this).attr("id"));
                 $("#edit_customer_id").val(data.customer_id);
                 $("#edit_profile").val(data.profile);
