@@ -144,7 +144,7 @@
                                         @foreach($accounts as $acc)
                                             <tr>
                                                 <td>
-                                                    @if($es->service->cover)
+                                                    @if($acc->service->cover)
                                                     <img src="{{asset(str_replace('public','storage',$acc->service->cover))}}" class="img-thumbnail" style="width:75px; height:75px;">@endif {{$acc->service->name}}        
                                                 </td>
                                                 <td><a target="_blank" href="{{route('accounts.edit',$acc->id)}}">{{$acc->email}}</a></td>
