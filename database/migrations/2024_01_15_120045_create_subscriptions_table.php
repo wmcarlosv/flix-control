@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('service_id');
             $table->unsignedBigInteger('account_id');
-            $table->unsignedBigInteger('customer_id');
+            $table->integer('customer_id')->nullable();
             $table->string('profile')->nullable();
             $table->string('pin')->nullable();
             $table->date('date_to');
@@ -26,7 +26,6 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('service_id')->references('id')->on('services');
             $table->foreign('account_id')->references('id')->on('accounts');
-            $table->foreign('customer_id')->references('id')->on('customers');
         });
     }
 

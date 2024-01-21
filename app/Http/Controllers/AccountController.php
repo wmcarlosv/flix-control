@@ -82,7 +82,7 @@ class AccountController extends Controller
     {
         $request->validate([
             'email'=>'required',
-            'passwordemail'=>'required',
+            'dateto'=>'required',
         ]);
 
         $element = new Account();
@@ -139,7 +139,7 @@ class AccountController extends Controller
     {
         $request->validate([
             'email'=>'required',
-            'passwordemail'=>'required',
+            'dateto'=>'required',
         ]);
 
         $element = Account::findorfail($id);

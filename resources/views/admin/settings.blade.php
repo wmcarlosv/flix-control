@@ -38,7 +38,7 @@
                             <img src="{{asset(str_replace('public','storage',@$data->logo))}}" class="img-thumbnail" style="width:100px; height:100px;">
                         @endif
                     </div>
-                    <div class="form-group">
+                    <!--<div class="form-group">
                         <label for="">Cover:</label>
                         <input type="file" class="form-control @error('cover') is-invalid @enderror" name="cover" />
                         @error('cover') 
@@ -48,7 +48,7 @@
                             <br />
                             <img src="{{asset(str_replace('public','storage',@$data->cover))}}" class="img-thumbnail" style="width:100px; height:100px;">
                         @endif
-                    </div>
+                    </div>-->
                     <div class="form-group">
                         <label for="">Template para Notificar Expiracion de Cuenta:</label>
                         <p><span class="label label-success">Variables que puedes Usar:</span></p>

@@ -9,6 +9,7 @@ use App\Http\Controllers\MovementController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\HomeController;
+use App\Models\Setting;
 
 
 
@@ -22,6 +23,18 @@ use App\Http\Controllers\HomeController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+$data = Setting::first();
+
+
+ config()->set('adminlte.title',$data->title ? $data->title: 'Flix Control');
+ config()->set('adminlte.logo',$data->title ? $data->title: '<b>Flix</b> Control');
+
+ if(!empty($data->logo)){
+    config()->set('adminlte.logo_img',asset(str_replace('public','storage',$data->logo)));
+    config()->set('adminlte.auth_logo.img.path',asset(str_replace('public','storage',$data->logo)));
+    config()->set('adminlte.auth_logo.img.alt',$data->title ? $data->title: 'Flix Control');
+ }
 
 Route::get('/', function () {
     return redirect()->route('login');
