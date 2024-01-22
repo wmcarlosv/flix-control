@@ -63,7 +63,7 @@ return [
     */
 
     'logo' => '<b>Flix</b> Control',
-    'logo_img' => asset('images/logo.png'),
+    'logo_img' => '/images/logo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
@@ -85,7 +85,7 @@ return [
     'auth_logo' => [
         'enabled' => true,
         'img' => [
-            'path' => asset('images/logo.png'),
+            'path' => 'images/logo.png',
             'alt' => 'Flix Control',
             'class' => '',
             'width' => 60,
