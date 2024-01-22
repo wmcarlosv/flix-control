@@ -102,3 +102,7 @@
         </p>
     @endif
 @stop
+
+@section('js')
+    @include('admin.partials.messages')
+@stop
