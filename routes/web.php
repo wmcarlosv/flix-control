@@ -45,7 +45,7 @@ Auth::routes();
 
 Route::group(['prefix'=>'admin', 'middleware'=>['auth']], function(){
     Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
-    Route::resource('users', UserController::class);
+    Route::resource('users', UserController::class)->middleware('can:isSuperAdmin');
     Route::resource('services', ServiceController::class);
     Route::resource('customers', CustomerController::class);
     Route::resource('accounts', AccountController::class);
@@ -57,8 +57,16 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth']], function(){
     Route::get('profile', [UserController::class, 'profile'])->name('profile');
     Route::put('update-profile', [UserController::class, 'update_profile'])->name('update_profile');
     Route::put('update-password', [UserController::class, 'update_password'])->name('update_password');
-    Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
-    Route::put('settings', [SettingController::class, 'update'])->name('settings.update');
+
+    if(env('LOCAL_MANAGER') == 'yes'){
+        Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
+        Route::put('settings', [SettingController::class, 'update'])->name('settings.update');
+    }else{
+        Route::get('settings', [SettingController::class, 'index'])->name('settings.index')->middleware('can:isSuperAdmin');
+        Route::put('settings', [SettingController::class, 'update'])->name('settings.update')->middleware('can:isSuperAdmin');
+    }
+    
+
     Route::get('get-expiration-message/{id}', [HomeController::class, 'getExpirationTemplate'])->name('get_expiration_template');
     Route::get('get-data-message/{id}', [HomeController::class, 'getCustomerData'])->name('get_data_message');
 });
