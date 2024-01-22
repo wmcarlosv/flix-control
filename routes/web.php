@@ -41,6 +41,8 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
+Route::get('cron/verify-users', [UserController::class, 'cronVerifyUsers']);
+
 Auth::routes();
 
 Route::group(['prefix'=>'admin', 'middleware'=>['auth']], function(){

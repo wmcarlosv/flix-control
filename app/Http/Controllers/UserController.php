@@ -50,6 +50,10 @@ class UserController extends Controller
                 'data'=>[
                     'format'=>'d/m/Y'
                 ]
+            ],
+            [
+                'title'=>'Dias Restantes',
+                'key'=>'last_days'
             ]
         ];
 
@@ -196,5 +200,40 @@ class UserController extends Controller
         }
 
         return redirect()->route('profile');
+    }
+
+    public function inactiveUsers(){
+        $cont = 0;
+        $users = User::where('is_active',1)->where('role','admin')->get();
+        foreach($users as $user){
+            if($user->last_days == 0){
+                $user_update = User::findorfail($user->id);
+                $user_update->is_active = 0;
+                $user_update->update();
+                $cont++;
+            }
+        }
+
+        print "Se inactivaron ".$cont.', Usuarios ';
+    }
+
+    public function activeUsers(){
+        $cont = 0;
+        $users = User::where('is_active',0)->where('role','admin')->get();
+        foreach($users as $user){
+            if($user->last_days > 0){
+                $user_update = User::findorfail($user->id);
+                $user_update->is_active = 1;
+                $user_update->update();
+                $cont++;
+            }
+        }
+
+        print "Se activaron ".$cont.', Usuarios ';
+    }
+
+    public function cronVerifyUsers(){
+        $this->inactiveUsers();
+        $this->activeUsers();
     }
 }

@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -17,6 +18,9 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
+    protected $appends = ['last_days'];
+
     protected $fillable = [
         'name',
         'email',
@@ -42,4 +46,26 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function lastDays(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => $this->getDays()
+        );
+    }
+
+    public function getDays(){
+        $now = time();
+        $total = "-";
+        if($this->role == 'admin'){
+            $your_date = strtotime($this->date_to);
+            $datediff = ($your_date-$now);
+            $total = floor($datediff / (60 * 60 * 24)) + 1;
+            if($total == 0){
+                #$total = 1;
+            }
+        }
+        
+        return $total;
+    }
 }
