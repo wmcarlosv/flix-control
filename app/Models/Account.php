@@ -28,6 +28,7 @@ class Account extends Model
         if($data){
             $this->settings = $data;
         }
+        $this->booted();
     }
 
     public function service(){
@@ -54,7 +55,6 @@ class Account extends Model
 
     public function getAccountList(){
         $subcount = $this->subscriptions;
-        #dd($subcount);
         $totals = (@$this->service->profiles - $this->subscriptions->count());
         $html = "<div>";
 

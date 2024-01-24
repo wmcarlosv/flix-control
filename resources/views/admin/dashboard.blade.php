@@ -108,7 +108,7 @@
                                     @foreach($expirations_subscriptions as $es)
                                         <tr>
                                             <td>
-                                                @if(!empty(@$es->service->cover))
+                                                @if(!empty($es->service->cover))
                                                 <img src="{{asset(str_replace('public','storage',@$es->service->cover))}}" class="img-thumbnail" style="width:75px; height:75px;">@endif {{$es->service->name}}        
                                             </td>
                                             <td>{{$es->account->email}}</td>
@@ -144,7 +144,7 @@
                                         @foreach($accounts as $acc)
                                             <tr>
                                                 <td>
-                                                    @if(!empty(@$acc->service->cover))
+                                                    @if(!empty($acc->service->cover))
                                                     <img src="{{asset(str_replace('public','storage',$acc->service->cover))}}" class="img-thumbnail" style="width:75px; height:75px;">@endif {{@$acc->service->name}}        
                                                 </td>
                                                 <td><a target="_blank" href="{{route('accounts.edit',$acc->id)}}">{{$acc->email}}</a></td>
