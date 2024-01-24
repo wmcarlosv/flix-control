@@ -55,7 +55,7 @@ class Account extends Model
     public function getAccountList(){
         $subcount = $this->subscriptions;
         #dd($subcount);
-        $totals = ($this->service->profiles - $this->subscriptions->count());
+        $totals = (@$this->service->profiles - $this->subscriptions->count());
         $html = "<div>";
 
         foreach($subcount as $sa){
