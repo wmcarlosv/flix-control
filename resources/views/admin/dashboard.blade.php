@@ -108,8 +108,8 @@
                                     @foreach($expirations_subscriptions as $es)
                                         <tr>
                                             <td>
-                                                @if(!empty($es->service->cover))
-                                                <img src="{{asset(str_replace('public','storage',$es->service->cover))}}" class="img-thumbnail" style="width:75px; height:75px;">@endif {{$es->service->name}}        
+                                                @if(!empty(@$es->service->cover))
+                                                <img src="{{asset(str_replace('public','storage',@$es->service->cover))}}" class="img-thumbnail" style="width:75px; height:75px;">@endif {{$es->service->name}}        
                                             </td>
                                             <td>{{$es->account->email}}</td>
                                             <td><a href="{{route('customers.edit',$es->customer->id)}}" target="_blank">{{$es->customer->name}}</a></td>
@@ -144,8 +144,8 @@
                                         @foreach($accounts as $acc)
                                             <tr>
                                                 <td>
-                                                    @if(!empty($acc->service->cover))
-                                                    <img src="{{asset(str_replace('public','storage',$acc->service->cover))}}" class="img-thumbnail" style="width:75px; height:75px;">@endif {{$acc->service->name}}        
+                                                    @if(!empty(@$acc->service->cover))
+                                                    <img src="{{asset(str_replace('public','storage',$acc->service->cover))}}" class="img-thumbnail" style="width:75px; height:75px;">@endif {{@$acc->service->name}}        
                                                 </td>
                                                 <td><a target="_blank" href="{{route('accounts.edit',$acc->id)}}">{{$acc->email}}</a></td>
                                                 <td>{{$acc->last_days}}</td>
