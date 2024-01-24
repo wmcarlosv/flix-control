@@ -43,10 +43,10 @@
                   				}
                   			@endphp
 
-                  			@if($format == 'plain')
+                  			@if(@$format == 'plain')
                   				{{$d->$relation->$key}}
                   			@else
-                  				{!!$d->$relation->$key!!}
+                  				{!!@$d->$relation->$key!!}
                   			@endif
                   			
                   		@break
