@@ -47,8 +47,8 @@ class Subscription extends Model
             $total = 1;
         }
 
-        if($total < 0){
-           
+        if($total == -1){
+            $total = 0;
         }
         return $total;
     }
