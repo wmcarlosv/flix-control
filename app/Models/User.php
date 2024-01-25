@@ -61,9 +61,6 @@ class User extends Authenticatable
             $your_date = strtotime($this->date_to);
             $datediff = ($your_date-$now);
             $total = floor($datediff / (60 * 60 * 24)) + 1;
-            if($total == 0){
-                #$total = 1;
-            }
         }
         
         return $total;
