@@ -43,6 +43,13 @@ class Subscription extends Model
         $your_date = strtotime($this->date_to);
         $datediff =  $your_date - $now;
         $total = round($datediff / (60 * 60 * 24));
+        if($total == 0){
+            $total = 1;
+        }
+
+        if($total < 0){
+           
+        }
         return $total;
     }
 

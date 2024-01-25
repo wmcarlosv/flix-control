@@ -91,6 +91,9 @@ class Account extends Model
         $your_date = strtotime($this->dateto);
         $datediff =  $your_date - $now;
         $total = round($datediff / (60 * 60 * 24));
+        if($total == 0){
+            $total = 0;
+        }
         return $total;
     }
 }
