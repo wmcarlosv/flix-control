@@ -42,7 +42,7 @@ class Subscription extends Model
         $now = time();
         $your_date = strtotime($this->date_to);
         $datediff =  $your_date - $now;
-        $total = floor($datediff / (60 * 60 * 24));
+        $total = round($datediff / (60 * 60 * 24));
         return $total;
     }
 
