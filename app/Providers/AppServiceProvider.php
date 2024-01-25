@@ -24,7 +24,11 @@ class AppServiceProvider extends ServiceProvider
     {
         Event::listen(BuildingMenu::class, function (BuildingMenu $event) {
             $users = [];
-            $settings = [];
+            $settings = [
+                'text'=>'Configuracion',
+                'icon'=>'fas fa-list',
+                'route'=>'config.index'
+            ];
 
             $role = Auth::user()->role;
 

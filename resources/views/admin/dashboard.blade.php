@@ -213,7 +213,7 @@
                 $.get("get-expiration-message/"+id, function(response){
                     let data = response;
                     if(data.success){
-                        let link = "https://wa.me/"+phone+"?text="+data.message;
+                        let link = encodeURI("https://wa.me/"+phone+"?text="+data.message);
                         window.open(link, "_blank");
                     }else{
                         Swal.fire({

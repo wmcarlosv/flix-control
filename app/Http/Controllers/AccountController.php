@@ -22,6 +22,10 @@ class AccountController extends Controller
 
         $columns = [
             [
+                'title'=>'#',
+                'key'=>'id'
+            ],
+            [
                 'title'=>'Servicio',
                 'key'=>'service_id',
                 'type'=>'relation',

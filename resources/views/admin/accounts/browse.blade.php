@@ -69,12 +69,17 @@
 @stop
 
 @section('js')
+    @include('admin.partials.messages')
     <script>
         var eds = parseInt(-1);
         @if($setting)
             eds = parseInt('{{$setting->expiration_days_subscriptions}}');
         @endif
         $(document).ready(function(){
+
+            currentTable.destroy();
+            currentTable = $(".data-table").DataTable({ order: [[0, 'desc']] });
+
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
@@ -111,7 +116,7 @@
                 $.get("get-data-message/"+id, function(response){
                     let data = response;
                     if(data.success){
-                        let link = "https://wa.me/"+phone+"?text="+data.message;
+                        let link = encodeURI("https://wa.me/"+phone+"?text="+data.message);
                         window.open(link, "_blank");
                     }else{
                         Swal.fire({
@@ -310,5 +315,4 @@
             });
         });
     </script>
-    @include('admin.partials.messages')
 @stop

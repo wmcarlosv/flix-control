@@ -1,7 +1,8 @@
 <script>
+	var currentTable;
 	$(document).ready(function(){
 
-		$(".data-table").DataTable();
+		currentTable = $(".data-table").DataTable();
 
 		@if(Session::get('success'))
 			Swal.fire({

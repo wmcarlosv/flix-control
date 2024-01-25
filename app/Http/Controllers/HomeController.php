@@ -8,7 +8,9 @@ use App\Models\Subscription;
 use App\Models\Setting;
 use App\Models\Account;
 use App\Models\Customer;
+use App\Models\Config;
 use DB;
+use Auth;
 
 class HomeController extends Controller
 {
@@ -22,7 +24,7 @@ class HomeController extends Controller
 
     public function __construct()
     {
-        $this->variables = ['#servicio','#cliente','#cuenta','#facturacion','#dias','#perfil','#pin'];
+        $this->variables = ['#servicio','#cliente','#cuenta','#facturacion','#dias','#perfil','#pin','#clave_cuenta'];
         $this->middleware('auth');
     }
 
@@ -35,7 +37,7 @@ class HomeController extends Controller
     {
         $movements = Movement::orderBy('id','Desc')->limit(100)->get();
         $movements_sum = Movement::all();
-        $setting = Setting::first();
+        $setting = $this->getSettings();
         $customers = Customer::all();
         $expirations_subscriptions = null;
         $accounts = null;
@@ -95,7 +97,7 @@ class HomeController extends Controller
 
     public function getExpirationTemplate($id){
         $subscription = Subscription::findorfail($id);
-        $settings = Setting::first();
+        $settings = $this->getSettings();
         $text = "";
         $data = [];
         if($settings){
@@ -132,6 +134,10 @@ class HomeController extends Controller
                             $temporal = str_replace($variable,$subscription->pin, $text);
                             $text = $temporal;
                         break;
+                        case '#clave_cuenta':
+                            $temporal = str_replace($variable,$subscription->account->password, $text);
+                            $text = $temporal;
+                        break;
                     }
                 }
                 $data = [
@@ -156,7 +162,7 @@ class HomeController extends Controller
 
     public function getCustomerData($id){
         $subscription = Subscription::findorfail($id);
-        $settings = Setting::first();
+        $settings = $this->getSettings();
         $text = "";
         $data = [];
         if($settings){
@@ -193,6 +199,10 @@ class HomeController extends Controller
                             $temporal = str_replace($variable,$subscription->pin, $text);
                             $text = $temporal;
                         break;
+                        case '#clave_cuenta':
+                            $temporal = str_replace($variable,$subscription->account->password, $text);
+                            $text = $temporal;
+                        break;
                     }
                 }
                 $data = [
@@ -213,5 +223,14 @@ class HomeController extends Controller
         }
 
         return response()->json($data);
+    }
+
+    public function getSettings(){
+        $setting = Config::where('user_id',Auth::user()->id)->first();
+        if(!$setting){
+            $setting = Setting::first();
+        }
+
+        return $setting;
     }
 }

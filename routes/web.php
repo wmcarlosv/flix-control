@@ -9,6 +9,7 @@ use App\Http\Controllers\MovementController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ConfigController;
 use App\Models\Setting;
 
 
@@ -71,6 +72,8 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth']], function(){
         Route::put('settings', [SettingController::class, 'update'])->name('settings.update')->middleware('can:isSuperAdmin');
     }
     
+    Route::get('config',[ConfigController::class, 'index'])->name('config.index');
+    Route::put('config',[ConfigController::class, 'update'])->name('config.update');
 
     Route::get('get-expiration-message/{id}', [HomeController::class, 'getExpirationTemplate'])->name('get_expiration_template');
     Route::get('get-data-message/{id}', [HomeController::class, 'getCustomerData'])->name('get_data_message');

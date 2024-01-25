@@ -19,6 +19,10 @@ class MovementController extends Controller
 
         $columns = [
             [
+                'title'=>'#',
+                'key'=>'id'
+            ],
+            [
                 'title'=>'Tipo',
                 'key'=>'type',
                 'type' => 'replace_text',

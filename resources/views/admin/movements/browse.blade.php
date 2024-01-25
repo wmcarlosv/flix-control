@@ -19,4 +19,10 @@
 
 @section('js')
     @include('admin.partials.messages')
+    <script>
+        $(document).ready(function(){
+            currentTable.destroy();
+            currentTable = $(".data-table").DataTable({ order: [[0, 'desc']] });
+        });
+    </script>
 @stop
