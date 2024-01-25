@@ -25,4 +25,15 @@ class Service extends Model
             get: fn ($value) => "<img src='".asset(str_replace('public','storage',$this->cover))."' class='img-thumbnail' style='width:75px; height:75px;'> ".$this->name
         );
     }
+
+    public function accounts(){
+        return $this->hasMany('App\Models\Account');
+    }
+
+    public function accountCount(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => $this->accounts->count()
+        );
+    }
 }

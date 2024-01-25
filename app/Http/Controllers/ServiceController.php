@@ -31,6 +31,10 @@ class ServiceController extends Controller
             [
                 'title'=>'Enlace',
                 'key'=>'link'
+            ],
+            [
+                'title'=>'Cantida de Cuentas',
+                'key'=>'account_count'
             ]
         ];
 
