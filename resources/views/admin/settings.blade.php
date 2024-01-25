@@ -60,6 +60,7 @@
                             <a href="#" class="btn btn-info variable">#dias</a>
                             <a href="#" class="btn btn-info variable">#perfil</a>
                             <a href="#" class="btn btn-info variable">#pin</a>
+                            <a href="#" class="btn btn-info variable">#clave_cuenta</a>
                         </p>
                         <textarea class="form-control @error('expiration_template') is-invalid @enderror" style="height: 200px;" name="expiration_template">{{@$data->expiration_template}}</textarea>
                         @error('expiration_template') 
@@ -78,6 +79,7 @@
                             <a href="#" class="btn btn-info variable">#dias</a>
                             <a href="#" class="btn btn-info variable">#perfil</a>
                             <a href="#" class="btn btn-info variable">#pin</a>
+                            <a href="#" class="btn btn-info variable">#clave_cuenta</a>
                         </p>
                         <textarea class="form-control @error('customer_data_template') is-invalid @enderror" style="height: 200px;" name="customer_data_template">{{@$data->customer_data_template}}</textarea>
                         @error('customer_data_template') 
