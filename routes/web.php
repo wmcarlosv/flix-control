@@ -42,6 +42,14 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
+if (config('app.debug')) {
+    Route::get('/dev/{command}', function ($command) {
+        Artisan::call($command);
+        $output = Artisan::output();
+        dd($output);
+    });
+}
+
 Route::get('cron/verify-users', [UserController::class, 'cronVerifyUsers']);
 
 Auth::routes();
