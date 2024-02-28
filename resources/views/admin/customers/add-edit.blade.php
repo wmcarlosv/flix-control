@@ -29,9 +29,9 @@
                         <div class="form-group">
                             <label for="">Telefono:</label>
                             <div class="alert alert-primary" role="alert">
-                                Es importante que el numero comienzo con el simbolo "+"
+                                Es importante que el numero comience con el codigo del pais Ejemplo 58 sin el signo de +
                             </div>
-                            <input type="text" placeholder="+584160000000"class="form-control @error('phone') is-invalid @enderror" value="{{ @$data->phone }}" name="phone" />
+                            <input type="text" placeholder="584160000000"class="form-control @error('phone') is-invalid @enderror" value="{{ @$data->phone }}" name="phone" />
                             @error('phone')
                                <span class="error invalid-feedback">{{ $message }}</span>
                             @enderror
