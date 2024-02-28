@@ -52,6 +52,7 @@ class SettingController extends Controller
         $data->customer_data_template = $request->customer_data_template;
         $data->expiration_days_subscriptions = $request->expiration_days_subscriptions;
         $data->expiration_days_accounts = $request->expiration_days_accounts;
+        $data->whatsapp_service_url = $request->whatsapp_service_url;
         
         $data->updated_at = date('Y-m-d H:i:s');
 
@@ -62,5 +63,12 @@ class SettingController extends Controller
         }
 
         return redirect()->route('settings.index');
+    }
+
+    public function whatsapp_logged(Request $request){
+        $data = Setting::first();
+        $data->isLogged = $request->logged;
+        $data->update();
+        return response()->json(['success'=>true]);
     }
 }

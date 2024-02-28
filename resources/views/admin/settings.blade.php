@@ -100,6 +100,17 @@
                             <span class="error invalid-feedback">{{ $message }}</span> 
                         @enderror
                     </div>
+                    <div class="form-group">
+                        <label for="">Url Servicio de Whatsapp:</label>
+                        <input type="text" class="form-control @error('whatsapp_service_url') is-invalid @enderror" name="whatsapp_service_url" value="{{@$data->whatsapp_service_url}}">
+                        @if(@$data->whatsapp_service_url)
+                            <br />
+                            <button class="btn btn-success" id="button-whatsapp-connect" type="button">Conectar Whatsapp</button>
+                        @endif
+                        @error('whatsapp_service_url') 
+                            <span class="error invalid-feedback">{{ $message }}</span> 
+                        @enderror
+                    </div>
                 </div>
                 <div class="card-footer">
                     @include('admin.partials.buttons',['cancelRoute'=>'dashboard'])
@@ -108,12 +119,94 @@
         </div>
     </div>
 </div>
+
+
+<!-- The Modal -->
+<div class="modal" id="whatsapp-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Conectar con Whatsapp (<span id="whatsapp-status">@if(@$data->isLogged) Conectado @else Desconectado @endif </span>)</h4>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div class="col-md-12 text-center" id="status-content">
+            @if(@$data->isLogged)
+                <img src="{{asset('images/connected.png')}}" style="width:150px; height:150px;">
+            @else
+                <img src="{{asset('images/disconnect.png')}}" style="width:150px; height:150px;">
+            @endif
+        </div>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button class="btn btn-success" id="connect-whatsapp" @if(@$data->isLogged) style='display:none;' @endif type="button">Conectar</button>
+        <button type="button" class="btn btn-danger" id="close-modal">Cerrar</button>
+      </div>
+
+    </div>
+  </div>
+</div>
 @stop
 
 @section('js')
+    @if(@$data->whatsapp_service_url)
+        <script src="{{@$data->whatsapp_service_url}}/socket.io/socket.io.js"></script>
+    @endif
     @include('admin.partials.messages')
     <script type="text/javascript">
         $(document).ready(function(){
+            var pulseConnected = false;
+
+            const socket = io('{{@$data->whatsapp_service_url}}');
+            socket.on('qrCode', (dataJson)=>{
+                const data = dataJson;
+                if (data.url) {
+                    if(pulseConnected){
+                        document.getElementById('status-content').innerHTML = `<img src="${data.url}" alt="QR Code" style="width: 200px; height: 200px;">`;
+                    }
+                }
+            });
+
+            socket.on('isConnect', (data)=>{
+                let value;
+                if(data){
+                    value = 1;
+                    $("#connect-whatsapp").hide();
+                    $("#whatsapp-status").text("Conectado");
+                    document.getElementById('status-content').innerHTML = `<img src="/images/connected.png" alt="QR Code" style="width: 150px; height: 150px;">`;
+                }else{
+                    value = 0;
+                    $("#connect-whatsapp").attr("disabled", false).text("Conectar").show();
+                    $("#whatsapp-status").text("Desconectado");
+                    pulseConnected = false;
+                    document.getElementById('status-content').innerHTML = `<img src="/images/disconnect.png" alt="QR Code" style="width: 150px; height: 150px;">`;
+                }
+
+                changeStatus(value);
+            });
+
+            $("#button-whatsapp-connect").click(function(){
+                $("#whatsapp-modal").modal({'keyboard': false, 'backdrop':'static'},"show");
+            });
+
+            $("#close-modal").click(function(){
+                ulseConnected = false;
+                $("#connect-whatsapp").attr("disabled", false).text("Conectar");
+                $("#whatsapp-modal").modal("hide");
+            });
+
+            $("#connect-whatsapp").click(function(){
+                pulseConnected = true;
+                $("#status-content").html('<img src="{{asset('images/loading.gif')}}" style="width:150px; height:150px;">');
+                $(this).attr("disabled", true).text("Conectando...");
+                $.get("{{@$data->whatsapp_service_url}}/add-device", function(response){
+                    
+                 });
+            });
+
             $("a.variable").click(function(){
                 var nm = $(this).attr("data-textarea");
                 var textarea = $("textarea[name='"+nm+"']");
@@ -126,7 +219,13 @@
                 textarea.prop('selectionEnd', currentPos + textToAdd.length);
                 textarea.focus();
                 return false;
-            })
+            });
+
+            function changeStatus(data){
+                $.post('{{route("whastapp_logged")}}',{ logged: data }, function(response){
+                    console.log(response);
+                });
+            }
         });
     </script>
 @stop
