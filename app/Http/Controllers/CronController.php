@@ -21,16 +21,20 @@ class CronController extends Controller
         $settings = Setting::first();
         $currentDate = date('Y-m-d');
         if($settings){
-            $days = $settings->expiration_days_subscriptions;
-            $subscriptions = Subscription::where('date_to','>=', $currentDate)->limit(3)->get();
-            foreach($subscriptions as $sub){
-                $date_1 = new \DateTime($sub->date_to);
-                $date_2 = new \DateTime($currentDate);
-                $interval = $date_1->diff($date_2);
-                if( intval($interval->days) > 0 && intval($interval->days) <= intval($days) ){
-                    if($sub->customer->last_notification != $currentDate){
-                        $this->sendMessage($sub->customer->id, $sub->id, $settings->whatsapp_service_url);
-                        sleep(3);
+            if($settings->isLogged){
+                $days = $settings->expiration_days_subscriptions;
+                $subscriptions = Subscription::where('date_to','>=', $currentDate)->limit(3)->get();
+                foreach($subscriptions as $sub){
+                    $date_1 = new \DateTime($sub->date_to);
+                    $date_2 = new \DateTime($currentDate);
+                    $interval = $date_1->diff($date_2);
+                    if( intval($interval->days) > 0 && intval($interval->days) <= intval($days) ){
+                        if($sub->customer->last_notification != $currentDate){
+                            if(!empty($sub->customer->phone)){
+                                $this->sendMessage($sub->customer->id, $sub->id, $settings->whatsapp_service_url);
+                                sleep(3);
+                            }
+                        }
                     }
                 }
             }
