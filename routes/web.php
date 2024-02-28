@@ -11,6 +11,7 @@ use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ConfigController;
 use App\Models\Setting;
+use App\Http\Controllers\CronController;
 
 
 
@@ -41,6 +42,8 @@ if(env('APP_ENV') == 'production'){
 Route::get('/', function () {
     return redirect()->route('login');
 });
+
+Route::get('/cron',[CronController::class, 'sendMessageExpirateAccount']);
 
 if (config('app.debug')) {
     Route::get('/dev/{command}', function ($command) {
