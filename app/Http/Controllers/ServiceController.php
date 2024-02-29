@@ -97,12 +97,15 @@ class ServiceController extends Controller
 
         $element = Service::findorfail($id);
         $element->name = $request->name;
-        if(isset($element->cover) and !empty($element->cover)){
-            if(!empty($element->cover)){
+
+        if($request->hasFile("cover")){
+            if(isset($element->cover) and !empty($element->cover)){
                 Storage::delete($element->cover);
             }
+            
             $element->cover = $request->cover->store("public/services/covers");
         }
+
         $element->profiles = $request->profiles;
         $element->link = $request->link;
 

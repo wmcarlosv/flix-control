@@ -26,7 +26,11 @@
                   		@break
 
                   		@case('img')
-                  			<img src="{{ asset(str_replace('public','storage',$d->$key)) }}" class="img-thumbnail" style="width:100px; height: 100px;" alt="image">
+                  			@if(!empty($d->$key))
+                  				<img src="{{ asset(str_replace('public','storage',$d->$key)) }}" class="img-thumbnail" style="width:100px; height: 100px;" alt="image">
+                  			@else
+                  				Sin Imagen
+                  			@endif
                   		@break
 
                   		@case('replace_text')
