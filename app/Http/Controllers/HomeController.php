@@ -52,12 +52,12 @@ class HomeController extends Controller
                         $index++;
                     }
                 }
-            }else{
+            }/*else{
                 foreach($des as $d){
                     $expirations_subscriptions[$index] = $des;
                     $index++;
                 }
-            }
+            }*/
 
             $index = 0;
             $acc = Account::where('status',1)->get();
@@ -69,12 +69,12 @@ class HomeController extends Controller
                         $index++;
                     }
                 }
-            }else{
+            }/*else{
                 foreach($acc as $a){
                     $accounts[$index] = $a;
                     $index++;
                 }
-            }
+            }*/
         }
 
         $data = [];
@@ -91,6 +91,8 @@ class HomeController extends Controller
         }
 
         $balance = ($input-$output);
+
+        #dd($expirations_subscriptions);
 
         return view('admin.dashboard', compact('movements','input','output','balance','expirations_subscriptions','accounts','customers'));
     }
