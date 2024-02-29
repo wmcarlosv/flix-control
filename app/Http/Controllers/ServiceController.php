@@ -97,8 +97,10 @@ class ServiceController extends Controller
 
         $element = Service::findorfail($id);
         $element->name = $request->name;
-        if($request->hasFile("cover")){
-            Storage::delete($element->cover);
+        if(isset($element->cover) and !empty($element->cover)){
+            if(!empty($element->cover)){
+                Storage::delete($element->cover);
+            }
             $element->cover = $request->cover->store("public/services/covers");
         }
         $element->profiles = $request->profiles;
@@ -116,7 +118,9 @@ class ServiceController extends Controller
     public function destroy(string $id)
     {
         $element = Service::findorfail($id);
-        Storage::delete($element->cover);
+        if(isset($element->cover) and !empty($element->cover)){
+            Storage::delete($element->cover);
+        }
         if($element->delete()){
             Session::flash('success', 'Registro Eliminado con Exito!!');
         }else{
