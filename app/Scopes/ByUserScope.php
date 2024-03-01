@@ -16,8 +16,10 @@ class ByUserScope implements Scope
      */
     public function apply(Builder $builder, Model $model)
     {
-        if(Auth::user()->role == 'admin'){
-             $builder->where('user_id', Auth::user()->id);
-        }  
+        if(!empty(Auth::user()->role)){
+            if(Auth::user()->role == 'admin'){
+                 $builder->where('user_id', Auth::user()->id);
+            }  
+        }
     }
 }
