@@ -25,34 +25,33 @@ class CronController extends Controller
                 $days = $settings->expiration_days_subscriptions;
                 $subscriptions = Subscription::where('date_to','>=', $currentDate)->limit(3)->get();
                 foreach($subscriptions as $sub){
-                    $date_1 = new \DateTime($sub->date_to);
-                    $date_2 = new \DateTime($currentDate);
-                    $interval = $date_1->diff($date_2);
-                    if( intval($interval->days) > 0 && intval($interval->days) <= intval($days) ){
-                        if($sub->customer->last_notification != $currentDate){
+                    
+                    if( intval($sub->last_days) > 0 && intval($sub->last_days) <= intval($days) ){
+                        if($sub->last_notification_date != $currentDate){
                             if(!empty($sub->customer->phone)){
-                                $this->sendMessage($sub->customer->id, $sub->id, $settings->whatsapp_service_url);
+                                $this->sendMessage($sub->id, $settings->whatsapp_service_url);
                                 sleep(3);
                             }
                         }
                     }
+
                 }
             }
         }
     }
 
-    public function sendMessage($customerID, $subID, $urlWhatsapp){
-        $customer = Customer::find($customerID);
+    public function sendMessage($subID, $urlWhatsapp){
+        $subscription = Subscription::find($subID);
         $template = $this->getExpirationTemplate($subID);
         if(count($template) > 0){
             if($template['success']){
                 $response = Http::post($urlWhatsapp."/send-message", [
-                    'number'=>$customer->phone,
+                    'number'=>$subscription->customer->phone,
                     'message'=>$template['message']
                 ]);
                 if($response->status() == 200){
-                    $customer->last_notification = date('Y-m-d');
-                    $customer->save();
+                    $subscription->last_notification_date = date('Y-m-d');
+                    $subscription->save();
                 }
             }
         }
