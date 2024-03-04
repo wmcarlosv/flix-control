@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Auth;
 
 class User extends Authenticatable
 {
@@ -53,7 +54,7 @@ class User extends Authenticatable
             get: fn ($value) => $this->getDays()
         );
     }
-
+    
     public function getDays(){
         $now = time();
         $total = "-";
@@ -64,5 +65,9 @@ class User extends Authenticatable
         }
         
         return $total;
+    }
+
+    public function user(){
+        return $this->belongsTo('App\Models\User','id','parent_user_id');
     }
 }

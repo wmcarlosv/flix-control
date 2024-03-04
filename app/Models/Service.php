@@ -36,4 +36,8 @@ class Service extends Model
             get: fn ($value) => $this->accounts->count()
         );
     }
+
+    public function user(){
+        return $this->belongsTo('App\Models\User');
+    }
 }
