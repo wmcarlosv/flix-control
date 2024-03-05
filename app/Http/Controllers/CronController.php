@@ -23,7 +23,7 @@ class CronController extends Controller
         if($settings){
             if($settings->isLogged){
                 $days = $settings->expiration_days_subscriptions;
-                $subscriptions = Subscription::where('date_to','>=', $currentDate)->limit(3)->get();
+                $subscriptions = Subscription::where('date_to','>=', $currentDate)->get();
                 foreach($subscriptions as $sub){
                     
                     if( intval($sub->last_days) > 0 && intval($sub->last_days) <= intval($days) ){
