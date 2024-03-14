@@ -136,6 +136,10 @@ class UserController extends Controller
         $element->date_to = $request->date_to;
         $element->role = $request->role;
 
+        if( isset($request->password) and !empty($request->password) ){
+            $element->password = bcrypt($request->password);
+        }
+
         if(empty($element->parent_user_id)){
             $element->parent_user_id = Auth::user()->id;
         }

@@ -62,7 +62,7 @@
                             <a href="#" class="btn btn-info variable" data-textarea="expiration_template">#pin</a>
                             <a href="#" class="btn btn-info variable" data-textarea="expiration_template">#clave_cuenta</a>
                         </p>
-                        <textarea class="form-control @error('expiration_template') is-invalid @enderror" style="height: 200px;" name="expiration_template">{{@$data->expiration_template}}</textarea>
+                        <textarea class="form-control @error('expiration_template') is-invalid @enderror" style="height: 220px;" name="expiration_template">{{@$data->expiration_template}}</textarea>
                         @error('expiration_template') 
                             <span class="error invalid-feedback">{{ $message }}</span> 
                         @enderror
@@ -81,7 +81,7 @@
                             <a href="#" class="btn btn-info variable" data-textarea="customer_data_template">#pin</a>
                             <a href="#" class="btn btn-info variable" data-textarea="customer_data_template">#clave_cuenta</a>
                         </p>
-                        <textarea class="form-control @error('customer_data_template') is-invalid @enderror" style="height: 200px;" name="customer_data_template">{{@$data->customer_data_template}}</textarea>
+                        <textarea class="form-control @error('customer_data_template') is-invalid @enderror" style="height: 220px;" name="customer_data_template">{{@$data->customer_data_template}}</textarea>
                         @error('customer_data_template') 
                             <span class="error invalid-feedback">{{ $message }}</span> 
                         @enderror
@@ -110,6 +110,26 @@
                         @error('whatsapp_service_url') 
                             <span class="error invalid-feedback">{{ $message }}</span> 
                         @enderror
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <b>Horario de Notificacion:</b> <span>"Debes seleccionar el rango completo, de lo contrario no se almacenara"</span>
+                        </div>
+                        @php
+                            $from = "";
+                            $to = "";
+                            if(!empty($data->hours_range_notification)){
+                               $hours = explode("-",$data->hours_range_notification);
+                                $from = $hours[0];
+                                $to = $hours[1]; 
+                            }
+                        @endphp
+                        <div class="col-md-6">
+                            <input type="time" name="time_from" class="form-control" value="{{$from}}" />
+                        </div>
+                        <div class="col-md-6">
+                            <input type="time" name="time_to" class="form-control" value="{{$to}}" />
+                        </div>
                     </div>
                 </div>
                 <div class="card-footer">
@@ -158,35 +178,38 @@
     @include('admin.partials.messages')
     <script type="text/javascript">
         $(document).ready(function(){
+            
             var pulseConnected = false;
 
-            const socket = io('{{@$data->whatsapp_service_url}}');
-            socket.on('qrCode', (dataJson)=>{
-                const data = dataJson;
-                if (data.url) {
-                    if(pulseConnected){
-                        document.getElementById('status-content').innerHTML = `<img src="${data.url}" alt="QR Code" style="width: 200px; height: 200px;">`;
+            @if(@$data->whatsapp_service_url)
+                const socket = io('{{@$data->whatsapp_service_url}}');
+                socket.on('qrCode', (dataJson)=>{
+                    const data = dataJson;
+                    if (data.url) {
+                        if(pulseConnected){
+                            document.getElementById('status-content').innerHTML = `<img src="${data.url}" alt="QR Code" style="width: 200px; height: 200px;">`;
+                        }
                     }
-                }
-            });
+                });
 
-            socket.on('isConnect', (data)=>{
-                let value;
-                if(data){
-                    value = 1;
-                    $("#connect-whatsapp").hide();
-                    $("#whatsapp-status").text("Conectado");
-                    document.getElementById('status-content').innerHTML = `<img src="/images/connected.png" alt="QR Code" style="width: 150px; height: 150px;">`;
-                }else{
-                    value = 0;
-                    $("#connect-whatsapp").attr("disabled", false).text("Conectar").show();
-                    $("#whatsapp-status").text("Desconectado");
-                    pulseConnected = false;
-                    document.getElementById('status-content').innerHTML = `<img src="/images/disconnect.png" alt="QR Code" style="width: 150px; height: 150px;">`;
-                }
+                socket.on('isConnect', (data)=>{
+                    let value;
+                    if(data){
+                        value = 1;
+                        $("#connect-whatsapp").hide();
+                        $("#whatsapp-status").text("Conectado");
+                        document.getElementById('status-content').innerHTML = `<img src="/images/connected.png" alt="QR Code" style="width: 150px; height: 150px;">`;
+                    }else{
+                        value = 0;
+                        $("#connect-whatsapp").attr("disabled", false).text("Conectar").show();
+                        $("#whatsapp-status").text("Desconectado");
+                        pulseConnected = false;
+                        document.getElementById('status-content').innerHTML = `<img src="/images/disconnect.png" alt="QR Code" style="width: 150px; height: 150px;">`;
+                    }
 
-                changeStatus(value);
-            });
+                    changeStatus(value);
+                });
+            @endif
 
             $("#button-whatsapp-connect").click(function(){
                 $("#whatsapp-modal").modal({'keyboard': false, 'backdrop':'static'},"show");

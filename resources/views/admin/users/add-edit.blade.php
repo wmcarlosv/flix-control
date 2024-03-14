@@ -31,6 +31,7 @@
                             <select class="form-control @error('role') is-invalid @enderror" name="role">
                                 <option value="super_admin">Super Admin</option>
                                 <option value="admin" @if(@$data->role == 'admin') selected='selected' @endif>Admin</option>
+                                <option value="admin" @if(@$data->role == 'reseller') selected='selected' @endif>Revendedor</option>
                             </select>
                             @error('role')
                                <span class="error invalid-feedback">{{ $message }}</span>
@@ -57,19 +58,16 @@
                             @enderror
                         </div>
 
-                        @if($type=='new')
-                            <div class="input-group">
-                                <!--<label for="">Password:</label>-->
-                                <input type="password" class="form-control @error('password') is-invalid @enderror" placeholder="Contraseña" value="{{ @$data->password }}" name="password" />
-                        
-                                <div class="input-group-append">
-                                    <button class="btn btn-success" type="button" id="view-password" data-view="n"><i class="fas fa-lock"></i></button>
-                                </div>
-                                @error('password')
-                                   <span class="error invalid-feedback">{{ $message }}</span>
-                                @enderror
+                        <div class="input-group">
+                            <input type="password" class="form-control @error('password') is-invalid @enderror" placeholder="Contraseña" value="" name="password" />
+                    
+                            <div class="input-group-append">
+                                <button class="btn btn-success" type="button" id="view-password" data-view="n"><i class="fas fa-lock"></i></button>
                             </div>
-                        @endif
+                            @error('password')
+                               <span class="error invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
 
                     </div>
                     <div class="card-footer">

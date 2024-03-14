@@ -18,6 +18,11 @@ class CronController extends Controller
     }
 
     public function sendMessageExpirateAccount(){
+        if(env('APP_TIMEZONE')){
+            date_default_timezone_set(env('APP_TIMEZONE'));
+        }  
+        
+
         $settings = Setting::first();
         $currentDate = date('Y-m-d');
         if($settings){
@@ -26,13 +31,29 @@ class CronController extends Controller
                 $subscriptions = Subscription::where('date_to','>=', $currentDate)->get();
                 foreach($subscriptions as $sub){
                     
-                    if( intval($sub->last_days) > 0 && intval($sub->last_days) <= intval($days) ){
+                    if( intval($sub->last_days) >= 0 && intval($sub->last_days) <= intval($days) ){
+
                         if($sub->last_notification_date != $currentDate){
+
                             if(!empty($sub->customer->phone)){
-                                $this->sendMessage($sub->id, $settings->whatsapp_service_url);
-                                sleep(3);
+
+                                if(empty($settings->hours_range_notification)){
+                                    $this->sendMessage($sub->id, $settings->whatsapp_service_url);
+                                    sleep(3);
+                                }else{
+                                    $range = explode("-", $settings->hours_range_notification);
+                                    $from = intval(str_replace(":","",$range[0]));
+                                    $to = intval(str_replace(":","",$range[1]));
+                                    $currentTime = intval(date('Hi'));
+                                    if($currentTime >=$from && $currentTime<=$to){
+                                        $this->sendMessage($sub->id, $settings->whatsapp_service_url);
+                                        sleep(3);
+                                    }
+                                }
+
                             }
                         }
+
                     }
 
                 }

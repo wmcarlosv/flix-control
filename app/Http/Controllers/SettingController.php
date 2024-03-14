@@ -53,6 +53,12 @@ class SettingController extends Controller
         $data->expiration_days_subscriptions = $request->expiration_days_subscriptions;
         $data->expiration_days_accounts = $request->expiration_days_accounts;
         $data->whatsapp_service_url = $request->whatsapp_service_url;
+
+        if($request->whatsapp_service_url){
+            if($request->time_from && $request->time_to){
+                $data->hours_range_notification = $request->time_from."-".$request->time_to;
+            }
+        }
         
         $data->updated_at = date('Y-m-d H:i:s');
 

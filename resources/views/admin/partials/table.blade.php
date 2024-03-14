@@ -25,7 +25,11 @@
                   <td>
                   	@switch($type)
                   		@case('text')
-                  			{{$d->$key}}
+                  			@if($d->$key)
+                  				{{$d->$key}}
+                  			@else
+                  				-
+                  			@endif
                   		@break
 
                   		@case('img')
@@ -61,6 +65,8 @@
                   		@case('date')
                   			@if(!empty($d->$key))
                   				{{ date($col['data']['format'], strtotime($d->$key)) }}
+                  			@else
+                  				-
                   			@endif
                   		@break
 
@@ -69,15 +75,15 @@
                   		@break
                   	@endswitch
                   </td>
-
-
 				@endforeach
 				@if(Auth::user()->role == 'super_admin')
-					@if(isset($d->user))
-                  		<td>{{$d->user->name }} || {{$d->user->email }}</td>
-                  	@else
-                  		<td>-</td>
-                  	@endif
+					<td>
+						@if(!empty($d->parent->name))
+							{{ $d->parent->name }} || {{ $d->parent->role }}
+						@else
+							-
+						@endif
+					</td>		
 				@endif
 				<td>
 					@include('admin.partials.actions',[ 'route'=>$route, 'id' => $d->id ])

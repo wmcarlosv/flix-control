@@ -67,7 +67,7 @@ class User extends Authenticatable
         return $total;
     }
 
-    public function user(){
-        return $this->belongsTo('App\Models\User','id','parent_user_id');
+    public function parent(){
+        return $this->belongsTo('App\Models\User','parent_user_id','id');
     }
 }
