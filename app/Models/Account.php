@@ -14,7 +14,7 @@ class Account extends Model
 
     protected $table = 'accounts';
 
-    protected $appends = ['last_days'];
+    protected $appends = ['last_days','the_subscriptions'];
 
     private $settings;
 
@@ -39,51 +39,12 @@ class Account extends Model
         return $this->hasMany("App\Models\Subscription");
     }
 
-    public function listProfiles(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($value) => $this->getAccountList()
-        );
-    }
 
     public function lastDays(): Attribute
     {
         return Attribute::make(
             get: fn ($value) => $this->getDays()
         );
-    }
-
-    public function getAccountList(){
-        $subcount = $this->subscriptions;
-        $totals = (@$this->service->profiles - $this->subscriptions->count());
-        $html = "<div>";
-
-        foreach($subcount as $sa){
-            $class = "btn-success";
-            $title = "Activo";
-            if($this->settings){
-                if(isset($this->settings->expiration_days_subscriptions) and !empty($this->settings->expiration_days_subscriptions)){
-                    if($sa->last_days <= $this->settings->expiration_days_subscriptions){
-                        $title = "Por Vencer en ".$sa->last_days." Dias";
-                        $class = "btn-warning";
-                    }
-                }
-            }
-
-            if($sa->last_days <= 0){
-                $class = "btn-danger";
-                $title = "Vencida";
-            }
-            $html.="<a href='#' class='modal-edit btn ".$class."' id='sub_".$sa->id."' data-customer='".json_encode($sa->customer)."' data-subscription='".json_encode($sa)."' title='".$title."'><i class='fas fa-user'></i></a> ";
-        }
-
-        for($i=0;$i<$totals;$i++){
-            $html.="<a href='#' class='modal-new btn btn-info' title='Disponible' id='free_".$this->id."_".$i."' data-ids='".$this->service_id.",".$this->id.",".$i."'><i class='fas fa-user'></i></a> ";
-        }
-
-        $html.="</div>";
-
-        return $html;
     }
 
     public function getDays(){
@@ -95,5 +56,62 @@ class Account extends Model
             $total = 0;
         }
         return $total;
+    }
+
+    public function profiles(){
+        return $this->hasMany('App\Models\Profile');
+    }
+
+    public function theSubscriptions(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => $this->getTheSubscriptions()
+        );
+    }
+
+    public function getTheSubscriptions(){
+        $data = "";
+        $modal = "-";
+        foreach($this->subscriptions as $sub){
+            $data.="<tr style='background:white !important;'>";
+                $data.="<td>".$sub->customer->name."</td>";
+                $data.="<td>".$sub->profile->name."</td>";
+                $data.="<td>".$sub->profile->pin."</td>";
+                $data.="<td>".$sub->last_days."</td>";
+                $data.="<td>".date('d-m-Y',strtotime($sub->date_to))."</td>";
+                $data.="<td>".$sub->real_status."</td>";
+            $data.="</tr>";
+        }
+
+        if($this->subscriptions->count() > 0){
+            $modal = '<button class="btn btn-success" data-toggle="modal" data-target="#view_profiles_'.$this->id.'"><i class="fas fa-star"></i> Ver Lista ('.$this->subscriptions->count().')</button>
+            <div class="modal fade" id="view_profiles_'.$this->id.'">
+                  <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Lista de Subscripciones</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <th>Cliente</th>
+                                <th>Perfil</th>
+                                <th>Pin</th>
+                                <th>Dias Restantes</th>
+                                <th>Vencimiento</th>
+                                <th>Estado</th>
+                            </thead>
+                            <tbody>'.$data.'</tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+            </div>';
+        }
+
+        return $modal;
     }
 }

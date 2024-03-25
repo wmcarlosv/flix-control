@@ -41,11 +41,6 @@ class AccountController extends Controller
                 'key'=>'email'
             ],
             [
-                'title'=>'Perfiles',
-                'key'=>'list_profiles',
-                'type'=>'html'
-            ],
-            [
                 'title'=>'Contraseña',
                 'key'=>'password'
             ],
@@ -60,6 +55,11 @@ class AccountController extends Controller
             [
                 'title'=>'Dias Restantes',
                 'key'=>'last_days'
+            ],
+            [
+                'title'=>'Subscripciones Activas',
+                'key'=>'the_subscriptions',
+                'type'=>'html'
             ]
         ];
 
@@ -114,7 +114,7 @@ class AccountController extends Controller
             Session::flash('error', 'Ocurrio un error al tratar de insertar el Registro!!');
         }
 
-        return redirect()->route('accounts.index');
+        return redirect()->route('accounts.edit',$element);
     }
 
     /**

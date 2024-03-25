@@ -70,4 +70,14 @@ class User extends Authenticatable
     public function parent(){
         return $this->belongsTo('App\Models\User','parent_user_id','id');
     }
+
+    public function scopeByRole($query){
+        if(Auth::user()->role == "admin"){
+            return $query->whereIn('role',['admin','reseller']);
+        }
+    }
+
+    public function addCredit($id){
+        
+    }
 }

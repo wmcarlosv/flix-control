@@ -58,10 +58,6 @@
                             @error('dateto')
                                <span class="error invalid-feedback">{{ $message }}</span>
                             @enderror
-                            @if($type == 'edit')
-                                <br />
-                                <a href="#" class="btn btn-success" id="open-modal-extend">Extender Facturacion</a>
-                            @endif
                         </div>
                         @if($type == 'edit')
                             <div class="form-group">
@@ -72,6 +68,10 @@
                     </div>
                     <div class="card-footer">
                         @include('admin.partials.buttons',['cancelRoute'=>'accounts.index'])
+                        @if($type == 'edit')
+                            <a href="#" class="btn btn-info" id="open-modal-profiles"><i class="fas fa-users"></i> Perfiles</a>
+                            <a href="#" class="btn btn-warning" id="open-modal-extend"><i class="fas fa-external-link-alt"></i> Extender Facturacion</a>
+                        @endif
                     </div>
                 </form>
             </div>
@@ -79,38 +79,107 @@
     </div>
 
     @if($type == 'edit')
-    <!-- Modal -->
-    <div class="modal fade" id="modal-extend" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="staticBackdropLabel">Extender la Facturacion</h5>
-            <button type="button" class="close close-modal-extend" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="form-group">
-                <label for="">Valor de la Facturacion:</label>
-                <input type="number" id="extend_amount" class="form-control" />
+        <!-- Modal -->
+        <div class="modal fade" id="modal-extend" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Extender la Facturacion</h5>
+                <button type="button" class="close close-modal-extend" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="form-group">
+                    <label for="">Valor de la Facturacion:</label>
+                    <input type="number" id="extend_amount" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="">Nueva Fecha Facturacion:</label>
+                    <input type="date" id="extend_date_to" value="{{@$data->dateto}}" class="form-control" />
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="save-moda-extend"><i class="fas fa-save"></i> Extender</button>
+                <button type="button" class="btn btn-danger close-modal-extend"><i class="fas fa-times"></i> Cancelar</button>
+              </div>
             </div>
-            <div class="form-group">
-                <label for="">Nueva Fecha Facturacion:</label>
-                <input type="date" id="extend_date_to" value="{{@$data->dateto}}" class="form-control" />
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-success" id="save-moda-extend"><i class="fas fa-save"></i> Extender</button>
-            <button type="button" class="btn btn-danger close-modal-extend"><i class="fas fa-times"></i> Cancelar</button>
           </div>
         </div>
-      </div>
-    </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="modal-profiles" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Perfiles de la Cuenta</h5>
+                <button type="button" class="close close-modal-extend" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <form action="{{ route('add_profiles') }}" autocomplete="off" method="POST">
+                @method('POST')
+                @csrf
+                  <div class="modal-body">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <th>Perfil</th>
+                            <th>Pin</th>
+                            <th>Acciones</th>
+                        </thead>
+                        <tbody>
+                            @php 
+                                $usados = $data->profiles->count();
+                                $totales = $data->service->profiles;
+                                $restantes = ($totales - $usados);
+                            @endphp
+
+                            @foreach($data->profiles as $p)
+                                <tr>
+                                    <td>
+                                        <input type="text" class="form-control" value="{{$p->name}}" id="edit_name_{{$p->id}}">
+                                    </td>
+                                    <td><input type="text" id="edit_pin_{{$p->id}}" pattern="\d*" maxlength="4" value="{{$p->pin}}" class="form-control"></td>
+                                    <td>
+                                        <a href="#" data-id='{{$p->id}}' class="btn btn-success edit-profile"><i class="fas fa-save"></i></a>
+                                        @if($p->subscriptions->count() > 0)
+                                             <a target="_blank" href="{{route('customers.edit',$p->subscriptions[0]->customer)}}" title="Ver Cliente {{$p->subscriptions[0]->customer->name}}" class="btn btn-warning"><i class="fas fa-user"></i></a>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endforeach
+
+                            @for($i=0; $i < $restantes; $i++)
+                                <tr>
+                                    <td>
+                                        <input type="hidden" name="account_id" value="{{$data->id}}">
+                                        <input type="hidden" name="positions[]" value="{{$i}}"/>
+                                        <input type="text" class="form-control" name="profiles[]">
+                                    </td>
+                                    <td><input type="text" name="pins[]" pattern="\d*" maxlength="4" class="form-control"></td>
+                                    <td>-</td>
+                                </tr>
+                            @endfor
+                        </tbody>
+                    </table>
+                  </div>
+                  <div class="modal-footer">
+                    @if($restantes > 0)
+                        <button type="submit" class="btn btn-success" id="save-modal-profiles"><i class="fas fa-save"></i> Guardar</button>
+                    @endif
+                    <button type="button" class="btn btn-danger" id="close-modal-profiles"><i class="fas fa-times"></i> Cerrar</button>
+                  </div>
+              </form>
+            </div>
+          </div>
+        </div>
     @endif
 @stop
 
 @section('js')
+@include('admin.partials.messages')
     <script>
+
         $(document).ready(function(){
 
             $.ajaxSetup({
@@ -120,6 +189,48 @@
             });
 
             @if($type == 'edit')
+                $("body").on('click','a.edit-profile', function(){
+                    let id = $(this).attr("data-id");
+                    let name = $("#edit_name_"+id).val();
+                    let pin = $("#edit_pin_"+id).val();
+
+                    if(name){
+                        $.ajax({
+                            type:'PUT',
+                            url:'{{route("edit_profile")}}',
+                            dataType:'json',
+                            data:{
+                                id:id,
+                                name:name,
+                                pin:pin
+                            },
+                            success: function(response){
+                                if(response.success){
+                                    Swal.fire({
+                                        title:'Notificacion',
+                                        text: 'Perfil actualizado con Exito!!',
+                                        icon:'success'
+                                    });
+                                }
+                            }
+                        })
+                    }else{
+                        Swal.fire({
+                            title: "Notificacion",
+                            text:"El campo perfil es Obligatorio!",
+                            icon:'error'
+                        });
+                    }
+                });
+
+                $("#open-modal-profiles").click(function(){
+                    $("#modal-profiles").modal({backdrop:'static',keyboard:false},'show');
+                });
+
+                $("#close-modal-profiles").click(function(){
+                    $("#modal-profiles").modal('hide');
+                });
+
                 $("#open-modal-extend").click(function(){
                     $("#modal-extend").modal('show');
                 });

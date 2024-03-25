@@ -29,6 +29,16 @@ class CustomerController extends Controller
                 'title'=>'Telefono',
                 'key'=>'phone'
             ],
+            [
+                'title'=>'Subscripciones',
+                'key'=>'my_subscriptions',
+                'type'=>'html'
+            ],
+            [
+                'title'=>'Pagos',
+                'key'=>'my_payments',
+                'type'=>'html'
+            ]
         ];
 
         $data = Customer::all();

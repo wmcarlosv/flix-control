@@ -16,21 +16,12 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             [
                 'id'=>1,
-                'name'=>'Super Admin',
-                'email'=>'super_admin@gmail.com',
-                'password'=>bcrypt('SuperAdmin123*'),
+                'name'=>'Administrador',
+                'email'=>'administrador@gmail.com',
+                'password'=>bcrypt('Admin123*'),
                 'role'=>'super_admin',
                 'date_to'=>null,
                 'parent_user_id'=>null
-            ],
-            [
-                'id'=>2,
-                'name'=>'admin',
-                'email'=>'admin@gmail.com',
-                'password'=>bcrypt('Admin123*'),
-                'role'=>'admin',
-                'date_to'=>'2080/12/31',
-                'parent_user_id'=>1
             ]
         ]);
     }

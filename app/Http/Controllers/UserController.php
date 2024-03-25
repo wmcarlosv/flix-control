@@ -30,8 +30,9 @@ class UserController extends Controller
                 'key'=>'role',
                 'type'=>'replace_text',
                 'data' => [
-                    'super_admin'=>'Super Admin',
-                    'admin'=>'Admin'
+                    'super_admin'=>'Super Administrador',
+                    'admin'=>'Administrador',
+                    'reseller'=>'Vendedor'
                 ]
             ],
             [
@@ -44,20 +45,12 @@ class UserController extends Controller
                 ]
             ],
             [
-                'title'=>'Facturacion',
-                'key'=>'date_to',
-                'type'=>'date',
-                'data'=>[
-                    'format'=>'d/m/Y'
-                ]
-            ],
-            [
-                'title'=>'Dias Restantes',
-                'key'=>'last_days'
+                'title'=>'Creditos',
+                'key'=>'total_credits'
             ]
         ];
 
-        $data = User::all();
+        $data = User::byRole()->get();
 
         return view('admin.users.browse', compact('title','columns', 'data'));
     }

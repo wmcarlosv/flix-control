@@ -12,6 +12,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ConfigController;
 use App\Models\Setting;
 use App\Http\Controllers\CronController;
+use App\Http\Controllers\CreditController;
+use App\Http\Controllers\ProfileController;
 
 
 
@@ -68,24 +70,18 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth']], function(){
     Route::resource('accounts', AccountController::class);
     Route::post('accounts/extend', [AccountController::class, 'extend_account'])->name('extend_account');
     Route::resource('movements', MovementController::class);
-    Route::post('subscriptions/store', [SubscriptionController::class, 'store'])->name('subscriptions.store');
-    Route::post('subscriptions/update', [SubscriptionController::class, 'update_data'])->name('subscriptions.update_data');
-    Route::post('subscriptions/extends', [SubscriptionController::class, 'extends'])->name('subscriptions.extends');
+    Route::resource('credits',CreditController::class)->middleware('can:isSuperAdmin');
     Route::get('profile', [UserController::class, 'profile'])->name('profile');
     Route::put('update-profile', [UserController::class, 'update_profile'])->name('update_profile');
     Route::put('update-password', [UserController::class, 'update_password'])->name('update_password');
-
-    if(env('LOCAL_MANAGER') == 'yes'){
-        Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
-        Route::put('settings', [SettingController::class, 'update'])->name('settings.update');
-    }else{
-        Route::get('settings', [SettingController::class, 'index'])->name('settings.index')->middleware('can:isSuperAdmin');
-        Route::put('settings', [SettingController::class, 'update'])->name('settings.update')->middleware('can:isSuperAdmin');
-    }
-    
-    Route::get('config',[ConfigController::class, 'index'])->name('config.index');
-    Route::put('config',[ConfigController::class, 'update'])->name('config.update');
-
+    Route::get('settings', [SettingController::class, 'index'])->name('settings.index')->middleware('can:isSuperAdmin');
+    Route::put('settings', [SettingController::class, 'update'])->name('settings.update')->middleware('can:isSuperAdmin');
     Route::get('get-expiration-message/{id}', [HomeController::class, 'getExpirationTemplate'])->name('get_expiration_template');
     Route::get('get-data-message/{id}', [HomeController::class, 'getCustomerData'])->name('get_data_message');
+    Route::resource('subscriptions',SubscriptionController::class);
+    Route::put('extend-subscription',[SubscriptionController::class,'extend_subscriptions'])->name('extend_subscriptions');
+    Route::post('add-profiles',[ProfileController::class, 'add_profiles'])->name('add_profiles');
+    Route::put('edit-profile',[ProfileController::class, 'edit_profile'])->name('edit_profile');
+    Route::get('get-accounts/{service_id}',[SubscriptionController::class,'getAccounts']);
+    Route::get('get-profiles/{account_id}',[SubscriptionController::class,'getProfiles']);
 });

@@ -34,7 +34,8 @@ class ServiceController extends Controller
             ],
             [
                 'title'=>'# Cuentas',
-                'key'=>'account_count'
+                'key'=>'account_count',
+                'type'=>'html'
             ]
         ];
 

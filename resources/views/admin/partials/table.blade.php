@@ -6,9 +6,6 @@
 		@foreach($columns as $col)
 			<th>{{$col['title']}}</th>
 		@endforeach
-		@if(Auth::user()->role == 'super_admin')
-			<th>Usuario Padre</th>
-		@endif
 		<th>Actions</th>
 	</thead>
 	<tbody>
@@ -76,15 +73,6 @@
                   	@endswitch
                   </td>
 				@endforeach
-				@if(Auth::user()->role == 'super_admin')
-					<td>
-						@if(!empty($d->parent->name))
-							{{ $d->parent->name }} || {{ $d->parent->role }}
-						@else
-							-
-						@endif
-					</td>		
-				@endif
 				<td>
 					@include('admin.partials.actions',[ 'route'=>$route, 'id' => $d->id ])
 				</td>

@@ -225,8 +225,8 @@
                 pulseConnected = true;
                 $("#status-content").html('<img src="{{asset('images/loading.gif')}}" style="width:150px; height:150px;">');
                 $(this).attr("disabled", true).text("Conectando...");
-                $.get("{{@$data->whatsapp_service_url}}/add-device", function(response){
-                    
+                $.get("{{@$data->whatsapp_service_url}}/get-last-qr", function(response){
+                    console.log(response)
                  });
             });
 

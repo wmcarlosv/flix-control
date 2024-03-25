@@ -6,7 +6,7 @@
 
 		@if(Session::get('success'))
 			Swal.fire({
-			  title: "Sucess",
+			  title: "Notificacion",
 			  text: "{{ Session::get('success') }}",
 			  icon: "success"
 			});
@@ -14,7 +14,7 @@
 
 		@if(Session::get('error'))
 			Swal.fire({
-			  title: "Error",
+			  title: "Notificacion",
 			  text: "{{ Session::get('error') }}",
 			  icon: "error"
 			});
@@ -24,10 +24,11 @@
 			let id = $(this).attr("data-id");
 
 			Swal.fire({
-			  title: "Are you sure to perform this action?",
+			  title: "Estas seguro de realizar esta Accion?",
 			  icon: "question",
 			  showCancelButton: true,
-			  confirmButtonText: "Confirm",
+			  cancelButtonText: 'Cancelar',
+			  confirmButtonText: "Confirmar",
 			  confirmButtonColor: "green",
 			  cancelButtonColor: "red",
 			}).then((result) => {

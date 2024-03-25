@@ -29,9 +29,11 @@
                         <div class="form-group">
                             <label for="">Rol:</label>
                             <select class="form-control @error('role') is-invalid @enderror" name="role">
-                                <option value="super_admin">Super Admin</option>
-                                <option value="admin" @if(@$data->role == 'admin') selected='selected' @endif>Admin</option>
-                                <option value="admin" @if(@$data->role == 'reseller') selected='selected' @endif>Revendedor</option>
+                                @if(Auth::user()->role == 'super_admin')
+                                    <option value="super_admin">Administrador</option>
+                                @endif
+                                <!--<option value="admin" @if(@$data->role == 'admin') selected='selected' @endif>Admin</option>-->
+                                <option value="reseller" @if(@$data->role == 'reseller') selected='selected' @endif>Revendedor</option>
                             </select>
                             @error('role')
                                <span class="error invalid-feedback">{{ $message }}</span>
@@ -50,13 +52,13 @@
                             </div>
                         @endif
 
-                        <div class="form-group">
+                        <!--<div class="form-group">
                             <label for="">Expiracion:</label>
                             <input type="date" class="form-control @error('date_to') is-invalid @enderror" value="{{ @$data->date_to }}" name="date_to" />
                             @error('date_to')
                                <span class="error invalid-feedback">{{ $message }}</span>
                             @enderror
-                        </div>
+                        </div>-->
 
                         <div class="input-group">
                             <input type="password" class="form-control @error('password') is-invalid @enderror" placeholder="Contraseña" value="" name="password" />
