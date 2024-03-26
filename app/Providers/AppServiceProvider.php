@@ -97,6 +97,11 @@ class AppServiceProvider extends ServiceProvider
                         'route'=>'customers.index'
                     ],
                     [
+                        'text'=>'Mis Cuentas',
+                        'icon'=>'fas fa-hand-sparkles',
+                        'route'=>'my_accounts'
+                    ],
+                    [
                         'text'=>'Subscripciones',
                         'icon'=>'fas fa-star',
                         'route'=>'subscriptions.index'
@@ -105,6 +110,11 @@ class AppServiceProvider extends ServiceProvider
                         'text'=>'Movimientos',
                         'icon'=>'fas fa-calculator',
                         'route'=>'movements.index'
+                    ],
+                    [
+                        'text'=>'Tienda',
+                        'icon'=>'fas fa-store',
+                        'route'=>'store'
                     ]
                 );
             }

@@ -29,6 +29,25 @@
 			}
 		}
 
+		public static function removeCredits(User $user, $credits){
+			$salida = -1;
+			$currentCredits = $user->total_credits;
+
+			if(floatval($currentCredits) < floatval($credits)){
+				$salida = 2;
+			}else{
+				$newCredits = floatval(($currentCredits - floatval($credits)));
+				$user->total_credits = $newCredits;
+				if($user->save()){
+					$salida = 1;
+				}else{
+					$salida = 0;
+				}
+			}
+			
+			return $salida;
+		}
+
 		public static function currentSymbol(){
 			$data = Setting::first();
 			$symbol = "$";

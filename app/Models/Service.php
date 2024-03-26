@@ -14,10 +14,10 @@ class Service extends Model
 
     protected $table = 'services';
 
-    protected static function booted()
+    /*protected static function booted()
     {
         static::addGlobalScope(new ByUserScope);
-    }
+    }*/
 
     public function imageName(): Attribute
     {

@@ -9,8 +9,10 @@ use App\Models\Setting;
 use App\Models\Account;
 use App\Models\Customer;
 use App\Models\Config;
+use App\Helpers\Helper;
 use DB;
 use Auth;
+use Session;
 
 class HomeController extends Controller
 {
@@ -234,5 +236,38 @@ class HomeController extends Controller
         }
 
         return $setting;
+    }
+
+    public function my_accounts(){
+        $accounts = Account::where('user_id',Auth::user()->id)->get();
+        return view('admin.my_accounts', compact('accounts'));
+    }
+
+    public function store(){
+        $accounts = Account::with(['service'])->withoutGlobalScopes()->where('is_store',1)->where('sold',0)->get();
+        return view('admin.store', compact('accounts'));
+    }
+
+    public function buy_account(Request $request){
+        $account = Account::withoutGlobalScopes()->find($request->account_id);
+        $response = Helper::removeCredits(Auth::user(), $account->sale_price);
+        if($response == 1){
+            $account->user_id = Auth::user()->id;
+            $account->sold = 1;
+            if($account->save()){
+                $data = [
+                    'type'=>'output',
+                    'description'=>'Compra de la cuenta '.$account->email.' del servicio de '.$account->service->name,
+                    'amount' => $account->sale_price
+                ];
+                Movement::createMovement($data);
+            }
+            Session::flash('success','La cuenta '.$account->email.' del servicio de '.$account->service->name.' fue adquirida de manera Satisfactoria!!');
+        }else if($response == 2){
+            Session::flash('error','No tienes suficientes creditos para adquirir esta cuenta, por favor recarga mas creditos!!');
+        }else{
+            Session::flash('error','Ocurrio un error al tratar de adquiri la cuenta, por favor comunicate con el administrador!!');
+        }
+        return redirect()->route('store');
     }
 }

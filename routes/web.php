@@ -84,4 +84,7 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth']], function(){
     Route::put('edit-profile',[ProfileController::class, 'edit_profile'])->name('edit_profile');
     Route::get('get-accounts/{service_id}',[SubscriptionController::class,'getAccounts']);
     Route::get('get-profiles/{account_id}',[SubscriptionController::class,'getProfiles']);
+    Route::get('my-accounts',[HomeController::class, 'my_accounts'])->name('my_accounts');
+    Route::get('store',[HomeController::class, 'store'])->name('store');
+    Route::post('buy-account',[HomeController::class, 'buy_account'])->name('buy_account');
 });

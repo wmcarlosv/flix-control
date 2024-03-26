@@ -14,7 +14,7 @@
     </ul>
     @if(Auth::user()->role == 'reseller')
     <div>
-        <b>Total Creditos: </b><span>{{Auth::user()->total_credits}}</span>
+        <b>Total Creditos:</b><span> {{\App\Helpers\Helper::currentSymbol()}} {{number_format(Auth::user()->total_credits, 2, ',','.')}}</span>
     </div>
     @endif
     {{-- Navbar right links --}}
