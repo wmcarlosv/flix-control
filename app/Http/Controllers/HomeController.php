@@ -94,7 +94,7 @@ class HomeController extends Controller
 
         #dd($expirations_subscriptions);
 
-        return view('admin.dashboard', compact('movements','input','output','balance','expirations_subscriptions','accounts','customers'));
+        return view('admin.dashboard', compact('movements','input','output','balance','expirations_subscriptions','accounts','customers','setting'));
     }
 
     public function getExpirationTemplate($id){

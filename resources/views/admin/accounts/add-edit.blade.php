@@ -48,10 +48,14 @@
                         </div>
                         @if($type=='new')
                             <div class="form-group">
-                                <label for="">Valor  de la Cuenta:</label>
+                                <label for="">Precio de Compra:</label>
                                 <input type="number" step="0.01" name="amount" class="form-control" />
                             </div>
                         @endif
+                        <div class="form-group">
+                                <label for="">Precio para Venta:</label>
+                                <input type="number" step="0.01" name="sale_price" value="{{@$data->sale_price}}" class="form-control" />
+                            </div>
                         <div class="form-group">
                             <label for="">Facturacion:</label>
                             <input type="date" @if($type=='edit') readonly @endif class="form-control @error('dateto') is-invalid @enderror" value="{{ @$data->dateto }}" name="dateto" />
@@ -65,6 +69,13 @@
                                 <input type="text" class="form-control" id="last_days" readonly value="{{ @$data->last_days }}" />
                             </div>
                         @endif
+                        <div class="form-group">
+                            <label for="">Visible en Tienda:</label>
+                            <select name="is_store" class="form-control">
+                                <option value="0">No</option>
+                                <option value="1" @if(@$data->is_store == 1) selected='selected' @endif>Si</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="card-footer">
                         @include('admin.partials.buttons',['cancelRoute'=>'accounts.index'])

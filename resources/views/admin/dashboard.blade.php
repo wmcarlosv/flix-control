@@ -7,13 +7,20 @@
 @stop
 
 @section('content')
+    @php
+        $symbol = "$";
+        if(!empty($setting->currency)){
+            $currency = json_decode($setting->currency, true);
+            $symbol = $currency['symbol'];
+        }
+    @endphp
     <div class="row">
         <div class="col-md-4">
             <div class="info-box bg-success">
               <span class="info-box-icon"><i class="fas fa-sort-numeric-up"></i></span>
               <div class="info-box-content">
                 <span class="info-box-text">Ingresos</span>
-                <span class="info-box-number">$ {{number_format($input,2,',','.')}}</span>
+                <span class="info-box-number">{{$symbol}} {{number_format($input,2,',','.')}}</span>
               </div>
             </div>
         </div>
@@ -22,7 +29,7 @@
               <span class="info-box-icon"><i class="fas fa-sort-numeric-down-alt"></i></span>
               <div class="info-box-content">
                 <span class="info-box-text">Gastos</span>
-                <span class="info-box-number">$ {{number_format($output,2,',','.')}}</span>
+                <span class="info-box-number">{{$symbol}} {{number_format($output,2,',','.')}}</span>
               </div>
             </div>
         </div>
@@ -32,7 +39,7 @@
               <span class="info-box-icon"><i class="far fa-money-bill-alt"></i></span>
               <div class="info-box-content">
                 <span class="info-box-text">Balance</span>
-                <span class="info-box-number">$ {{number_format($balance,2,',','.')}}</span>
+                <span class="info-box-number">{{$symbol}} {{number_format($balance,2,',','.')}}</span>
               </div>
             </div>
         </div>
@@ -81,7 +88,7 @@
                                             @endif
                                         </td>
                                         <td>{{$mv->description}}</td>
-                                        <td>$ {{number_format($mv->amount,2,',','.')}}</td>
+                                        <td>{{$symbol}} {{number_format($mv->amount,2,',','.')}}</td>
                                         <td>{{date('d-m-Y', strtotime($mv->datemovement))}}</td>
                                     </tr>
                                     @endforeach

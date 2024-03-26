@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use App\Scopes\ByUserScope;
+use App\Helpers\Helper;
 
 class Customer extends Model
 {
@@ -93,7 +94,7 @@ class Customer extends Model
         $modal = "-";
         foreach($this->payments as $pay){
             $data.="<tr style='background:white !important;'>";
-                $data.="<td>".$pay->amount."</td>";
+                $data.="<td>".Helper::currentSymbol()." ".number_format($pay->amount, 2,',','.')."</td>";
                 $data.="<td>".date('d-m-Y',strtotime($pay->created_at))."</td>";
             $data.="</tr>";
         }

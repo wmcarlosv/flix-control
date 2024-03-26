@@ -20,7 +20,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
 
-    protected $appends = ['last_days'];
+    protected $appends = ['last_days','role_and_name'];
 
     protected $fillable = [
         'name',
@@ -54,6 +54,13 @@ class User extends Authenticatable
             get: fn ($value) => $this->getDays()
         );
     }
+
+    public function roleAndName(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => $this->name." (".$this->role.")"
+        );
+    }
     
     public function getDays(){
         $now = time();
@@ -75,9 +82,5 @@ class User extends Authenticatable
         if(Auth::user()->role == "admin"){
             return $query->whereIn('role',['admin','reseller']);
         }
-    }
-
-    public function addCredit($id){
-        
     }
 }

@@ -31,6 +31,10 @@ class Account extends Model
         $this->booted();
     }
 
+    public function user(){
+        return $this->belongsTo('App\Models\User');
+    }
+
     public function service(){
         return $this->belongsTo('App\Models\Service');
     }

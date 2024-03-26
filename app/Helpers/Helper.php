@@ -3,6 +3,8 @@
 	namespace App\Helpers;
 
 	use DB;
+	use App\Models\User;
+	use App\Models\Setting;
 
 	class Helper{
 
@@ -14,6 +16,28 @@
 				return null;
 			}
 			
+		}
+
+		public static function addCredits(User $user, $credits){
+			$currentCredits = $user->total_credits;
+			$newCredits = floatval(($currentCredits + floatval($credits)));
+			$user->total_credits = $newCredits;
+			if($user->save()){
+				return true;
+			}else{
+				return false;
+			}
+		}
+
+		public static function currentSymbol(){
+			$data = Setting::first();
+			$symbol = "$";
+			if(!empty($data->currency)){
+				$response = json_decode($data->currency, true);
+				$symbol = $response['symbol'];
+			}
+
+			return $symbol;
 		}
 
 	}

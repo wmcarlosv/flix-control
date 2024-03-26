@@ -11,6 +11,7 @@ use App\Models\Customer;
 use App\Models\Movement;
 use App\Models\Setting;
 use App\Models\Subscription;
+use App\Helpers\Helper;
 
 class AccountController extends Controller
 {
@@ -60,6 +61,32 @@ class AccountController extends Controller
                 'title'=>'Subscripciones Activas',
                 'key'=>'the_subscriptions',
                 'type'=>'html'
+            ],
+            [
+                'title'=>'Visible en Tienda?',
+                'key'=>'is_store',
+                'type'=>'replace_text',
+                'data'=>[
+                    0=>'No',
+                    1=>'Si'
+                ]
+            ],
+            [
+                'title'=>'Valor de Venta',
+                'key'=>'sale_price',
+                'type'=>'currency',
+                'data'=>[
+                    'symbol'=> Helper::currentSymbol()
+                ]
+            ],
+            [
+                'title'=>'Dueño',
+                'key'=>'user_id',
+                'type'=>'relation',
+                'data'=>[
+                    'relation'=>'user',
+                    'key'=>'role_and_name'
+                ]
             ]
         ];
 
@@ -96,6 +123,8 @@ class AccountController extends Controller
         $element->password = $request->password;
         $element->dateto = $request->dateto;
         $element->service_id = $request->service_id;
+        $element->is_store = $request->is_store;
+        $element->sale_price = $request->sale_price;
 
         $element->user_id = Auth::user()->id;
 
@@ -153,6 +182,8 @@ class AccountController extends Controller
         $element->password = $request->password;
         $element->dateto = $request->dateto;
         $element->service_id = $request->service_id;
+        $element->is_store = $request->is_store;
+        $element->sale_price = $request->sale_price;
 
         if($element->update()){
             Session::flash('success', 'Registro Actualizado con Exito!!');

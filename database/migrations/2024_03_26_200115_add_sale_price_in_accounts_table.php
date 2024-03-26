@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('settings', function (Blueprint $table) {
-            $table->text('currency')->nullable();
+        Schema::table('accounts', function (Blueprint $table) {
+            $table->float('sale_price')->nullable();
         });
     }
 
@@ -21,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('settings', function (Blueprint $table) {
+        Schema::table('accounts', function (Blueprint $table) {
             //
         });
     }

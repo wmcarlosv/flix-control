@@ -17,7 +17,7 @@ class ByUserScope implements Scope
     public function apply(Builder $builder, Model $model)
     {
         if(!empty(Auth::user()->role)){
-            if(Auth::user()->role == 'admin'){
+            if(Auth::user()->role == 'reseller'){
                  $builder->where('user_id', Auth::user()->id);
             }  
         }

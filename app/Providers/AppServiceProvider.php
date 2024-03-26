@@ -97,11 +97,6 @@ class AppServiceProvider extends ServiceProvider
                         'route'=>'customers.index'
                     ],
                     [
-                        'text'=>'Cuentas',
-                        'icon'=>'fas fa-piggy-bank',
-                        'route'=>'accounts.index'
-                    ],
-                    [
                         'text'=>'Subscripciones',
                         'icon'=>'fas fa-star',
                         'route'=>'subscriptions.index'

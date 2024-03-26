@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Helpers\Helper;
 use Session;
 use Auth;
 
@@ -46,7 +47,11 @@ class UserController extends Controller
             ],
             [
                 'title'=>'Creditos',
-                'key'=>'total_credits'
+                'key'=>'total_credits',
+                'type'=>'currency',
+                'data'=>[
+                    'symbol'=>Helper::currentSymbol()
+                ]
             ]
         ];
 

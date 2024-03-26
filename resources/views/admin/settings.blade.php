@@ -101,6 +101,21 @@
                         @enderror
                     </div>
                     <div class="form-group">
+                        <label for="">Moneda:</label>
+                         @php
+                            $cur = [];
+                            if(!empty(@$data->currency)){
+                                $cur = json_decode(@$data->currency, true);
+                            }
+                         @endphp
+                        <select name="currency" class="form-control">
+                            <option value="">Seleccione</option>
+                            @foreach($currencies as $key=>$currency)
+                                <option value="{{json_encode($currency)}}" @if(@$cur['name'] == $currency['name']) selected='selected' @endif>{{$currency['name']}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label for="">Url Servicio de Whatsapp:</label>
                         <input type="text" class="form-control @error('whatsapp_service_url') is-invalid @enderror" name="whatsapp_service_url" value="{{@$data->whatsapp_service_url}}">
                         @if(@$data->whatsapp_service_url)
@@ -178,7 +193,7 @@
     @include('admin.partials.messages')
     <script type="text/javascript">
         $(document).ready(function(){
-            
+            $("select[name='currency']").select2();
             var pulseConnected = false;
 
             @if(@$data->whatsapp_service_url)

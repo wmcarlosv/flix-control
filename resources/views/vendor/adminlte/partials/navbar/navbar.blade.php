@@ -1,7 +1,6 @@
 <nav class="main-header navbar
     {{ config('adminlte.classes_topnav_nav', 'navbar-expand') }}
     {{ config('adminlte.classes_topnav', 'navbar-white navbar-light') }}">
-
     {{-- Navbar left links --}}
     <ul class="navbar-nav">
         {{-- Left sidebar toggler link --}}
@@ -13,7 +12,11 @@
         {{-- Custom left links --}}
         @yield('content_top_nav_left')
     </ul>
-
+    @if(Auth::user()->role == 'reseller')
+    <div>
+        <b>Total Creditos: </b><span>{{Auth::user()->total_credits}}</span>
+    </div>
+    @endif
     {{-- Navbar right links --}}
     <ul class="navbar-nav ml-auto">
         {{-- Custom right links --}}

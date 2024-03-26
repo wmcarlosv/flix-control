@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Credit;
 use App\Models\User;
+use App\Helpers\Helper;
+use App\Models\Movement;
 use Session;
 use Auth;
 
@@ -34,6 +36,10 @@ class CreditController extends Controller
             [
                 'title'=>'Monto',
                 'key'=>'amount',
+                'type'=>'currency',
+                'data'=>[
+                    'symbol'=>Helper::currentSymbol()
+                ]
             ],
             [
                 'title'=>'Comentario',
@@ -73,6 +79,14 @@ class CreditController extends Controller
         $element->comment = $request->comment;
 
         if($element->save()){
+            $user = User::find($element->user_id);
+            Helper::addCredits($user, $element->amount);
+            $data = [
+                'type'=>'input',
+                'description'=>'Se agrego credito al usuario '.$element->user->name,
+                'amount'=>$element->amount
+            ];
+            Movement::createMovement($data);
             Session::flash('success', 'Registro Insertado con Exito!!');
         }else{
             Session::flash('error', 'Ocurrio un error al tratar de insertar el Registro!!');

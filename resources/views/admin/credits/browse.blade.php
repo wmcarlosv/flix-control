@@ -21,10 +21,7 @@
     @include('admin.partials.messages')
     <script>
         $(document).ready(function(){
-            let parent = $("a.btn-info").parent();
             $("a.btn-info").remove();
-            $("form").remove();
-            parent.text("Sin Acciones");
         });
     </script>
 @stop

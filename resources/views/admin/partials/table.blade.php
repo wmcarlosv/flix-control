@@ -29,6 +29,10 @@
                   			@endif
                   		@break
 
+                  		@case('currency')
+                  			{{$col['data']['symbol']}} {{number_format($d->$key,2,',','.')}}
+                  		@break
+
                   		@case('img')
                   			@if(!empty($d->$key))
                   				<img src="{{ asset(str_replace('public','storage',$d->$key)) }}" class="img-thumbnail" style="width:100px; height: 100px;" alt="image">

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use App\Models\Setting;
 use Storage;
 use Session;
@@ -18,7 +19,14 @@ class SettingController extends Controller
             $data = [];
         }
 
-        return view('admin.settings', compact('title','data'));
+        $currencies = [];
+
+        $jsonPath = public_path('json/currencies.json');
+        if (File::exists($jsonPath)) {
+            $jsonData = File::get($jsonPath);
+            $currencies = json_decode($jsonData, true);
+        }
+        return view('admin.settings', compact('title','data','currencies'));
     }
 
     public function update(Request $request){
@@ -53,7 +61,7 @@ class SettingController extends Controller
         $data->expiration_days_subscriptions = $request->expiration_days_subscriptions;
         $data->expiration_days_accounts = $request->expiration_days_accounts;
         $data->whatsapp_service_url = $request->whatsapp_service_url;
-
+        $data->currency = $request->currency;
         if($request->whatsapp_service_url){
             if($request->time_from && $request->time_to){
                 $data->hours_range_notification = $request->time_from."-".$request->time_to;

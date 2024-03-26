@@ -65,9 +65,9 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth']], function(){
 
     Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
     Route::resource('users', UserController::class)->middleware('can:isSuperAdmin');
-    Route::resource('services', ServiceController::class);
+    Route::resource('services', ServiceController::class)->middleware('can:isSuperAdmin');
     Route::resource('customers', CustomerController::class);
-    Route::resource('accounts', AccountController::class);
+    Route::resource('accounts', AccountController::class)->middleware('can:isSuperAdmin');
     Route::post('accounts/extend', [AccountController::class, 'extend_account'])->name('extend_account');
     Route::resource('movements', MovementController::class);
     Route::resource('credits',CreditController::class)->middleware('can:isSuperAdmin');
