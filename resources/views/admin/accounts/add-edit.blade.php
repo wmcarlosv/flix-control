@@ -11,6 +11,9 @@
                 </div>
                 @include('admin.partials.form', ['element'=>'accounts', 'type'=>$type, 'id'=>@$data->id])
                     <div class="card-body">
+                         @if($type == 'edit')
+                            <div class="alert alert-warning text-center">Es Importante que le configures los perfiles a las cuentas, para que funcionen de manera Correcta!!</div>
+                        @endif
                         <div class="form-group">
                             <label for="">Servicio:</label>
                             <select class="form-control @error('service_id') is-invalid @enderror" value="{{ @$data->service_id }}" name="service_id">

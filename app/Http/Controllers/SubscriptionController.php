@@ -100,7 +100,7 @@ class SubscriptionController extends Controller
             'service_id'=>'required',
             'account_id'=>'required',
             'customer_id'=>'required',
-            'profile_id'=>'required',
+            'profile_id'=>'required|numeric|min:1',
             'date_to'=>'required',
             'amount'=>'required'
         ]);

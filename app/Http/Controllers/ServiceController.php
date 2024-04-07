@@ -54,7 +54,7 @@ class ServiceController extends Controller
     {
         $request->validate([
             'name'=>'required',
-            'profiles'=>'required',
+            'profiles'=>'required|numeric|min:1',
         ]);
 
         $element = new Service();
@@ -93,7 +93,7 @@ class ServiceController extends Controller
     {
         $request->validate([
             'name'=>'required',
-            'profiles'=>'required'
+            'profiles'=>'required|numeric|min:1',
         ]);
 
         $element = Service::findorfail($id);
