@@ -12,6 +12,7 @@ use App\Models\Movement;
 use App\Models\Setting;
 use App\Models\Subscription;
 use App\Helpers\Helper;
+use App\Models\Profile;
 
 class AccountController extends Controller
 {
@@ -201,6 +202,7 @@ class AccountController extends Controller
     {
         $element = Account::findorfail($id);
         Subscription::where('account_id',$id)->delete();
+        Profile::where('account_id',$id)->delete();
         if($element->delete()){
             Session::flash('success', 'Registro Eliminado con Exito!!');
         }else{
