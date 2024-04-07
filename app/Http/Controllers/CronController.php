@@ -112,11 +112,11 @@ class CronController extends Controller
                                 $text = $temporal;
                             break;
                             case '#perfil':
-                                $temporal = str_replace($variable,$subscription->profile, $text);
+                                $temporal = str_replace($variable,$subscription->profile->name, $text);
                                 $text = $temporal;
                             break;
                             case '#pin':
-                                $temporal = str_replace($variable,$subscription->pin, $text);
+                                $temporal = str_replace($variable,$subscription->profile->pin, $text);
                                 $text = $temporal;
                             break;
                             case '#clave_cuenta':
