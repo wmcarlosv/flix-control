@@ -125,7 +125,7 @@
                                             <td>
                                                 <a href="#" class="btn btn-info copy-data" data-id='{{$es->id}}' title="Copiar Informacion de Expiracion"><i class="fas fa-copy"></i></a>
                                                 <a href="#" class="btn btn-success send-by-whatsapp" data-id='{{$es->id}}' data-number="{{$es->customer->phone}}" title="Notificar por Whatsapp"><i class="fab fa-whatsapp"></i></a>
-                                                <a href="#" class="btn btn-warning modal-edit" data-subscription='{{json_encode($es)}}' title="Extender Membresia"><i class="fas fa-expand-arrows-alt"></i></a>
+                                                
                                             </td>
                                         </tr>
                                     @endforeach
