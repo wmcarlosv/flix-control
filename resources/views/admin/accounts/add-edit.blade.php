@@ -153,7 +153,7 @@
                                     <td>
                                         <input type="text" class="form-control" value="{{$p->name}}" id="edit_name_{{$p->id}}">
                                     </td>
-                                    <td><input type="text" id="edit_pin_{{$p->id}}" pattern="\d*" maxlength="5" value="{{$p->pin}}" class="form-control"></td>
+                                    <td><input type="text" id="edit_pin_{{$p->id}}" value="{{$p->pin}}" class="form-control"></td>
                                     <td>
                                         <a href="#" data-id='{{$p->id}}' class="btn btn-success edit-profile"><i class="fas fa-save"></i></a>
                                         @if($p->subscriptions->count() > 0)
