@@ -68,6 +68,16 @@
                 return false;
             });
 
+            $("body").on('click','.page-link', function(){
+                 $("a.btn-info").addClass('btn-warning').attr("title","Extender Facturacion").html('<i class="fas fa-external-link-alt"></>');
+                $("a.btn-info").click(function(){
+                    let id = $(this).attr("data-id");
+                    $("input[name='id']").val(id);
+                    $("#modal-extend").modal({backdrop: 'static', keyboard:false},'show');
+                    return false;
+                });
+            });
+
             $("button.close-modal-extend").click(function(){
                 $("#modal-extend").modal('hide');
             });
