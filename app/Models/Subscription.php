@@ -84,7 +84,7 @@ class Subscription extends Model
     }
 
     public function getShareButtons(){
-        $buttons = "<a href='#' id='send-by-whatsapp' data-id='".$this->id."' data-phone='".$this->customer->phone."' class='btn btn-success'><i class='fab fa-whatsapp'></i></a> <a href='#' class='btn btn-default' data-id='".$this->id."' id='copy_button'><i class='fas fa-copy'></i></a>";
+        $buttons = "<a href='#' data-id='".$this->id."' data-phone='".$this->customer->phone."' class='btn btn-success send-by-whatsapp'><i class='fab fa-whatsapp'></i></a> <a href='#' class='btn btn-default copy_button' data-id='".$this->id."' ><i class='fas fa-copy'></i></a>";
         return $buttons;
     }
 
