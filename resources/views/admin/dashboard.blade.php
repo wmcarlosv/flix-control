@@ -123,8 +123,8 @@
                                             <td>{{$es->last_days}}</td>
                                             <td>{{date('d/m/Y',strtotime($es->date_to))}}</td>
                                             <td>
-                                                <a href="#" class="btn btn-info copy-data" data-id='{{$es->id}}' title="Copiar Informacion de Expiracion"><i class="fas fa-copy"></i></a>
-                                                <a href="#" class="btn btn-success send-by-whatsapp" data-id='{{$es->id}}' data-number="{{$es->customer->phone}}" title="Notificar por Whatsapp"><i class="fab fa-whatsapp"></i></a>
+                                                <a href="#" class="btn btn-info copy_button" data-id='{{$es->id}}' title="Copiar Informacion de Expiracion"><i class="fas fa-copy"></i></a>
+                                                <a href="#" class="btn btn-success send-by-whatsapp" data-id='{{$es->id}}' data-phone="{{$es->customer->phone}}" title="Notificar por Whatsapp"><i class="fab fa-whatsapp"></i></a>
                                                 
                                             </td>
                                         </tr>
@@ -174,7 +174,7 @@
 @section('js')
     <script>
         $(document).ready(function(){
-            
+
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
