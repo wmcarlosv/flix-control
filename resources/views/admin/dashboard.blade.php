@@ -174,9 +174,66 @@
 @section('js')
     <script>
         $(document).ready(function(){
+            
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            });
+
             $("#table-last_movements").DataTable({ order: [[0, 'desc']] });
             $("#table-expirations_subscriptions").DataTable({ order: [[3, 'asc']] });
             $("#table-expirations_accounts").DataTable({ order: [[2, 'asc']] });
+
+            $("body").on('click','a.copy_button',function(){
+                let id = $(this).attr("data-id");
+                $.get("get-data-message/"+id, function(response){
+                    let data = response;
+                    if(data.success){
+                        copyToClipboard(data.message);
+                        Swal.fire({
+                            title: "Notificacion",
+                            text: "Se han copiado los datos correctamente!!",
+                            icon: "success",
+                            position: "top-end",
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    }else{
+                        Swal.fire({
+                            title: "Notificacion",
+                            text: data.messasge,
+                            icon: "error"
+                        });
+                    }
+                });
+            });
+
+            $("body").on('click','a.send-by-whatsapp',function(){
+                let id = $(this).attr("data-id");
+                let phone = $(this).attr("data-phone");
+                $.get("get-data-message/"+id, function(response){
+                    let data = response;
+                    if(data.success){
+                        let link = encodeURI("https://wa.me/"+phone+"?text="+data.message);
+                        window.open(link, "_blank");
+                    }else{
+                        Swal.fire({
+                            title: "Notificacion",
+                            text: data.messasge,
+                            icon: "error"
+                        });
+                    }
+                });
+            });
+
+            function copyToClipboard(text) {
+                var $temp = $("<textarea></textarea>");
+                $("#myTabContentEdit").append($temp);
+                $temp.val(text).select();
+                document.execCommand('copy');
+                $temp.remove();
+            }
         });
     </script>
 @stop
