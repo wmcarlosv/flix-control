@@ -72,7 +72,7 @@
                 $("#modal-extend").modal('hide');
             });
 
-            $(".copy_button").click(function(){
+            $("body").on('click','button.copy_button',function(){
                 let id = $(this).attr("data-id");
                 $.get("get-data-message/"+id, function(response){
                     let data = response;
@@ -95,8 +95,8 @@
                     }
                 });
             });
-
-            $(".send-by-whatsapp").click(function(){
+            
+            $("body").on('click','button.send-by-whatsapp',function(){
                 let id = $(this).attr("data-id");
                 let phone = $(this).attr("data-phone");
                 $.get("get-data-message/"+id, function(response){
