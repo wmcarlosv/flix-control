@@ -52,6 +52,26 @@
 @section('js')
     @include('admin.partials.messages')
     <script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.body.addEventListener('click', function(event) {
+                if (event.target.classList.contains('page-link')) {
+                    // Select all 'a.btn-info' elements
+                    document.querySelectorAll('a.btn-info').forEach(function(element) {
+                        // Add 'btn-warning' class
+                        element.classList.add('btn-warning');
+
+                        // Set the 'title' attribute
+                        element.setAttribute('title', 'Extender Facturacion');
+
+                        // Set the HTML content
+                        element.innerHTML = '<i class="fas fa-external-link-alt"></i>';
+                    });
+                    event.preventDefault();
+                }
+            });
+        });
+
         $(document).ready(function(){
 
             $.ajaxSetup({
@@ -61,21 +81,11 @@
             });
 
             $("a.btn-info").addClass('btn-warning').attr("title","Extender Facturacion").html('<i class="fas fa-external-link-alt"></>');
-            $("a.btn-info").click(function(){
+            $("body").on('click','a.btn-info',function(){
                 let id = $(this).attr("data-id");
                 $("input[name='id']").val(id);
                 $("#modal-extend").modal({backdrop: 'static', keyboard:false},'show');
                 return false;
-            });
-
-            $("body").on('click','.page-link', function(){
-                 $("a.btn-info").addClass('btn-warning').attr("title","Extender Facturacion").html('<i class="fas fa-external-link-alt"></>');
-                $("a.btn-info").click(function(){
-                    let id = $(this).attr("data-id");
-                    $("input[name='id']").val(id);
-                    $("#modal-extend").modal({backdrop: 'static', keyboard:false},'show');
-                    return false;
-                });
             });
 
             $("button.close-modal-extend").click(function(){
