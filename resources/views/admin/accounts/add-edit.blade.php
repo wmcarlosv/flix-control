@@ -56,9 +56,13 @@
                             </div>
                         @endif
                         <div class="form-group">
-                                <label for="">Precio para Venta:</label>
-                                <input type="number" step="0.01" name="sale_price" value="{{@$data->sale_price}}" class="form-control" />
-                            </div>
+                            <label for="">Precio para Venta:</label>
+                            <input type="number" step="0.01" name="sale_price" value="{{@$data->sale_price}}" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="">Precio Venta por Perfil:</label>
+                            <input type="number" step="0.01" name="profile_price" value="{{@$data->profile_price}}" class="form-control" />
+                        </div>
                         <div class="form-group">
                             <label for="">Facturacion:</label>
                             <input type="date" @if($type=='edit') readonly @endif class="form-control @error('dateto') is-invalid @enderror" value="{{ @$data->dateto }}" name="dateto" />

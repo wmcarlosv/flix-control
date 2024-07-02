@@ -56,7 +56,7 @@
                   			@endphp
 
                   			@if(@$format == 'plain')
-                  				{{$d->$relation->$key}}
+                  				{{@$d->$relation->$key}}
                   			@else
                   				{!!@$d->$relation->$key!!}
                   			@endif

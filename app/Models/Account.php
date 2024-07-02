@@ -63,7 +63,7 @@ class Account extends Model
     }
 
     public function profiles(){
-        return $this->hasMany('App\Models\Profile')->withoutGlobalScopes();;
+        return $this->hasMany('App\Models\Profile')->withoutGlobalScopes();
     }
 
     public function theSubscriptions(): Attribute
@@ -79,8 +79,8 @@ class Account extends Model
         foreach($this->subscriptions as $sub){
             $data.="<tr style='background:white !important;'>";
                 $data.="<td>".$sub->customer->name."</td>";
-                $data.="<td>".$sub->profile->name."</td>";
-                $data.="<td>".$sub->profile->pin."</td>";
+                $data.="<td>".@$sub->profile->name."</td>";
+                $data.="<td>".@$sub->profile->pin."</td>";
                 $data.="<td>".$sub->last_days."</td>";
                 $data.="<td>".date('d-m-Y',strtotime($sub->date_to))."</td>";
                 $data.="<td>".$sub->real_status."</td>";

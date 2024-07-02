@@ -81,6 +81,14 @@ class AccountController extends Controller
                 ]
             ],
             [
+                'title'=>'Precio por Perfil',
+                'key'=>'profile_price',
+                'type'=>'currency',
+                'data'=>[
+                    'symbol'=> Helper::currentSymbol()
+                ]
+            ],
+            [
                 'title'=>'Dueño',
                 'key'=>'user_id',
                 'type'=>'relation',
@@ -126,6 +134,7 @@ class AccountController extends Controller
         $element->service_id = $request->service_id;
         $element->is_store = $request->is_store;
         $element->sale_price = $request->sale_price;
+        $element->profile_price = $request->profile_price;
 
         $element->user_id = Auth::user()->id;
 
@@ -185,6 +194,7 @@ class AccountController extends Controller
         $element->service_id = $request->service_id;
         $element->is_store = $request->is_store;
         $element->sale_price = $request->sale_price;
+        $element->profile_price = $request->profile_price;
 
         if($element->update()){
             Session::flash('success', 'Registro Actualizado con Exito!!');

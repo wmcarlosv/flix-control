@@ -5,12 +5,18 @@
 	use DB;
 	use App\Models\User;
 	use App\Models\Setting;
+	use Auth;
 
 	class Helper{
 
-		public static function getDataSelect($attr){
+		public static function getDataSelect($attr, $validateUser=false){
 			if($attr){
-				$data = DB::table($attr['table'])->select($attr['columns'])->where($attr['compare'],$attr['compare_value'])->get();
+				if($validateUser){
+					$data = DB::table($attr['table'])->select($attr['columns'])->where($attr['compare'],$attr['compare_value'])->where('user_id',Auth::user()->id)->get();
+				}else{
+					$data = DB::table($attr['table'])->select($attr['columns'])->where($attr['compare'],$attr['compare_value'])->get();
+				}
+				
 				return $data;
 			}else{
 				return null;

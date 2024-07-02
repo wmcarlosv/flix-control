@@ -170,7 +170,7 @@ class SubscriptionController extends Controller
             'compare'=>'service_id',
             'compare_value'=>$service_id
         ];
-        $response = Helper::getDataSelect($attr);
+        $response = Helper::getDataSelect($attr, true);
         if($response){
             $data = $response;
         }
