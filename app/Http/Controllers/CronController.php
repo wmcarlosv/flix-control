@@ -20,13 +20,13 @@ class CronController extends Controller
     public function sendMessageExpirateAccount(){
         if(env('APP_TIMEZONE')){
             date_default_timezone_set(env('APP_TIMEZONE'));
-        }  
+        }
         
 
         $settings = Setting::first();
         $currentDate = date('Y-m-d');
         if($settings){
-            if($settings->isLogged){
+            //if($settings->isLogged){
                 $days = $settings->expiration_days_subscriptions;
                 $subscriptions = Subscription::where('date_to','>=', $currentDate)->get();
                 foreach($subscriptions as $sub){
@@ -57,7 +57,7 @@ class CronController extends Controller
                     }
 
                 }
-            }
+            //}
         }
     }
 
@@ -66,10 +66,13 @@ class CronController extends Controller
         $template = $this->getExpirationTemplate($subID);
         if(count($template) > 0){
             if($template['success']){
-                $response = Http::post($urlWhatsapp."/send-message", [
-                    'number'=>$subscription->customer->phone,
-                    'message'=>$template['message']
+
+                $response = Http::post("https://api.wachat.net/send", [
+                    'receiver'=>$subscription->customer->phone,
+                    'msgtext'=>$template['message'],
+                    'token'=>$urlWhatsapp
                 ]);
+
                 if($response->status() == 200){
                     $subscription->last_notification_date = date('Y-m-d');
                     $subscription->save();
@@ -112,11 +115,11 @@ class CronController extends Controller
                                 $text = $temporal;
                             break;
                             case '#perfil':
-                                $temporal = str_replace($variable,$subscription->profile->name, $text);
+                                $temporal = str_replace($variable,(!empty($subscription->profile) ? $subscription->profile->name : "Sin Perfil"), $text);
                                 $text = $temporal;
                             break;
                             case '#pin':
-                                $temporal = str_replace($variable,$subscription->profile->pin, $text);
+                                $temporal = str_replace($variable,(!empty($subscription->profile) ? $subscription->profile->pin : "Sin Pin"), $text);
                                 $text = $temporal;
                             break;
                             case '#clave_cuenta':

@@ -111,7 +111,7 @@
                         if(data.length > 0){
                             $("select[name='profile_id']").html("<option value='-1'>Seleccione</option>");
                             $.each(data, function(v,e){
-                                $("select[name='profile_id']").append("<option value='"+e.id+"'>"+e.name+" ("+e.pin+")</option>");
+                                $("select[name='profile_id']").append("<option value='"+e.id+"'>"+e.name+" ("+(e.pin ? e.pin : 'Sin Pin')+")</option>");
                             });
                         }
                     })

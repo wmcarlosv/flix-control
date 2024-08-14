@@ -116,11 +116,11 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="">Url Servicio de Whatsapp:</label>
+                        <label for="">Wachat Api Token:</label>
                         <input type="text" class="form-control @error('whatsapp_service_url') is-invalid @enderror" name="whatsapp_service_url" value="{{@$data->whatsapp_service_url}}">
                         @if(@$data->whatsapp_service_url)
-                            <br />
-                            <button class="btn btn-success" id="button-whatsapp-connect" type="button">Conectar Whatsapp</button>
+                            <!--<br />
+                            <button class="btn btn-success" id="button-whatsapp-connect" type="button">Conectar Whatsapp</button>-->
                         @endif
                         @error('whatsapp_service_url') 
                             <span class="error invalid-feedback">{{ $message }}</span> 

@@ -131,11 +131,11 @@ class HomeController extends Controller
                             $text = $temporal;
                         break;
                         case '#perfil':
-                            $temporal = str_replace($variable,$subscription->profile->name, $text);
+                            $temporal = str_replace($variable,(!empty($subscription->profile) ? $subscription->profile->name : "Sin Perfil"), $text);
                             $text = $temporal;
                         break;
                         case '#pin':
-                            $temporal = str_replace($variable,$subscription->profile->pin, $text);
+                            $temporal = str_replace($variable,(!empty($subscription->profile) ? $subscription->profile->pin : "Sin Pin"), $text);
                             $text = $temporal;
                         break;
                         case '#clave_cuenta':
@@ -196,11 +196,11 @@ class HomeController extends Controller
                             $text = $temporal;
                         break;
                         case '#perfil':
-                            $temporal = str_replace($variable,$subscription->profile->name, $text);
+                            $temporal = str_replace($variable,(!empty($subscription->profile) ? $subscription->profile->name : "Sin Perfil" ), $text);
                             $text = $temporal;
                         break;
                         case '#pin':
-                            $temporal = str_replace($variable,$subscription->profile->pin, $text);
+                            $temporal = str_replace($variable,(!empty($subscription->profile) ? $subscription->profile->pin : "Sin Pin" ), $text);
                             $text = $temporal;
                         break;
                         case '#clave_cuenta':

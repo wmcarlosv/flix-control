@@ -337,12 +337,12 @@ return [
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => '//cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js',
+                    'location' => 'https://cdn.datatables.net/2.1.3/js/dataTables.js',
                 ],
                 [
                     'type' => 'css',
                     'asset' => false,
-                    'location' => '//cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css',
+                    'location' => 'https://cdn.datatables.net/2.1.3/css/dataTables.dataTables.css',
                 ],
             ],
         ],
@@ -396,6 +396,46 @@ return [
                 ],
             ],
         ],
+        'DatableButtons' => [
+            'active'=>true,
+            'files'=>[
+                [
+                    'type' => 'css',
+                    'asset' => false,
+                    'location' => 'https://cdn.datatables.net/buttons/3.1.1/css/buttons.dataTables.css'
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => 'https://cdn.datatables.net/buttons/3.1.1/js/dataTables.buttons.js'
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => 'https://cdn.datatables.net/buttons/3.1.1/js/buttons.dataTables.js'
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js'
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js'
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js'
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => 'https://cdn.datatables.net/buttons/3.1.1/js/buttons.html5.min.js'
+                ]
+            ]
+        ]
     ],
 
     /*

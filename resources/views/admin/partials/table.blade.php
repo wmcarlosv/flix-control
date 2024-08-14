@@ -56,9 +56,21 @@
                   			@endphp
 
                   			@if(@$format == 'plain')
-                  				{{@$d->$relation->$key}}
+                  				@if(!empty($d->$relation))
+                  					{{@$d->$relation->$key}}
+                  				@else
+                  					@if(array_key_exists("default_text", $col['data']))
+                  						{{$col['data']['default_text']}}
+                  					@endif
+                  				@endif
                   			@else
-                  				{!!@$d->$relation->$key!!}
+                  				@if(!empty($d->$relation))
+                  					{!!@$d->$relation->$key!!}
+                  				@else
+                  					@if(array_key_exists("default_text", $col['data']))
+                  						{{$col['data']['default_text']}}
+                  					@endif
+                  				@endif
                   			@endif
                   			
                   		@break

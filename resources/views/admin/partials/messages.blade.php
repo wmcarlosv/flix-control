@@ -2,7 +2,13 @@
 	var currentTable;
 	$(document).ready(function(){
 
-		currentTable = $(".data-table").DataTable();
+		currentTable = $(".data-table").DataTable({
+			layout: {
+		        topStart: {
+		            buttons: ['copyHtml5', 'excelHtml5', 'csvHtml5', 'pdfHtml5']
+		        }
+		    }
+		});
 
 		@if(Session::get('success'))
 			Swal.fire({
