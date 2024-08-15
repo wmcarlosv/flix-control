@@ -174,7 +174,7 @@
                                         <input type="hidden" name="positions[]" value="{{$i}}"/>
                                         <input type="text" class="form-control" name="profiles[]">
                                     </td>
-                                    <td><input type="text" name="pins[]" pattern="\d*" maxlength="4" class="form-control"></td>
+                                    <td><input type="text" name="pins[]" class="form-control"></td>
                                     <td>-</td>
                                 </tr>
                             @endfor

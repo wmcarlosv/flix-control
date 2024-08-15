@@ -17,7 +17,7 @@
                             <ul class="list-group">
                                 <li class="list-group-item"><b>Email:</b> {{$account->email}}</li>
                                 <li class="list-group-item"><b>Clave Cuenta:</b> {{$account->password}}</li>
-                                <li class="list-group-item"><b>Facturacion:</b> {{date('d-m-Y',strtotime($account->dateto))}}</li>
+                                <li class="list-group-item"><b>Facturacion:</b> {{date('d-m-Y',strtotime($account->reseller_due_date))}}</li>
                                 <li class="list-group-item"><b>Dias Restantes:</b> {{$account->last_days}}</li>
                                 <li class="list-group-item"><b>Perfiles:</b> {{$account->service->profiles}}</li>
                             </ul>
@@ -80,6 +80,7 @@
                                 </div>
                               </div>
                             </div>
+                            <!--<button class="btn btn-info renove-reseller-account" data-account-id="{{$account->id}}" type="button">Renovar Subscripcion</button>-->
                       </div>
                     </div>
                 </div>

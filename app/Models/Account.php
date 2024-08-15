@@ -54,6 +54,11 @@ class Account extends Model
     public function getDays(){
         $now = time();
         $your_date = strtotime($this->dateto);
+
+        if($this->sold){
+            $your_date = strtotime($this->reseller_due_date);
+        }
+        
         $datediff =  $your_date - $now;
         $total = round($datediff / (60 * 60 * 24));
         if($total == 0){

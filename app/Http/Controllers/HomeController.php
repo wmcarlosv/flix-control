@@ -254,6 +254,10 @@ class HomeController extends Controller
         if($response == 1){
             $account->user_id = Auth::user()->id;
             $account->sold = 1;
+            $date = new \DateTime();
+            $date->modify('+1 month');
+            $new_date = $date->format('Y-m-d');
+            $account->reseller_due_date = $new_date;
             if($account->save()){
                 $data = [
                     'type'=>'output',

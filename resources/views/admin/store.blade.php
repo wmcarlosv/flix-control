@@ -28,12 +28,12 @@
                 @foreach($accounts as $account)
                     <div class="col-md-3">
                         <div class="card">
-                          <img class="card-img-top" src="{{ asset(str_replace('public','storage',$account->service->cover)) }}" alt="{{$account->service->title}}">
+                          <img class="card-img-top" style="width:100%; height: 300px;" src="{{ asset(str_replace('public','storage',$account->service->cover)) }}" alt="{{$account->service->title}}">
                           <div class="card-body">
                             <h4 class="card-title">{{$account->service->title}}</h4>
                             <p class="card-text">
                                 <ul class="list-group">
-                                    <li class="list-group-item"><b>Email:</b> {{$account->email}}</li>
+                                    <!--<li class="list-group-item"><b>Email:</b> {{$account->email}}</li>-->
                                     <li class="list-group-item"><b>Perfiles:</b> {{$account->service->profiles}}</li>
                                     <li class="list-group-item"><b>Precio:</b> {{\App\Helpers\Helper::currentSymbol()}} {{number_format($account->sale_price, 2, ',','.')}}</li>
                                 </ul>
