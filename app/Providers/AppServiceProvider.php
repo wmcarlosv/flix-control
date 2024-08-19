@@ -7,6 +7,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Event;
 use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
 use Auth;
+use App\Models\Setting;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,8 +24,24 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+
         Schema::defaultStringLength(191);
         Event::listen(BuildingMenu::class, function (BuildingMenu $event) {
+            $data = Setting::first();
+            $help_url = [];
+            if($data){
+                if(!empty($data->help_url)){
+                    $help_url = [
+                        'text'=>'Ayuda',
+                        'icon'=>'fas fa-info-circle',
+                        'url'=>$data->help_url,
+                        'target'=>'_blank'
+                    ];
+                }
+            }else{
+                $data = [];
+            }
+
             $role = Auth::user()->role;
             if($role == "super_admin" || $role == "admin"){
                 $event->menu->add(
@@ -77,7 +94,8 @@ class AppServiceProvider extends ServiceProvider
                         'text'=>'Movimientos',
                         'icon'=>'fas fa-calculator',
                         'route'=>'movements.index'
-                    ]
+                    ],
+                    $help_url
                 );
             }else{
                 $event->menu->add(
@@ -115,7 +133,8 @@ class AppServiceProvider extends ServiceProvider
                         'text'=>'Tienda',
                         'icon'=>'fas fa-store',
                         'route'=>'store'
-                    ]
+                    ],
+                    $help_url
                 );
             }
         });

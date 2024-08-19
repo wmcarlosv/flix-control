@@ -69,7 +69,7 @@ class SettingController extends Controller
         }
         
         $data->updated_at = date('Y-m-d H:i:s');
-
+        $data->help_url = $request->help_url;
         if($data->save()){
             Session::flash('success', 'Registro Insertado con Exito!!');
         }else{

@@ -146,6 +146,13 @@
                             <input type="time" name="time_to" class="form-control" value="{{$to}}" />
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label for="">Url de Ayuda:</label>
+                        <input type="text" class="form-control @error('help_url') is-invalid @enderror" name="help_url" value="{{@$data->help_url}}">
+                        @error('help_url') 
+                            <span class="error invalid-feedback">{{ $message }}</span> 
+                        @enderror
+                    </div>
                 </div>
                 <div class="card-footer">
                     @include('admin.partials.buttons',['cancelRoute'=>'dashboard'])
