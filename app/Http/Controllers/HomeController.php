@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Movement;
 use App\Models\Subscription;
+use App\Models\Profile;
 use App\Models\Setting;
 use App\Models\Account;
 use App\Models\Customer;
@@ -239,25 +240,49 @@ class HomeController extends Controller
     }
 
     public function my_accounts(){
-        $accounts = Account::where('user_id',Auth::user()->id)->get();
-        return view('admin.my_accounts', compact('accounts'));
+        $setting = $this->getSettings();
+        $accounts = Account::with(['profiles'])->withoutGlobalScopes()
+            ->where('user_id',Auth::user()->id)
+            ->orWhereHas('profiles',function($query){
+                $query->where('user_id',Auth::user()->id);
+            })->get();
+
+        return view('admin.my_accounts', compact('accounts', 'setting'));
     }
 
     public function store(){
-        $accounts = Account::with(['service'])->withoutGlobalScopes()->where('is_store',1)->where('sold',0)->get();
+        $accounts = Account::with(['service','profiles'])->withoutGlobalScopes()->where('sold',0)->where('is_store',1)->get();
         return view('admin.store', compact('accounts'));
     }
 
     public function buy_account(Request $request){
         $account = Account::withoutGlobalScopes()->find($request->account_id);
-        $response = Helper::removeCredits(Auth::user(), $account->sale_price);
+        $sale_type = $request->sale_type;
+        $total = 0;
+        
+        if($sale_type == "complete"){
+            $total = $account->sale_price;
+        }else{
+            $total = $request->total;
+        }
+
+        $response = Helper::removeCredits(Auth::user(), $total);
+
         if($response == 1){
-            $account->user_id = Auth::user()->id;
-            $account->sold = 1;
-            $date = new \DateTime();
-            $date->modify('+1 month');
-            $new_date = $date->format('Y-m-d');
-            $account->reseller_due_date = $new_date;
+            if($sale_type == "complete"){
+                $account->user_id = Auth::user()->id;
+                $account->sold = 1;
+                $date = new \DateTime();
+                $date->modify('+1 month');
+                $new_date = $date->format('Y-m-d');
+                $account->reseller_due_date = $new_date;    
+            }else{
+                $result =  $this->updateProfiles($request->profile_selected, $account, 1);
+                if($result == 0){
+                    $account->sold = 1;
+                }
+            }
+            
             if($account->save()){
                 $data = [
                     'type'=>'output',
@@ -270,8 +295,73 @@ class HomeController extends Controller
         }else if($response == 2){
             Session::flash('error','No tienes suficientes creditos para adquirir esta cuenta, por favor recarga mas creditos!!');
         }else{
-            Session::flash('error','Ocurrio un error al tratar de adquiri la cuenta, por favor comunicate con el administrador!!');
+            Session::flash('error','Ocurrio un error al tratar de adquirir la cuenta, por favor comunicate con el administrador!!');
         }
         return redirect()->route('store');
+    }
+
+    public function updateProfiles($profiles, $account, $months, $is_update=false){
+        $date = new \DateTime();
+        $date->modify('+'.$months.' month');
+        $new_date = $date->format('Y-m-d');
+
+        foreach($profiles as $profile){
+            $cprofile = Profile::find($profile);
+            $cprofile->user_id = Auth::user()->id;
+
+            if($is_update){
+                $date = new \DateTime($cprofile->due_date);
+                $date->modify('+'.$months.' month');
+                $new_date = $date->format('Y-m-d');
+            }
+
+            $cprofile->due_date = $new_date;
+            $cprofile->save();
+        }
+
+        return $account->profilesbuyed->count();
+    }
+
+    public function extend_reseller_subscription(Request $request){
+        $account = Account::withoutGlobalScopes()->find($request->account_id);
+        $total = $request->total;
+        $months = $request->months;
+        $response = Helper::removeCredits(Auth::user(), $total);
+        if($response == 1){
+            if($request->sale_type == "complete"){
+                $account->user_id = Auth::user()->id;
+                $account->sold = 1;
+                $date = new \DateTime();
+                $date->modify('+'.$months.' month');
+                $new_date = $date->format('Y-m-d');
+                $account->reseller_due_date = $new_date;
+                if($account->save()){
+                    $data = [
+                        'type'=>'output',
+                        'description'=>'Extencion de la cuenta '.$account->email.' del servicio de '.$account->service->name,
+                        'amount' => $total
+                    ];
+                    Movement::createMovement($data);
+                }
+                Session::flash('success','La cuenta '.$account->email.' del servicio de '.$account->service->name.' fue extendida '.$months.' mas de manera Satisfactoria!!');
+            }else{
+                $profiles = $request->renove_profile_selected;
+                $this->updateProfiles($profiles, $account, $months, true);
+                $data = [
+                        'type'=>'output',
+                        'description'=>'Se extendieron '.count($profiles).' de la cuenta '.$account->email.' del servicio de '.$account->service->name,
+                        'amount' => $total
+                    ];
+
+                    Movement::createMovement($data);
+                    Session::flash('success','La extensión de '.count($profiles).' perfiles de la cuenta '.$account->email.' del servicio de '.$account->service->name.' fue extendida '.$months.' meses mas de manera Satisfactoria!!');
+            }
+        }else if($response == 2){
+            Session::flash('error','No tienes suficientes creditos para extender esta cuenta, por favor recarga mas creditos!!');
+        }else{
+            Session::flash('error','Ocurrio un error al tratar de extender la cuenta, por favor comunicate con el administrador!!');
+        }
+
+        return redirect()->route("my_accounts");
     }
 }

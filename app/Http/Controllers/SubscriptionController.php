@@ -12,6 +12,7 @@ use Auth;
 use Session;
 use App\Helpers\Helper;
 use App\Models\Profile;
+use App\Models\Account;
 
 class SubscriptionController extends Controller
 {
@@ -160,8 +161,9 @@ class SubscriptionController extends Controller
     }
 
     public function getAccounts($service_id){
+        $cont=0;
         $data = [];
-        $attr = [
+        /*$attr = [
             'table'=>'accounts',
             'columns'=>[
                 'id',
@@ -173,6 +175,19 @@ class SubscriptionController extends Controller
         $response = Helper::getDataSelect($attr, true);
         if($response){
             $data = $response;
+        }*/
+        $accounts = Account::with(['profiles'])->withoutGlobalScopes()
+        ->where('user_id',Auth::user()->id)
+        ->orWhereHas('profiles', function($query){
+            $query->where('user_id',Auth::user()->id);
+        })->where('service_id', $service_id)->get();
+
+        foreach($accounts as $account){
+            if($account->service_id == $service_id){
+                $data[$cont]['id'] = $account->id;
+                $data[$cont]['email'] = $account->email." (".$account->service->name.")";
+                $cont++;
+            }
         }
 
         return response()->json(['data'=>$data]);
@@ -195,7 +210,9 @@ class SubscriptionController extends Controller
             foreach($response as $res){
                 $profile = Profile::find($res->id);
                 if($profile->subscriptions->count() == 0){
-                    array_push($data, $res);
+                    if($profile->user_id == Auth::user()->id){
+                        array_push($data, $res);
+                    }
                 }
             }
         }

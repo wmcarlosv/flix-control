@@ -87,4 +87,5 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth']], function(){
     Route::get('my-accounts',[HomeController::class, 'my_accounts'])->name('my_accounts');
     Route::get('store',[HomeController::class, 'store'])->name('store');
     Route::post('buy-account',[HomeController::class, 'buy_account'])->name('buy_account');
+    Route::post('extend-reseller-subscription', [HomeController::class, 'extend_reseller_subscription'])->name("extend_reseller_subscription");
 });

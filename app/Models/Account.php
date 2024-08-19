@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Setting;
 use App\Scopes\ByUserScope;
+use Auth;
 
 class Account extends Model
 {
@@ -43,7 +44,6 @@ class Account extends Model
         return $this->hasMany("App\Models\Subscription")->withoutGlobalScopes();;
     }
 
-
     public function lastDays(): Attribute
     {
         return Attribute::make(
@@ -69,6 +69,14 @@ class Account extends Model
 
     public function profiles(){
         return $this->hasMany('App\Models\Profile')->withoutGlobalScopes();
+    }
+
+    public function profilesbuyed(){
+        return $this->hasMany('App\Models\Profile')->withoutGlobalScopes()->whereNull('user_id');
+    }
+
+    public function profilessaled(){
+        return $this->hasMany('App\Models\Profile')->withoutGlobalScopes()->where('user_id',Auth::user()->id);
     }
 
     public function theSubscriptions(): Attribute

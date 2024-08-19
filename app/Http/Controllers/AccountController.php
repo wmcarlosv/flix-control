@@ -133,6 +133,7 @@ class AccountController extends Controller
         $element->dateto = $request->dateto;
         $element->service_id = $request->service_id;
         $element->is_store = $request->is_store;
+        $element->sale_type = $request->sale_type;
         $element->sale_price = $request->sale_price;
         $element->profile_price = $request->profile_price;
 
@@ -193,6 +194,7 @@ class AccountController extends Controller
         $element->dateto = $request->dateto;
         $element->service_id = $request->service_id;
         $element->is_store = $request->is_store;
+        $element->sale_type = $request->sale_type;
         $element->sale_price = $request->sale_price;
         $element->profile_price = $request->profile_price;
 

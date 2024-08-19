@@ -83,6 +83,24 @@
                                 <option value="1" @if(@$data->is_store == 1) selected='selected' @endif>Si</option>
                             </select>
                         </div>
+                        @php
+                            $display = "none";
+                            if($type == "edit"){
+                                if(!empty($data->is_store)){
+                                    if($data->is_store == 1){
+                                        $display = "block";
+                                    }
+                                }
+                            }
+                        @endphp
+                        <div class="form-group" id="div_sale_type" style="display:{{$display}};">
+                            <label for="">Como se Vendera?</label>
+                            <select name="sale_type" class="form-control">
+                                <option value="">Seleccione</option>
+                                <option value="complete" @if(@$data->sale_type == 'complete') selected='selected' @endif>Completa</option>
+                                <option value="profile" @if(@$data->sale_type == 'profile') selected='selected' @endif>Por Pefiles</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="card-footer">
                         @include('admin.partials.buttons',['cancelRoute'=>'accounts.index'])
@@ -199,6 +217,16 @@
     <script>
 
         $(document).ready(function(){
+
+            $("select[name='is_store']").change(function(){
+                let value = $(this).val();
+               
+                if(value == "1"){
+                    $("#div_sale_type").show();
+                }else{
+                     $("#div_sale_type").hide();
+                }
+            });
 
             $.ajaxSetup({
                 headers: {
