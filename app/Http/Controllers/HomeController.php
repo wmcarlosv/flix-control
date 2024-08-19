@@ -287,7 +287,7 @@ class HomeController extends Controller
                 $data = [
                     'type'=>'output',
                     'description'=>'Compra de la cuenta '.$account->email.' del servicio de '.$account->service->name,
-                    'amount' => $account->sale_price
+                    'amount' => $total
                 ];
                 Movement::createMovement($data);
             }
