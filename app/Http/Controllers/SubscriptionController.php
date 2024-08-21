@@ -18,7 +18,7 @@ class SubscriptionController extends Controller
 {
     public function index()
     {
-        $title = "Subscripciones";
+        $title = "Suscripciones";
 
         $columns = [
             [
