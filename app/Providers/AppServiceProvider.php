@@ -86,7 +86,7 @@ class AppServiceProvider extends ServiceProvider
                         'route'=>'accounts.index'
                     ],
                     [
-                        'text'=>'Subscripciones',
+                        'text'=>'Suscripciones',
                         'icon'=>'fas fa-star',
                         'route'=>'subscriptions.index'
                     ],
@@ -120,7 +120,7 @@ class AppServiceProvider extends ServiceProvider
                         'route'=>'my_accounts'
                     ],
                     [
-                        'text'=>'Subscripciones',
+                        'text'=>'Suscripciones',
                         'icon'=>'fas fa-star',
                         'route'=>'subscriptions.index'
                     ],

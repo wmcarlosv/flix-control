@@ -230,7 +230,7 @@
                 @php
                     $setting = json_decode($setting->currency, true);
                 @endphp
-                symbol = "{{$setting['symbol']}}";
+                symbol = "{{(!empty($setting['symbol']) ? $setting['symbol'] : '$')}}";
             @endif
 
             $("button.renove-reseller-account").click(function(){
