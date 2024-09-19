@@ -206,12 +206,17 @@ class SubscriptionController extends Controller
             'compare_value'=>$account_id
         ];
         $response = Helper::getDataSelect($attr);
-        if($response){
+        if(count($response) > 0){
             foreach($response as $res){
                 $profile = Profile::find($res->id);
                 if($profile->subscriptions->count() == 0){
+
                     if($profile->user_id == Auth::user()->id){
                         array_push($data, $res);
+                    }else{
+                        if(Auth::user()->role == "super_admin"){
+                            array_push($data, $res);
+                        }
                     }
                 }
             }
