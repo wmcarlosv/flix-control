@@ -153,6 +153,8 @@
                             <span class="error invalid-feedback">{{ $message }}</span> 
                         @enderror
                     </div>
+
+                    <a href="{{route('downloadBackup')}}" class="btn btn-success">Descargar Respaldo de Base de Datos</a>
                 </div>
                 <div class="card-footer">
                     @include('admin.partials.buttons',['cancelRoute'=>'dashboard'])

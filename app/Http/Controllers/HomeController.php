@@ -14,6 +14,9 @@ use App\Helpers\Helper;
 use DB;
 use Auth;
 use Session;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class HomeController extends Controller
 {
@@ -98,6 +101,40 @@ class HomeController extends Controller
         #dd($expirations_subscriptions);
 
         return view('admin.dashboard', compact('movements','input','output','balance','expirations_subscriptions','accounts','customers','setting'));
+    }
+
+    public function downloadBackup()
+    {
+        $databaseName = env('DB_DATABASE');
+        $username = env('DB_USERNAME');
+        $password = env('DB_PASSWORD');
+        $host = env('DB_HOST', '127.0.0.1');
+        $backupFile = storage_path("backups/{$databaseName}_" . date('Y-m-d_H-i-s') . '.sql');
+
+        // Create the backups directory if it doesn't exist
+        if (!is_dir(storage_path('backups'))) {
+            mkdir(storage_path('backups'), 0755, true);
+        }
+
+        // Command to execute mysqldump and output to a file
+        $process = new Process([
+            'mysqldump',
+            '--user=' . $username,
+            '--password=' . $password,
+            '--host=' . $host,
+            $databaseName,
+            '--result-file=' . $backupFile,
+        ]);
+
+        try {
+            // Execute the process
+            $process->mustRun();
+        } catch (ProcessFailedException $exception) {
+            return response()->json(['error' => 'Backup failed: ' . $exception->getMessage()], 500);
+        }
+
+        // Return the file as a download and delete it after sending
+        return response()->download($backupFile)->deleteFileAfterSend(true);
     }
 
     public function getExpirationTemplate($id){
