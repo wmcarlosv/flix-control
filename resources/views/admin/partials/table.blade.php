@@ -1,4 +1,17 @@
-<a href="{{ route($route.'.create') }}" class="btn btn-success"><i class="fas fa-plus"></i> Nuevo</a>
+@php
+	$settings = \App\Models\Setting::first();
+	if(!$settings){
+		$settings = [];
+	}
+@endphp
+@if($route == 'movements' && Auth::user()->role == 'reseller')
+	@if($settings->allow_reseller_ae_movements == 1)
+		<a href="{{ route($route.'.create') }}" class="btn btn-success"><i class="fas fa-plus"></i> Nuevo</a>
+	@endif
+@else
+	<a href="{{ route($route.'.create') }}" class="btn btn-success"><i class="fas fa-plus"></i> Nuevo</a>
+@endif
+
 <br />
 <br />
 <table class="table table-striped table-bordered data-table">
@@ -90,7 +103,13 @@
                   </td>
 				@endforeach
 				<td>
-					@include('admin.partials.actions',[ 'route'=>$route, 'id' => $d->id ])
+					@if($route == 'movements' && Auth::user()->role == 'reseller')
+						@if($settings->allow_reseller_ae_movements == 1)
+							@include('admin.partials.actions',[ 'route'=>$route, 'id' => $d->id ])
+						@endif
+					@else
+						@include('admin.partials.actions',[ 'route'=>$route, 'id' => $d->id ])
+					@endif 
 				</td>
 			</tr>
 		@endforeach

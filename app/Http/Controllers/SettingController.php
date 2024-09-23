@@ -70,6 +70,8 @@ class SettingController extends Controller
         
         $data->updated_at = date('Y-m-d H:i:s');
         $data->help_url = $request->help_url;
+        $data->allow_reseller_ae_movements = $request->allow_reseller_ae_movements;
+        
         if($data->save()){
             Session::flash('success', 'Registro Insertado con Exito!!');
         }else{

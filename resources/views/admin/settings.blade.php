@@ -154,6 +154,14 @@
                         @enderror
                     </div>
 
+                    <div class="form-group">
+                        <label>Permitir que los Vendedores Agreguen y Editen Movimientos:</label>
+                        <select class="form-control" name="allow_reseller_ae_movements">
+                            <option value="1">Si</option>
+                            <option value="0" @if(@$data->allow_reseller_ae_movements == 0) selected @endif>No</option>
+                        </select> 
+                    </div>
+
                     <a href="{{route('downloadBackup')}}" class="btn btn-success">Descargar Respaldo de Base de Datos</a>
                 </div>
                 <div class="card-footer">
