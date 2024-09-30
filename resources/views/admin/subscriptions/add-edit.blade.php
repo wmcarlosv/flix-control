@@ -16,7 +16,7 @@
                             <select name="service_id" class="form-control @error('service_id') is-invalid @enderror">
                                 <option value="-1">Seleccione</option>
                                 @foreach($services as $service)
-                                    <option value="{{$service->id}}">{{$service->name}}</option>
+                                    <option value="{{$service->id}}" @if($service_id && $service_id == $service->id) selected @endif>{{$service->name}}</option>
                                 @endforeach
                             </select>
                             @error('service_id')
@@ -86,25 +86,45 @@
     <script>
         $(document).ready(function(){
             $("select").select2();
+
             $("select[name='service_id']").change(function(){
                 let id = $(this).val();
+                getAccounts(id);
+            });
+
+            $("select[name='account_id']").change(function(){
+                let id = $(this).val();
+                getProfiles(id);
+            });
+
+            @if($service_id)
+                getAccounts({{$service_id}}, {{$account_id}});
+                
+            @endif
+
+            function getAccounts(id, account_id = null){
                 if(id != '-1'){
                     $.get('/admin/get-accounts/'+id, function(response){
                         let data = response.data;
                         if(data.length > 0){
                             $("select[name='account_id']").html("<option value='-1'>Seleccione</option>");
                             $.each(data, function(v,e){
-                                $("select[name='account_id']").append("<option value='"+e.id+"'>"+e.email+"</option>");
+                                if(account_id == e.id){
+                                    $("select[name='account_id']").append("<option value='"+e.id+"' selected>"+e.email+"</option>");
+                                    getProfiles(e.id);
+                                }else{
+                                    $("select[name='account_id']").append("<option value='"+e.id+"'>"+e.email+"</option>");
+                                }
+                                
                             });
                         }
                     })
                 }else{
                     $("select[name='account_id']").html("<option>Seleccione</option>");
                 }
-            });
+            }
 
-            $("select[name='account_id']").change(function(){
-                let id = $(this).val();
+            function getProfiles(id){
                 if(id != '-1'){
                     $.get('/admin/get-profiles/'+id, function(response){
                         let data = response.data;
@@ -118,7 +138,7 @@
                 }else{
                     $("select[name='profile_id']").html("<option value='-1'>Seleccione</option>");
                 }
-            });
+            }
         });
     </script>
 @stop

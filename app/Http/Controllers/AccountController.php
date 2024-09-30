@@ -59,7 +59,7 @@ class AccountController extends Controller
                 'key'=>'last_days'
             ],
             [
-                'title'=>'Subscripciones Activas',
+                'title'=>'Subscripciones',
                 'key'=>'the_subscriptions',
                 'type'=>'html'
             ],

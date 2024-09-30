@@ -2,6 +2,14 @@
 
 @section('title', $title)
 
+@section('css')
+<style>
+    a.items{
+        margin: 5px !important;
+    }
+</style>
+@stop
+
 @section('content')
     <div class="row" style="margin-top:20px;">
         <div class="col-md-12">

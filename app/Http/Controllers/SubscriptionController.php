@@ -16,8 +16,10 @@ use App\Models\Account;
 
 class SubscriptionController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $id = $request->get('id');
+
         $title = "Suscripciones";
 
         $columns = [
@@ -85,15 +87,22 @@ class SubscriptionController extends Controller
 
         $data = Subscription::all();
 
+        if($id){
+            $data = Subscription::where('id',$id)->get();
+        }
+
         return view('admin.subscriptions.browse', compact('title','columns', 'data'));
     }
-    public function create()
+    public function create(Request $request)
     {
         $title = "Nueva Subscripcion";
         $type = "new";
         $services = Service::all();
         $customers = Customer::all();
-        return view('admin.subscriptions.add-edit', compact('title','type','services','customers'));
+        $service_id = $request->get('service_id');
+        $account_id = $request->get('account_id');
+        
+        return view('admin.subscriptions.add-edit', compact('title','type','services','customers','service_id','account_id'));
     }
 
     public function store(Request $request)
