@@ -97,7 +97,7 @@ class Account extends Model
         }
 
         for($i=0; $i < $total_profiles;$i++){
-            $data.="<a target='_blank' href='".route('subscriptions.create')."?service_id=".$this->service_id."&account_id=".$this->id."' title='Agregar Suscripcion' class='btn btn-info items'><i class='fas fa-user'></i></a>";
+            $data.="<a href='".route('subscriptions.create')."?service_id=".$this->service_id."&account_id=".$this->id."' title='Agregar Suscripcion' class='btn btn-info items'><i class='fas fa-user'></i></a>";
         }
 
         return $data;
