@@ -156,13 +156,14 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        $element = User::findorfail($id);
-        if($element->delete()){
+        try{
+            $element = User::findorfail($id);
+            $element->delete();
             Session::flash('success', 'Registro Eliminado con Exito!!');
-        }else{
-            Session::flash('error', 'Ocurrio un error al tratar de Eliminar el Registro!!');
+        }catch(\Exception $exception){
+            Session::flash('error', 'No se ha podido eliminar el usuario debido a que tiene registros asociados, en ese caso debes solo inactivarlo!!');
         }
-
+        
         return redirect()->route('users.index');
     }
 
