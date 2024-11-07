@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Customer;
 use App\Models\Payment;
+use App\Models\Subscription;
 use Session;
 use Auth;
 use DB;
@@ -134,10 +135,17 @@ class CustomerController extends Controller
 
         $element = Customer::findorfail($id);
         $payments = Payment::where('customer_id', $id)->get();
-        
+        $subscriptions = Subscription::where('customer_id', $id)->get();
+
         if($payments->count() > 0){
             foreach($payments as $payment){
                 $payment->delete();
+            }
+        }
+
+        if($subscriptions->count() > 0){
+            foreach($subscriptions as $subscription){
+                $subscription->delete();
             }
         }
 
