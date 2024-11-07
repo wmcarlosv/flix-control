@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Customer;
+use App\Models\Payment;
 use Session;
 use Auth;
+use DB;
 
 class CustomerController extends Controller
 {
@@ -129,7 +131,15 @@ class CustomerController extends Controller
      */
     public function destroy(string $id)
     {
+
         $element = Customer::findorfail($id);
+        $payments = Payment::where('customer_id', $id)->get();
+        
+        if($payments->count() > 0){
+            foreach($payments as $payment){
+                $payment->delete();
+            }
+        }
 
         if($element->delete()){
             Session::flash('success', 'Registro Eliminado con Exito!!');
