@@ -276,15 +276,28 @@ class HomeController extends Controller
         return $setting;
     }
 
-    public function my_accounts(){
-        $setting = $this->getSettings();
-        $accounts = Account::with(['profiles'])->withoutGlobalScopes()
+    public function my_accounts(Request $request){
+        $q = "";
+
+        if(!empty($request->get('q'))){
+            $q = $request->get('q');
+            $accounts = Account::with(['profiles'])->withoutGlobalScopes()
+            ->where('user_id',Auth::user()->id)
+            ->where('email','like','%'.$q.'%')
+            ->get();
+        }else{
+            $accounts = Account::with(['profiles'])->withoutGlobalScopes()
             ->where('user_id',Auth::user()->id)
             ->orWhereHas('profiles',function($query){
                 $query->where('user_id',Auth::user()->id);
             })->get();
+        }
 
-        return view('admin.my_accounts', compact('accounts', 'setting'));
+        $setting = $this->getSettings();
+
+        
+
+        return view('admin.my_accounts', compact('accounts', 'setting','q'));
     }
 
     public function store(){

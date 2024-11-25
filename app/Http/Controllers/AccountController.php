@@ -13,6 +13,7 @@ use App\Models\Setting;
 use App\Models\Subscription;
 use App\Helpers\Helper;
 use App\Models\Profile;
+use App\Models\User;
 
 class AccountController extends Controller
 {
@@ -89,6 +90,14 @@ class AccountController extends Controller
                 ]
             ],
             [
+                'title'=>'Vencimiento Reseller',
+                'key'=>'reseller_due_date',
+                'type'=>'date',
+                'data'=>[
+                    'format'=>'d/m/Y'
+                ]
+            ],
+            [
                 'title'=>'Dueño',
                 'key'=>'user_id',
                 'type'=>'relation',
@@ -113,7 +122,8 @@ class AccountController extends Controller
         $title = "Nueva Cuenta";
         $type = "new";
         $services = Service::all();
-        return view('admin.accounts.add-edit', compact('title','type','services'));
+        $users = User::where('role','reseller')->get();
+        return view('admin.accounts.add-edit', compact('title','type','services','users'));
     }
 
     /**
@@ -137,7 +147,15 @@ class AccountController extends Controller
         $element->sale_price = $request->sale_price;
         $element->profile_price = $request->profile_price;
 
-        $element->user_id = Auth::user()->id;
+        $element->reseller_due_date = $request->reseller_due_date;
+
+        if(!empty($request->user_id)){
+            $element->user_id = $request->user_id;
+            $element->sale_type = "complete";
+        }else{
+            $element->user_id = Auth::user()->id;
+        }
+
 
         if($element->save()){
 
@@ -174,7 +192,8 @@ class AccountController extends Controller
         $type = "edit";
         $data = Account::findorfail($id);
         $services = Service::all();
-        return view('admin.accounts.add-edit', compact('title','type','data','services'));
+        $users = User::where('role','reseller')->get();
+        return view('admin.accounts.add-edit', compact('title','type','data','services','users'));
     }
 
     /**
@@ -197,6 +216,14 @@ class AccountController extends Controller
         $element->sale_type = $request->sale_type;
         $element->sale_price = $request->sale_price;
         $element->profile_price = $request->profile_price;
+        $element->reseller_due_date = $request->reseller_due_date;
+        $element->user_id = $request->user_id;
+
+        if(!empty($request->user_id)){
+            $element->user_id = $request->user_id;
+        }else{
+            $element->user_id = Auth::user()->id;
+        }
 
         if($element->update()){
             Session::flash('success', 'Registro Actualizado con Exito!!');

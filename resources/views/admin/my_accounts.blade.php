@@ -19,6 +19,17 @@
 @section('content_header')
     <h1><i class="fas fa-hand-sparkles"></i> Mis Cuentas</h1>
     <br />
+
+    <div class="row">
+        <form class="form-inline">
+          <div class="form-group mx-sm-3 mb-2">
+            <label for="inputPassword2" class="sr-only">Buscador por Correo:</label>
+            <input type="text" class="form-control" value="{{$q}}" name="q" placeholder="Ingres el Email">
+          </div>
+          <button type="submit" class="btn btn-primary mb-2">Buscar</button>
+        </form>
+    </div>
+
     <div class="row">
         @if($accounts->count() > 0)
             @foreach($accounts as $account)

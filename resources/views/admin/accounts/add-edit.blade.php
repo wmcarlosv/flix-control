@@ -76,6 +76,30 @@
                                 <input type="text" class="form-control" id="last_days" readonly value="{{ @$data->last_days }}" />
                             </div>
                         @endif
+
+                        <div class="form-group">
+                            <label for="">Vendedor:</label>
+                            <select class="form-control @error('user_id') is-invalid @enderror" value="{{ @$data->user_id }}" name="user_id">
+                                <option value="">-</option>
+                                @foreach($users as $user)
+                                    <option value="{{$user->id}}" @if($user->id == @$data->user_id) selected='selected'  @endif>{{$user->name}}({{$user->role}})</option>
+                                @endforeach
+                            </select>
+                            @error('user_id')
+                               <span class="error invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="">Vencimiento Reseller:</label>
+                            <input type="date" class="form-control @error('reseller_due_date') is-invalid @enderror" value="{{ @$data->reseller_due_date }}" name="reseller_due_date" />
+                            @error('reseller_due_date')
+                               <span class="error invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+
                         <div class="form-group">
                             <label for="">Visible en Tienda:</label>
                             <select name="is_store" class="form-control">
@@ -83,6 +107,7 @@
                                 <option value="1" @if(@$data->is_store == 1) selected='selected' @endif>Si</option>
                             </select>
                         </div>
+
                         @php
                             $display = "none";
                             if($type == "edit"){
