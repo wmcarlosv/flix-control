@@ -98,44 +98,75 @@ class AppServiceProvider extends ServiceProvider
                     $help_url
                 );
             }else{
-                $event->menu->add(
-                    [
-                        'text'=>'Dashboard',
-                        'icon'=>'fas fa-cogs',
-                        'route'=>'dashboard'
-                    ],
-                    [
-                        'text' => 'Perfil',
-                        'icon' => 'fas fa-user',
-                        'route' => 'profile'
-                    ],
-                    [
-                        'text'=>'Clientes',
-                        'icon'=>'fas fa-walking',
-                        'route'=>'customers.index'
-                    ],
-                    [
-                        'text'=>'Mis Cuentas',
-                        'icon'=>'fas fa-hand-sparkles',
-                        'route'=>'my_accounts'
-                    ],
-                    [
-                        'text'=>'Suscripciones',
-                        'icon'=>'fas fa-star',
-                        'route'=>'subscriptions.index'
-                    ],
-                    [
-                        'text'=>'Movimientos',
-                        'icon'=>'fas fa-calculator',
-                        'route'=>'movements.index'
-                    ],
-                    [
-                        'text'=>'Tienda',
-                        'icon'=>'fas fa-store',
-                        'route'=>'store'
-                    ],
-                    $help_url
-                );
+                if($data->disable_s_and_c){
+                    $event->menu->add(
+                        [
+                            'text'=>'Dashboard',
+                            'icon'=>'fas fa-cogs',
+                            'route'=>'dashboard'
+                        ],
+                        [
+                            'text' => 'Perfil',
+                            'icon' => 'fas fa-user',
+                            'route' => 'profile'
+                        ],
+                        [
+                            'text'=>'Mis Cuentas',
+                            'icon'=>'fas fa-hand-sparkles',
+                            'route'=>'my_accounts'
+                        ],
+                        [
+                            'text'=>'Movimientos',
+                            'icon'=>'fas fa-calculator',
+                            'route'=>'movements.index'
+                        ],
+                        [
+                            'text'=>'Tienda',
+                            'icon'=>'fas fa-store',
+                            'route'=>'store'
+                        ],
+                        $help_url
+                    );
+                }else{
+                    $event->menu->add(
+                        [
+                            'text'=>'Dashboard',
+                            'icon'=>'fas fa-cogs',
+                            'route'=>'dashboard'
+                        ],
+                        [
+                            'text' => 'Perfil',
+                            'icon' => 'fas fa-user',
+                            'route' => 'profile'
+                        ],
+                        [
+                            'text'=>'Clientes',
+                            'icon'=>'fas fa-walking',
+                            'route'=>'customers.index'
+                        ],
+                        [
+                            'text'=>'Mis Cuentas',
+                            'icon'=>'fas fa-hand-sparkles',
+                            'route'=>'my_accounts'
+                        ],
+                        [
+                            'text'=>'Suscripciones',
+                            'icon'=>'fas fa-star',
+                            'route'=>'subscriptions.index'
+                        ],
+                        [
+                            'text'=>'Movimientos',
+                            'icon'=>'fas fa-calculator',
+                            'route'=>'movements.index'
+                        ],
+                        [
+                            'text'=>'Tienda',
+                            'icon'=>'fas fa-store',
+                            'route'=>'store'
+                        ],
+                        $help_url
+                    );
+                }
             }
         });
     }

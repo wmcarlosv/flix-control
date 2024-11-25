@@ -53,10 +53,19 @@
                 <a class="nav-link active" id="last_movements-tab" data-toggle="tab" href="#last_movements" role="tab" aria-controls="last_movements"
                   aria-selected="true">Ultimos Movimientos</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" id="expirations_subscriptions-tab" data-toggle="tab" href="#expirations_subscriptions" role="tab" aria-controls="expirations_subscriptions"
-                  aria-selected="false">Subscripciones por Vencer</a>
-              </li>
+              @if(Auth::user()->role == 'reseller')
+                @if(!$setting->disable_s_and_c)
+                  <li class="nav-item">
+                    <a class="nav-link" id="expirations_subscriptions-tab" data-toggle="tab" href="#expirations_subscriptions" role="tab" aria-controls="expirations_subscriptions"
+                      aria-selected="false">Subscripciones por Vencer</a>
+                  </li>
+                  @endif
+              @else
+                 <li class="nav-item">
+                    <a class="nav-link" id="expirations_subscriptions-tab" data-toggle="tab" href="#expirations_subscriptions" role="tab" aria-controls="expirations_subscriptions"
+                      aria-selected="false">Subscripciones por Vencer</a>
+                  </li>
+              @endif
               <li class="nav-item">
                 <a class="nav-link" id="expirations_accounts-tab" data-toggle="tab" href="#expirations_accounts" role="tab" aria-controls="expirations_accounts"
                   aria-selected="false">Cuentas por Vencer</a>

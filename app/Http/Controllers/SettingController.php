@@ -62,6 +62,7 @@ class SettingController extends Controller
         $data->expiration_days_accounts = $request->expiration_days_accounts;
         $data->whatsapp_service_url = $request->whatsapp_service_url;
         $data->currency = $request->currency;
+        $data->disable_s_and_c = $request->disable_s_and_c;
         if($request->whatsapp_service_url){
             if($request->time_from && $request->time_to){
                 $data->hours_range_notification = $request->time_from."-".$request->time_to;

@@ -162,6 +162,14 @@
                         </select> 
                     </div>
 
+                    <div class="form-group">
+                        <label>Desabilitar Suscripciones y clientes a los Reseller:</label>
+                        <select class="form-control" name="disable_s_and_c">
+                            <option value="1">Si</option>
+                            <option value="0" @if(@$data->disable_s_and_c == 0) selected @endif>No</option>
+                        </select> 
+                    </div>
+
                     <a href="{{route('downloadBackup')}}" class="btn btn-success">Descargar Respaldo de Base de Datos</a>
                 </div>
                 <div class="card-footer">
