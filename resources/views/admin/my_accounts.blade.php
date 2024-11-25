@@ -38,7 +38,7 @@
                     <div class="card">
                       <img class="card-img-top" style="width: 100%; height: 212px;" src="{{ asset(str_replace('public','storage',$account->service->cover)) }}" alt="{{$account->service->title}}">
                       <div class="card-body">
-                        <h4 class="card-title">{{$account->service->title}}</h4>
+                        <h4 class="card-title">{{$account->service->name}}</h4>
                         <p class="card-text">
                             <ul class="list-group">
                                 <li class="list-group-item"><b>Email:</b> {{$account->email}}</li>
