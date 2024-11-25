@@ -1,6 +1,13 @@
 @inject('layoutHelper', 'JeroenNoten\LaravelAdminLte\Helpers\LayoutHelper')
 @inject('preloaderHelper', 'JeroenNoten\LaravelAdminLte\Helpers\preloaderHelper')
 
+@php
+    $settings = \App\Models\Setting::first();
+    if(!$settings){
+        $settings = [];
+    }
+@endphp
+
 @if($layoutHelper->isLayoutTopnavEnabled())
     @php( $def_container_class = 'container' )
 @else
@@ -15,6 +22,12 @@
         @include('adminlte::partials.common.preloader')
     @endif
 
+    @if($settings->system_notification)
+        <div class="alert alert-primary" role="alert" style="margin:5px !important; text-align: center;">
+          {{$settings->system_notification}}
+        </div>
+    @endif
+
     {{-- Content Header --}}
     @hasSection('content_header')
         <div class="content-header">
@@ -26,6 +39,7 @@
 
     {{-- Main Content --}}
     <div class="content">
+
         <div class="{{ config('adminlte.classes_content') ?: $def_container_class }}">
             @stack('content')
             @yield('content')
@@ -33,3 +47,4 @@
     </div>
 
 </div>
+

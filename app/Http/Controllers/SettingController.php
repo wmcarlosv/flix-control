@@ -63,6 +63,7 @@ class SettingController extends Controller
         $data->whatsapp_service_url = $request->whatsapp_service_url;
         $data->currency = $request->currency;
         $data->disable_s_and_c = $request->disable_s_and_c;
+        $data->system_notification = $request->system_notification;
         
         if($request->whatsapp_service_url){
             if($request->time_from && $request->time_to){

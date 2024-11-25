@@ -34,7 +34,7 @@
                                 <h4 class="card-title">{{$account->service->title}}</h4>
                                 <p class="card-text">
                                     <ul class="list-group">
-                                        <!--<li class="list-group-item"><b>Email:</b> {{$account->email}}</li>-->
+                                        <li class="list-group-item"><b>Servicio:</b> {{$account->service->name}}</li>
                                         <li class="list-group-item"><b>Perfiles:</b> {{$account->service->profiles}}</li>
                                         <li class="list-group-item"><b>Precio:</b> {{\App\Helpers\Helper::currentSymbol()}} {{number_format($account->sale_price, 2, ',','.')}}</li>
                                     </ul>

@@ -171,6 +171,14 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="">Notificacion de Sistema:</label>
+                        <input type="text" class="form-control @error('system_notification') is-invalid @enderror" name="system_notification" value="{{@$data->system_notification}}">
+                        @error('system_notification') 
+                            <span class="error invalid-feedback">{{ $message }}</span> 
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
                         <label>Permitir que los Vendedores Agreguen y Editen Movimientos:</label>
                         <select class="form-control" name="allow_reseller_ae_movements">
                             <option value="1">Si</option>

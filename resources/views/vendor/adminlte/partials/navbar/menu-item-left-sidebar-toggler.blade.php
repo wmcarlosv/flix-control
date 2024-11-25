@@ -13,6 +13,11 @@
         <span class="sr-only">{{ __('adminlte::adminlte.toggle_navigation') }}</span>
     </a>
 </li>
+ <style type="text/css">
+        p.content-credits{
+            margin-top: 8px;
+        }
+    </style>
 @if(Auth::user()->role == 'reseller')
     @php
         $settings = \App\Models\Setting::first();
@@ -31,9 +36,4 @@
     <p class="content-credits">
         <span>Creditos Disponibles: <b>{{$symbol}} {{number_format(Auth::user()->total_credits,2,',','.')}}</b></span>
     </p>
-    <style type="text/css">
-        p.content-credits{
-            margin-top: 8px;
-        }
-    </style>
 @endif
