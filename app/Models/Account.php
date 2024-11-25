@@ -15,7 +15,7 @@ class Account extends Model
 
     protected $table = 'accounts';
 
-    protected $appends = ['last_days','the_subscriptions'];
+    protected $appends = ['last_days','the_subscriptions','last_reseller_days'];
 
     private $settings;
 
@@ -51,6 +51,13 @@ class Account extends Model
         );
     }
 
+    public function lastResellerDays(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => $this->getDaysReseller()
+        );
+    }
+
     public function getDays(){
         $now = time();
         $your_date = strtotime($this->dateto);
@@ -65,6 +72,21 @@ class Account extends Model
             $total = 0;
         }
         return $total;
+    }
+
+    public function getDaysReseller(){
+        if(!empty($this->reseller_due_date)){
+            $now = time();
+            $your_date = strtotime($this->reseller_due_date);
+            $datediff =  $your_date - $now;
+            $total = round($datediff / (60 * 60 * 24));
+            if($total == 0){
+                $total = 0;
+            }
+            return date('d/m/Y', strtotime($this->reseller_due_date))." (".$total." Dias Restantes)";
+        }
+        
+        return "-";
     }
 
     public function profiles(){

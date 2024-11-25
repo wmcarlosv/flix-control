@@ -79,7 +79,7 @@
 
                         <div class="form-group">
                             <label for="">Vendedor:</label>
-                            <select class="form-control @error('user_id') is-invalid @enderror" value="{{ @$data->user_id }}" name="user_id">
+                            <select class="form-control @error('user_id') is-invalid @enderror select-2" value="{{ @$data->user_id }}" name="user_id">
                                 <option value="">-</option>
                                 @foreach($users as $user)
                                     <option value="{{$user->id}}" @if($user->id == @$data->user_id) selected='selected'  @endif>{{$user->name}}({{$user->role}})</option>
@@ -242,6 +242,8 @@
     <script>
 
         $(document).ready(function(){
+
+            $(".select-2").select2();
 
             $("select[name='is_store']").change(function(){
                 let value = $(this).val();

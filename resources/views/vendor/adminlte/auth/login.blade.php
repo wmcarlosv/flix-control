@@ -4,6 +4,10 @@
     <link rel="stylesheet" href="{{ asset('vendor/icheck-bootstrap/icheck-bootstrap.min.css') }}">
 @stop
 
+@php
+    $settings = \App\Models\Setting::first();
+@endphp
+
 @php( $login_url = View::getSection('login_url') ?? config('adminlte.login_url', 'login') )
 @php( $register_url = View::getSection('register_url') ?? config('adminlte.register_url', 'register') )
 @php( $password_reset_url = View::getSection('password_reset_url') ?? config('adminlte.password_reset_url', 'password/reset') )
@@ -83,7 +87,17 @@
     </form>
 @stop
 
+
 @section('auth_footer')
+    
+    @if($settings->enable_register_form)
+        <p class="my-0">
+            <a href="{{ route('register') }}">
+                Registrarme
+            </a>
+        </p>
+    @endif
+
     {{-- Password reset link --}}
     @if($password_reset_url)
         <p class="my-0">

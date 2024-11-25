@@ -91,11 +91,7 @@ class AccountController extends Controller
             ],
             [
                 'title'=>'Vencimiento Reseller',
-                'key'=>'reseller_due_date',
-                'type'=>'date',
-                'data'=>[
-                    'format'=>'d/m/Y'
-                ]
+                'key'=>'last_reseller_days'
             ],
             [
                 'title'=>'Dueño',

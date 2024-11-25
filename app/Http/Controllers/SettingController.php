@@ -63,12 +63,16 @@ class SettingController extends Controller
         $data->whatsapp_service_url = $request->whatsapp_service_url;
         $data->currency = $request->currency;
         $data->disable_s_and_c = $request->disable_s_and_c;
+        
         if($request->whatsapp_service_url){
             if($request->time_from && $request->time_to){
                 $data->hours_range_notification = $request->time_from."-".$request->time_to;
             }
         }
-        
+
+        $data->enable_notifications = $request->enable_notifications;
+        $data->enable_register_form = $request->enable_register_form;
+
         $data->updated_at = date('Y-m-d H:i:s');
         $data->help_url = $request->help_url;
         $data->allow_reseller_ae_movements = $request->allow_reseller_ae_movements;

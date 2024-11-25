@@ -146,6 +146,22 @@
                             <input type="time" name="time_to" class="form-control" value="{{$to}}" />
                         </div>
                     </div>
+                    
+                    <div class="form-group">
+                        <label>Habilitar Notificaciones:</label>
+                        <select class="form-control" name="enable_notifications">
+                            <option value="1">Si</option>
+                            <option value="0" @if(@$data->enable_notifications == 0) selected @endif>No</option>
+                        </select> 
+                    </div>
+                    <div class="form-group">
+                        <label>Habilitar Formulario de Registro:</label>
+                        <select class="form-control" name="enable_register_form">
+                            <option value="1">Si</option>
+                            <option value="0" @if(@$data->enable_register_form == 0) selected @endif>No</option>
+                        </select> 
+                    </div>
+
                     <div class="form-group">
                         <label for="">Url de Ayuda:</label>
                         <input type="text" class="form-control @error('help_url') is-invalid @enderror" name="help_url" value="{{@$data->help_url}}">

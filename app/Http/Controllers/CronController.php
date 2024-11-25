@@ -24,6 +24,11 @@ class CronController extends Controller
         
 
         $settings = Setting::first();
+
+        if(!$settings->enable_notifications){
+            return;
+        }
+        
         $currentDate = date('Y-m-d');
         if($settings){
             //if($settings->isLogged){
