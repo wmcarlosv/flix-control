@@ -25,7 +25,7 @@
                         </div>
                         <div class="form-group">
                             <label for="">Monto:</label>
-                            <input type="number" name="amount" class="form-control @error('amount') is-invalid @enderror">
+                            <input type="text" name="amount" class="form-control @error('amount') is-invalid @enderror">
                             @error('amount')
                                <span class="error invalid-feedback">{{ $message }}</span>
                             @enderror
