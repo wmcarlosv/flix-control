@@ -1,6 +1,49 @@
 <script>
 	var currentTable;
+	var inputs;
 	$(document).ready(function(){
+
+		let params = $("input[name='multi_select[]']");
+		if(params.length > 0 ){
+			inputs = params;
+		}
+
+		$("#select_all").click(function(){
+			if($(this).prop("checked")){
+				checkAll();
+			}else{
+				checkAll(false);
+			}
+		});
+
+		$("#delete_massive").click(function(){
+			let cont = 0;
+			let ids="";
+			$.each(inputs, function(v,e){
+				if($(this).prop("checked")){
+					ids+=e.value+",";
+					cont++;
+				}
+			});
+
+			console.log(ids);
+
+			if(cont > 0){
+				ids = ids.slice(0, -1);
+				$("#selected_rows").val(ids);
+				if(confirm("Estas seguro de eliminar los registros seleccionados?")){
+					$("#massive_form").submit();
+				}
+			}else{
+				alert("Debes Seleccionar al menos un Registro!!");
+			}
+		});
+
+		function checkAll(ischeck = true){
+			$.each(inputs, function(v,e){
+				$(this).prop("checked", ischeck);
+			});
+		}
 
 		currentTable = $(".data-table").DataTable({
 			layout: {

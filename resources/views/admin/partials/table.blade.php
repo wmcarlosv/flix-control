@@ -11,13 +11,26 @@
 @else
 	<a href="{{ route($route.'.create') }}" class="btn btn-success"><i class="fas fa-plus"></i> Nuevo</a>
 @endif
-
+@if(array_key_exists('type', $columns[0]) and $columns[0]['type'] == 'check')
+	<form method="POST" style="display:inline;" id="massive_form" action="{{route($route.'.delete_massive')}}">
+		@method('POST')
+		@csrf
+		<input type="hidden" id="selected_rows" name="selected_rows" />
+		<button type="button" id="delete_massive" class="btn btn-danger"><i class="fas fa-times"></i> Eliminar Masivo</button>
+	</form>
+@endif
 <br />
 <br />
 <table class="table table-striped table-bordered data-table">
 	<thead>
 		@foreach($columns as $col)
-			<th>{{$col['title']}}</th>
+			<th>
+				@if(array_key_exists('type', $col) and $col['type'] == 'check')
+					<input type="checkbox" id="select_all" />
+				@else
+					{{$col['title']}}
+				@endif
+			</th>
 		@endforeach
 		<th>Actions</th>
 	</thead>
@@ -98,6 +111,9 @@
 
                   		@case('html')
                   			{!!$d->$key!!}
+                  		@break
+                  		@case('check')
+                  			<input type="checkbox" name="multi_select[]" value="{!!$d->$key!!}">
                   		@break
                   	@endswitch
                   </td>

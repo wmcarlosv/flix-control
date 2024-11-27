@@ -20,6 +20,11 @@ class MovementController extends Controller
         $columns = [
             [
                 'title'=>'#',
+                'type'=>'check',
+                'key'=>'id'
+            ],
+            [
+                'title'=>'ID',
                 'key'=>'id'
             ],
             [
@@ -153,5 +158,20 @@ class MovementController extends Controller
         }
 
         return redirect()->route('movements.index');
+    }
+
+    public function massive_destroy(Request $request){
+        $rows = [];
+        if(!empty($request->selected_rows)){
+            $rows = explode(',', $request->selected_rows);
+            foreach($rows as $row){
+                $ref = Movement::find($row);
+                $ref->delete();
+            }
+        }
+
+        Session::flash('success', count($rows).' Registros eliminados con exito!!');
+
+        return redirect()->route('movements.index');  
     }
 }

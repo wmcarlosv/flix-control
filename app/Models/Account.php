@@ -124,4 +124,8 @@ class Account extends Model
 
         return $data;
     }
+
+    public function getReportForm(){
+        
+    }
 }

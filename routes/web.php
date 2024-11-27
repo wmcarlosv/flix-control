@@ -70,6 +70,7 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth']], function(){
     Route::resource('accounts', AccountController::class)->middleware('can:isSuperAdmin');
     Route::post('accounts/extend', [AccountController::class, 'extend_account'])->name('extend_account');
     Route::resource('movements', MovementController::class);
+    Route::post('movements-delete-massive', [MovementController::class, 'massive_destroy'])->name('movements.delete_massive');
     Route::resource('credits',CreditController::class)->middleware('can:isSuperAdmin');
     Route::get('profile', [UserController::class, 'profile'])->name('profile');
     Route::put('update-profile', [UserController::class, 'update_profile'])->name('update_profile');
