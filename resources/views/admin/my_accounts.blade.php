@@ -138,6 +138,7 @@
                             @else
                                 <button class="btn btn-info renove-reseller-account-profile" data-account-id="{{$account->id}}" type="button">Renovar Subscripcion</button>
                             @endif
+                            {!!$account->get_report_form!!}
                       </div>
                     </div>
                 </div>

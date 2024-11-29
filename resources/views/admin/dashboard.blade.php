@@ -70,6 +70,12 @@
                 <a class="nav-link" id="expirations_accounts-tab" data-toggle="tab" href="#expirations_accounts" role="tab" aria-controls="expirations_accounts"
                   aria-selected="false">Cuentas por Vencer</a>
               </li>
+              @if(Auth::user()->role == 'super_admin')
+              <li class="nav-item">
+                <a class="nav-link" id="account-reports-tab" data-toggle="tab" href="#account_reports" role="tab" aria-controls="account_reports"
+                  aria-selected="false">Reporte de Cuentas</a>
+              </li>
+              @endif
             </ul>
 
             <div class="tab-content" id="myTabContent">
@@ -175,6 +181,52 @@
                     </div>
                 </div>
 
+                @if(Auth::user()->role == 'super_admin')
+                    <div class="tab-pane fade" id="account_reports" role="tabpanel" aria-labelledby="account-reports-tab">
+                         <div class="card">
+                            <div class="card-body">
+                                <table class="table table-bordered table-striped" id="table-account-reports">
+                                    <thead>
+                                        <th>#</th>
+                                        <th>Cuenta</th>
+                                        <th>Vendedor</th>
+                                        <th>Motivo</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($reports as $report)
+                                            <tr>
+                                                <td>{{$report->id}}</td>
+                                                <td><a target="_blank" href="{{route('accounts.edit',$report->account_id)}}">{{$report->account->email}} ({{$report->account->service->name}})</a></td>
+                                                <td>{{$report->user->role_and_name}}</td>
+                                                <td>{{$report->about}}</td>
+                                                <td>
+                                                    @switch($report->status)
+                                                        @case('pending')
+                                                            Pendiente
+                                                        @break
+                                                        @case('in_progress')
+                                                            En Revision
+                                                        @break
+                                                        @case('closed')
+                                                            Cerrado
+                                                        @break
+                                                    @endswitch
+                                                </td>
+                                                <td>
+                                                    @if(!empty($report->image))
+                                                        <a title="ver imagen adjunta" class="btn btn-info" target="_blank" href="{{asset('storage/'.$report->image)}}"><i class="fas fa-image"></i></a>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div> 
+                    </div>
+                @endif
             </div>
         </div>
     </div>
@@ -193,6 +245,7 @@
             $("#table-last_movements").DataTable({ order: [[0, 'desc']] });
             $("#table-expirations_subscriptions").DataTable({ order: [[3, 'asc']] });
             $("#table-expirations_accounts").DataTable({ order: [[2, 'asc']] });
+            $("#table-account-reports").DataTable({ order: [[0, 'desc']] });
 
             $("body").on('click','a.copy_button',function(){
                 let id = $(this).attr("data-id");

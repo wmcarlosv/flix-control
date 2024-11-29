@@ -15,7 +15,7 @@ class Account extends Model
 
     protected $table = 'accounts';
 
-    protected $appends = ['last_days','the_subscriptions','last_reseller_days'];
+    protected $appends = ['last_days','the_subscriptions','last_reseller_days','get_report_form'];
 
     private $settings;
 
@@ -125,7 +125,62 @@ class Account extends Model
         return $data;
     }
 
-    public function getReportForm(){
-        
+    public function getReportForm(): Attribute{
+        return Attribute::make(
+            get: fn ($value) => $this->ReportForm()
+        );
     }
+
+public function ReportForm(){
+    $modal = '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#reportAccount_'.$this->id.'">Reportar</button>
+                <div class="modal fade" id="reportAccount_'.$this->id.'" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Reporte de Cuenta</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <form method="POST" action="'.route('add_report').'" enctype="multipart/form-data">
+                      '.csrf_field().'
+                      '.method_field('POST').'
+                      <div class="modal-body">
+                        <input type="hidden" name="account_id" value="'.$this->id.'" />
+
+                        <div class="form-group">
+                          <label>Servicio:</label>
+                          <input type="text" class="form-control" value="'.$this->service->name.'" readonly />
+                        </div>
+
+                        <div class="form-group">
+                          <label>Cuenta:</label>
+                          <input type="text" class="form-control" value="'.$this->email.'" readonly />
+                        </div>
+                        
+                        <!-- Motivo Field -->
+                        <div class="form-group">
+                          <label for="about">Motivo</label>
+                          <textarea name="about" required id="about" class="form-control" rows="3" required></textarea>
+                        </div>
+                        
+                        <!-- Carga una Imagen Field -->
+                        <div class="form-group">
+                          <label for="image">Cargar Imagen  Adjunta:</label>
+                          <input type="file" name="image" id="image" class="form-control-file" accept="image/*">
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Enviar Reporte</button>
+                      </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>';
+
+    return $modal;
+}
+
+
 }

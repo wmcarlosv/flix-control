@@ -90,6 +90,11 @@ class AccountController extends Controller
                 ]
             ],
             [
+                'title'=>'Reporte',
+                'key'=>'get_report_form',
+                'type'=>'html'
+            ],
+            [
                 'title'=>'Vencimiento Reseller',
                 'key'=>'last_reseller_days'
             ],

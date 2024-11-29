@@ -28,6 +28,16 @@ class MovementController extends Controller
                 'key'=>'id'
             ],
             [
+                'title'=>'Usuario',
+                'key'=>'user_id',
+                'type'=>'relation',
+                'data'=>[
+                    'relation'=>'user',
+                    'key'=>'role_and_name',
+                    'format'=>'text'
+                ]
+            ],
+            [
                 'title'=>'Tipo',
                 'key'=>'type',
                 'type' => 'replace_text',

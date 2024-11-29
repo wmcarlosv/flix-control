@@ -10,4 +10,12 @@ class Report extends Model
     use HasFactory;
 
     protected $table = "reports";
+
+    public function user(){
+        return $this->belongsTo('App\Models\User');
+    }
+
+    public function account(){
+        return $this->belongsTo('App\Models\Account');
+    }
 }

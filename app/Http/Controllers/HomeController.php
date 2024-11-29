@@ -17,6 +17,7 @@ use Session;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use App\Models\Report;
 
 class HomeController extends Controller
 {
@@ -45,6 +46,7 @@ class HomeController extends Controller
         $movements_sum = Movement::all();
         $setting = $this->getSettings();
         $customers = Customer::all();
+        $reports = Report::all();
         $expirations_subscriptions = null;
         $accounts = null;
         $index = 0;
@@ -100,7 +102,7 @@ class HomeController extends Controller
 
         #dd($expirations_subscriptions);
 
-        return view('admin.dashboard', compact('movements','input','output','balance','expirations_subscriptions','accounts','customers','setting'));
+        return view('admin.dashboard', compact('movements','input','output','balance','expirations_subscriptions','accounts','customers','setting','reports'));
     }
 
     public function downloadBackup()

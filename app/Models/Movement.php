@@ -35,4 +35,8 @@ class Movement extends Model
         $mv->user_id = Auth::user()->id;
         $mv->save();
     }
+
+    public function user(){
+        return $this->belongsTo('App\Models\User');
+    }
 }

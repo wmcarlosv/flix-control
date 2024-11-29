@@ -14,6 +14,7 @@ use App\Models\Setting;
 use App\Http\Controllers\CronController;
 use App\Http\Controllers\CreditController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReportController;
 
 
 
@@ -90,4 +91,6 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth']], function(){
     Route::post('buy-account',[HomeController::class, 'buy_account'])->name('buy_account');
     Route::post('extend-reseller-subscription', [HomeController::class, 'extend_reseller_subscription'])->name("extend_reseller_subscription");
     Route::get('/backup-database', [HomeController::class, 'downloadBackup'])->name('downloadBackup');
+
+    Route::post('report-account',[ReportController::class, 'add_report'])->name('add_report');
 });
