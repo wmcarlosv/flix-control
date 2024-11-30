@@ -94,4 +94,7 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth']], function(){
 
     Route::post('report-account',[ReportController::class, 'add_report'])->name('add_report');
     Route::put('edit-report', [ReportController::class, 'edit_report'])->name('edit_report');
+
+    Route::post('/accounts/upload', [AccountController::class, 'uploadCsv'])->name('accounts.upload');
+
 });

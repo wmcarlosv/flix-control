@@ -69,6 +69,7 @@ class Customer extends Model
                         </button>
                       </div>
                       <div class="modal-body">
+                      <div class="table-responsive">
                         <table class="table table-bordered table-striped">
                             <thead>
                                 <th>Servicio</th>
@@ -80,6 +81,7 @@ class Customer extends Model
                             </thead>
                             <tbody>'.$data.'</tbody>
                         </table>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -111,6 +113,7 @@ class Customer extends Model
                         </button>
                       </div>
                       <div class="modal-body">
+                      <div class="table-responsive">
                         <table class="table table-bordered table-striped">
                             <thead>
                                 <th>Monto</th>
@@ -118,6 +121,7 @@ class Customer extends Model
                             </thead>
                             <tbody>'.$data.'</tbody>
                         </table>
+                        </div>
                       </div>
                     </div>
                   </div>

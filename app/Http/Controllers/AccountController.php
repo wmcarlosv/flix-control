@@ -280,4 +280,26 @@ class AccountController extends Controller
 
         return response()->json($data);
     }
+
+    public function uploadCsv(Request $request)
+    {
+        $request->validate([
+            'csvFile' => 'required|file|mimes:csv,txt|max:2048',
+        ]);
+
+        $file = $request->file('csvFile');
+        $rows = [];
+        if (($handle = fopen($file->getPathname(), 'r')) !== false) {
+            $header = fgetcsv($handle, 1000, ",");
+            while (($data = fgetcsv($handle, 1000, ",")) !== false) {
+                $rows[] = array_combine($header, $data);
+            }
+            fclose($handle);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $rows,
+        ]);
+    }
 }

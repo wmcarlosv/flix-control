@@ -61,6 +61,7 @@ class Service extends Model
                         </button>
                       </div>
                       <div class="modal-body">
+                      <div class="table-responsive">
                         <table class="table table-bordered table-striped">
                             <thead>
                                 <th>Email</th>
@@ -70,6 +71,7 @@ class Service extends Model
                             </thead>
                             <tbody>'.$data.'</tbody>
                         </table>
+                        </div>
                       </div>
                     </div>
                   </div>

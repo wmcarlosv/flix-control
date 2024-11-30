@@ -165,6 +165,7 @@ public function ReportForm(){
                             <div class="tab-content" id="myTabContent">
                             
                               <div class="tab-pane fade show active" id="reports-list-'.$this->id.'" role="tabpanel" aria-labelledby="reports-list-tab">
+                              <div class="table-responsive">
                                 <table class="table table-bordered mt-3" id="reports-table">
                                   <thead>
                                     <tr>
@@ -221,6 +222,7 @@ public function ReportForm(){
         $modal .= '
                                   </tbody>
                                 </table>
+                                </div>
                               </div>
                               <!-- New Report Tab -->
                               <div class="tab-pane fade" id="new-report-'.$this->id.'" role="tabpanel" aria-labelledby="new-report-tab">
