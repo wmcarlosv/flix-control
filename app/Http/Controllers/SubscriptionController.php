@@ -95,7 +95,7 @@ class SubscriptionController extends Controller
     }
     public function create(Request $request)
     {
-        $title = "Nueva Subscripcion";
+        $title = "Nueva Suscripcion";
         $type = "new";
         $services = Service::all();
         $customers = Customer::all();
