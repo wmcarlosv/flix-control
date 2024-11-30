@@ -53,6 +53,16 @@ class SubscriptionController extends Controller
                 ]
             ],
             [
+                'title'=>'Vendedor',
+                'key'=>'user_id',
+                'type'=>'relation',
+                'data'=>[
+                    'relation'=>'user',
+                    'key'=>'role_and_name',
+                    'format'=>'text'
+                ]
+            ],
+            [
                 'title'=>'Cliente',
                 'key'=>'customer_id',
                 'type'=>'relation',

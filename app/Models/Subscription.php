@@ -26,6 +26,10 @@ class Subscription extends Model
         );
     }
 
+    public function user(){
+        return $this->belongsTo('App\Models\User');
+    }
+
     public function realStatus(): Attribute
     {
         return Attribute::make(

@@ -7,16 +7,29 @@ use App\Models\Movement;
 use Session;
 use Storage;
 use Auth;
+use App\Models\Setting;
 
 class MovementController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $title = "Movimientos";
+        $setting = Setting::first();
+        $symbol = "$";
 
+        if(!empty($setting->currency)){
+            $currency = json_decode($setting->currency, true);
+            $symbol = $currency['symbol'];
+        }
+
+        $title = "Movimientos";
+        $desde = @$request->get('desde');
+        $hasta = @$request->get('hasta');
+        $entradas = 0;
+        $salidas = 0;
+        $total = 0;
         $columns = [
             [
                 'title'=>'#',
@@ -64,9 +77,26 @@ class MovementController extends Controller
             ],
         ];
 
-        $data = Movement::all();
+        if(!empty($desde) and !empty($hasta)){
+            $data = Movement::whereBetween('datemovement', [$desde, $hasta])->get();
+        }else{
+            $data = Movement::all();
+        }
 
-        return view('admin.movements.browse', compact('title','columns', 'data'));
+
+        foreach($data as $d){
+            if($d->type == "input"){
+                $entradas+=$d->amount;
+            }else{
+                $salidas+=$d->amount;
+            }
+        }
+
+        $total = $entradas-$salidas;
+
+        $total = $symbol." ".number_format($total,2,',','.');
+
+        return view('admin.movements.browse', compact('title','columns', 'data','desde','hasta','total'));
     }
 
     /**

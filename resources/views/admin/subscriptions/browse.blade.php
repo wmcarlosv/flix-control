@@ -38,6 +38,22 @@
                     <label for="">Nueva Fecha Facturacion:</label>
                     <input type="date" name="date_to" required class="form-control" />
                 </div>
+                <hr />
+                <h4>Mover cliente de Cuenta</h4>
+                <p>"Si no deseas mover el cliente, deja esta seccion en blanco"</p>
+                <hr />
+                <div class="form-group">
+                    <label for="">Cuenta:</label>
+                    <select class="form-control" name="new_account_id">
+                        <option>Seleccione</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="">Perfil:</label>
+                    <select class="form-control" name="new_profile_id">
+                        <option>Seleccione</option>
+                    </select>
+                </div>
               </div>
               <div class="modal-footer">
                 <button type="submit" class="btn btn-success" id="save-modal-extend"><i class="fas fa-save"></i> Extender</button>
