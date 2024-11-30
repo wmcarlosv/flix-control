@@ -74,6 +74,10 @@ class Account extends Model
         return $total;
     }
 
+    public function reports(){
+        return $this->hasMany('App\Models\Report');
+    }
+
     public function getDaysReseller(){
         if(!empty($this->reseller_due_date)){
             $now = time();
@@ -132,55 +136,130 @@ class Account extends Model
     }
 
 public function ReportForm(){
-    $modal = '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#reportAccount_'.$this->id.'">Reportar</button>
-                <div class="modal fade" id="reportAccount_'.$this->id.'" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                  <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title">Reporte de Cuenta</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
+        // Fetch all reports for the current user
+        $reports = $this->reports()->where('user_id', Auth::id())->orderBy('id','DESC')->get();
+
+        $status = "";
+
+       
+
+        $modal = '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#reportAccount_'.$this->id.'">Reportar</button>
+                    <div class="modal fade" id="reportAccount_'.$this->id.'" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title">Reporte de Cuenta</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                              <li class="nav-item" role="presentation">
+                                <a class="nav-link active" id="reports-list-tab" data-toggle="tab" href="#reports-list-'.$this->id.'" role="tab" aria-controls="reports-list-'.$this->id.'" aria-selected="true">Lista de Reportes</a>
+                              </li>
+                              <li class="nav-item" role="presentation">
+                                <a class="nav-link" id="new-report-tab" data-toggle="tab" href="#new-report-'.$this->id.'" role="tab" aria-controls="new-report-'.$this->id.'" aria-selected="false">Nuevo Reporte</a>
+                              </li>
+                            </ul>
+                            <div class="tab-content" id="myTabContent">
+                              <!-- Reports List Tab -->
+                              <div class="tab-pane fade show active" id="reports-list-'.$this->id.'" role="tabpanel" aria-labelledby="reports-list-tab">
+                                <table class="table table-bordered mt-3">
+                                  <thead>
+                                    <tr>
+                                      <th>ID</th>
+                                      <th>Motivo</th>
+                                      <th>Imagen</th>
+                                      <th>Estado</th>
+                                      <th>Acciones</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>';
+        
+        // Populate the table rows with user reports
+        foreach ($reports as $report) {
+
+             switch($report->status){
+                    case 'pending':
+                        $status = "Pendiente";
+                    break;
+
+                    case 'in_review':
+                        $status = "En Revision";
+                    break;
+
+                    case 'closed':
+                        $status = "Cerrado";
+                    break;
+                }
+        
+            $modal .= '
+                                    <tr data-report-id="'.$report->id.'">
+                                      <td>'.$report->id.'</td>
+                                      <td class="editable" data-field="about">'.$report->about.'</td>
+                                      <td>';
+            if ($report->image) {
+                $modal .= '<img src="'.asset('storage/'.$report->image).'" alt="Report Image" style="width: 100px; height: auto;">';
+            } else {
+                $modal .= 'No disponible';
+            }
+            $modal .= '</td>
+                                      <td class="editable" data-field="status">'.$status.'</td>
+                                      <td>
+                                        <!--<a href="#" class="btn btn-info"><i class="fas fa-edit"></i> Editar</a>-->
+                                        <a href="#" class="btn btn-success"><i class="fas fa-envelope"></i> Mensajes</a>
+                                      </td>
+                                    </tr>';
+        }
+
+        // Handle empty state
+        if ($reports->isEmpty()) {
+            $modal .= '<tr><td colspan="5" class="text-center">No hay reportes disponibles.</td></tr>';
+        }
+
+        $modal .= '
+                                  </tbody>
+                                </table>
+                              </div>
+                              <!-- New Report Tab -->
+                              <div class="tab-pane fade" id="new-report-'.$this->id.'" role="tabpanel" aria-labelledby="new-report-tab">
+                                <form method="POST" action="'.route('add_report').'" enctype="multipart/form-data" class="mt-3">
+                                  '.csrf_field().'
+                                  '.method_field('POST').'
+                                  <input type="hidden" name="account_id" value="'.$this->id.'" />
+
+                                  <div class="form-group">
+                                    <label>Servicio:</label>
+                                    <input type="text" class="form-control" value="'.$this->service->name.'" readonly />
+                                  </div>
+
+                                  <div class="form-group">
+                                    <label>Cuenta:</label>
+                                    <input type="text" class="form-control" value="'.$this->email.'" readonly />
+                                  </div>
+                                  
+                                  <div class="form-group">
+                                    <label for="about">Motivo</label>
+                                    <textarea name="about" required id="about" class="form-control" rows="3"></textarea>
+                                  </div>
+                                  
+                                  <div class="form-group">
+                                    <label for="image">Cargar Imagen Adjunta:</label>
+                                    <input type="file" name="image" id="image" class="form-control-file" accept="image/*">
+                                  </div>
+                                  
+                                  <div class="form-group">
+                                    <button type="submit" class="btn btn-primary">Enviar Reporte</button>
+                                  </div>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                      <form method="POST" action="'.route('add_report').'" enctype="multipart/form-data">
-                      '.csrf_field().'
-                      '.method_field('POST').'
-                      <div class="modal-body">
-                        <input type="hidden" name="account_id" value="'.$this->id.'" />
+                    </div>';
 
-                        <div class="form-group">
-                          <label>Servicio:</label>
-                          <input type="text" class="form-control" value="'.$this->service->name.'" readonly />
-                        </div>
-
-                        <div class="form-group">
-                          <label>Cuenta:</label>
-                          <input type="text" class="form-control" value="'.$this->email.'" readonly />
-                        </div>
-                        
-                        <!-- Motivo Field -->
-                        <div class="form-group">
-                          <label for="about">Motivo</label>
-                          <textarea name="about" required id="about" class="form-control" rows="3" required></textarea>
-                        </div>
-                        
-                        <!-- Carga una Imagen Field -->
-                        <div class="form-group">
-                          <label for="image">Cargar Imagen  Adjunta:</label>
-                          <input type="file" name="image" id="image" class="form-control-file" accept="image/*">
-                        </div>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">Enviar Reporte</button>
-                      </div>
-                      </form>
-                    </div>
-                  </div>
-                </div>';
-
-    return $modal;
-}
-
-
+        return $modal;
+    }
 }

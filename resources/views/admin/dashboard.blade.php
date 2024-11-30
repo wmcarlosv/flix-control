@@ -182,50 +182,120 @@
                 </div>
 
                 @if(Auth::user()->role == 'super_admin')
-                    <div class="tab-pane fade" id="account_reports" role="tabpanel" aria-labelledby="account-reports-tab">
-                         <div class="card">
-                            <div class="card-body">
-                                <table class="table table-bordered table-striped" id="table-account-reports">
-                                    <thead>
-                                        <th>#</th>
-                                        <th>Cuenta</th>
-                                        <th>Vendedor</th>
-                                        <th>Motivo</th>
-                                        <th>Estado</th>
-                                        <th>Acciones</th>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($reports as $report)
-                                            <tr>
-                                                <td>{{$report->id}}</td>
-                                                <td><a target="_blank" href="{{route('accounts.edit',$report->account_id)}}">{{$report->account->email}} ({{$report->account->service->name}})</a></td>
-                                                <td>{{$report->user->role_and_name}}</td>
-                                                <td>{{$report->about}}</td>
-                                                <td>
-                                                    @switch($report->status)
-                                                        @case('pending')
-                                                            Pendiente
-                                                        @break
-                                                        @case('in_progress')
-                                                            En Revision
-                                                        @break
-                                                        @case('closed')
-                                                            Cerrado
-                                                        @break
-                                                    @endswitch
-                                                </td>
-                                                <td>
-                                                    @if(!empty($report->image))
-                                                        <a title="ver imagen adjunta" class="btn btn-info" target="_blank" href="{{asset('storage/'.$report->image)}}"><i class="fas fa-image"></i></a>
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+<div class="tab-pane fade" id="account_reports" role="tabpanel" aria-labelledby="account-reports-tab">
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-bordered table-striped" id="table-account-reports">
+                <thead>
+                    <th>#</th>
+                    <th>Cuenta</th>
+                    <th>Vendedor</th>
+                    <th>Motivo</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </thead>
+                <tbody>
+                    @foreach($reports as $report)
+                        <tr>
+                            <td>{{$report->id}}</td>
+                            <td>
+                                <a target="_blank" href="{{route('accounts.edit',$report->account_id)}}">
+                                    {{$report->account->email}} ({{$report->account->service->name}})
+                                </a>
+                            </td>
+                            <td>{{$report->user->role_and_name}}</td>
+                            <td>{{$report->about}}</td>
+                            <td>
+                                @switch($report->status)
+                                    @case('pending')
+                                        Pendiente
+                                    @break
+                                    @case('in_review')
+                                        En Revision
+                                    @break
+                                    @case('closed')
+                                        Cerrado
+                                    @break
+                                @endswitch
+                            </td>
+                            <td>
+                                <!-- Edit Button -->
+                                <button 
+                                    type="button" 
+                                    class="btn btn-warning" 
+                                    data-toggle="modal" 
+                                    data-target="#editReportModal{{$report->id}}"
+                                    title="Editar Reporte">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            </td>
+                        </tr>
+
+                        <!-- Edit Modal -->
+                        <div class="modal fade" id="editReportModal{{$report->id}}" tabindex="-1" role="dialog" aria-labelledby="editReportModalLabel{{$report->id}}" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="editReportModalLabel{{$report->id}}">Editar Reporte #{{$report->id}}</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form method="POST" action="{{route('edit_report')}}">
+                                        @csrf
+                                        @method('PUT')
+                                        <div class="modal-body">
+                                            <input type="hidden" name="id" value="{{$report->id}}">
+                                            
+                                            <div class="form-group">
+                                                <label for="about{{$report->id}}">Motivo</label>
+                                                <textarea 
+                                                    name="about" 
+                                                    id="about{{$report->id}}" 
+                                                    class="form-control" 
+                                                    rows="3" 
+                                                    required>{{$report->about}}</textarea>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label for="status{{$report->id}}">Estado</label>
+                                                <select 
+                                                    name="status" 
+                                                    id="status{{$report->id}}" 
+                                                    class="form-control" 
+                                                    required>
+                                                    <option value="pending" {{$report->status == 'pending' ? 'selected' : ''}}>Pendiente</option>
+                                                    <option value="in_review" {{$report->status == 'in_review' ? 'selected' : ''}}>En Revision</option>
+                                                    <option value="closed" {{$report->status == 'closed' ? 'selected' : ''}}>Cerrado</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Imagen Adjunta</label>
+                                                @if(!empty($report->image))
+                                                    <div>
+                                                        <img src="{{asset('storage/'.$report->image)}}" alt="Imagen Adjunta" style="width: 100%; max-width: 300px; height: auto;">
+                                                    </div>
+                                                @else
+                                                    <p>No hay imagen disponible</p>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
-                        </div> 
-                    </div>
+                        </div>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
                 @endif
             </div>
         </div>
@@ -233,6 +303,7 @@
 @stop
 
 @section('js')
+@include('admin.partials.messages')
     <script>
         $(document).ready(function(){
 

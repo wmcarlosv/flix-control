@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Report;
 use Storage;
 use Auth;
+use Session;
 
 class ReportController extends Controller
 {
@@ -25,5 +26,13 @@ class ReportController extends Controller
 
 	    // Redirect or return response
 	    return redirect()->back()->with('success', 'Reporte enviado correctamente.');
+	}
+
+	public function edit_report(Request $request){
+		$report = Report::find($request->id);
+		$report->status = $request->status;
+		$report->update();
+		Session::flash('success','Reporte Actualizado con Exito!!');
+		return redirect()->route('dashboard');
 	}
 }
