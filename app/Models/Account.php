@@ -163,23 +163,26 @@ public function ReportForm(){
                               </li>
                             </ul>
                             <div class="tab-content" id="myTabContent">
-                              <!-- Reports List Tab -->
+                            
                               <div class="tab-pane fade show active" id="reports-list-'.$this->id.'" role="tabpanel" aria-labelledby="reports-list-tab">
-                                <table class="table table-bordered mt-3">
+                                <table class="table table-bordered mt-3" id="reports-table">
                                   <thead>
                                     <tr>
                                       <th>ID</th>
                                       <th>Motivo</th>
+                                      <th>Respuesta</th>
                                       <th>Imagen</th>
                                       <th>Estado</th>
-                                      <th>Acciones</th>
                                     </tr>
                                   </thead>
                                   <tbody>';
         
         // Populate the table rows with user reports
         foreach ($reports as $report) {
-
+            $respuesta = "Sin Respuesta.";
+            if(!empty($report->messages)){
+                $respuesta = $report->messages;
+            }
              switch($report->status){
                     case 'pending':
                         $status = "Pendiente";
@@ -193,11 +196,12 @@ public function ReportForm(){
                         $status = "Cerrado";
                     break;
                 }
-        
+
             $modal .= '
                                     <tr data-report-id="'.$report->id.'">
                                       <td>'.$report->id.'</td>
                                       <td class="editable" data-field="about">'.$report->about.'</td>
+                                      <td class="editable" data-field="about">'.$respuesta.'</td>
                                       <td>';
             if ($report->image) {
                 $modal .= '<img src="'.asset('storage/'.$report->image).'" alt="Report Image" style="width: 100px; height: auto;">';
@@ -206,10 +210,6 @@ public function ReportForm(){
             }
             $modal .= '</td>
                                       <td class="editable" data-field="status">'.$status.'</td>
-                                      <td>
-                                        <!--<a href="#" class="btn btn-info"><i class="fas fa-edit"></i> Editar</a>-->
-                                        <a href="#" class="btn btn-success"><i class="fas fa-envelope"></i> Mensajes</a>
-                                      </td>
                                     </tr>';
         }
 

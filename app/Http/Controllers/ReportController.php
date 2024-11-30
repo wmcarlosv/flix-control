@@ -31,6 +31,7 @@ class ReportController extends Controller
 	public function edit_report(Request $request){
 		$report = Report::find($request->id);
 		$report->status = $request->status;
+		$report->messages = $request->message;
 		$report->update();
 		Session::flash('success','Reporte Actualizado con Exito!!');
 		return redirect()->route('dashboard');

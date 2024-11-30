@@ -256,6 +256,16 @@
                                                     rows="3" 
                                                     required>{{$report->about}}</textarea>
                                             </div>
+
+                                            <div class="form-group">
+                                                <label for="message{{$report->id}}">Respuesta</label>
+                                                <textarea 
+                                                    name="message" 
+                                                    id="message{{$report->id}}" 
+                                                    class="form-control" 
+                                                    rows="3" 
+                                                    required>{{$report->messages}}</textarea>
+                                            </div>
                                             
                                             <div class="form-group">
                                                 <label for="status{{$report->id}}">Estado</label>
