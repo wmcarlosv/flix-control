@@ -120,6 +120,7 @@
                                <thead>
                                    <th>Servicio</th>
                                    <th>Cuenta (email)</th>
+                                   <th>Vendedor</th>
                                    <th>Cliente</th>
                                    <th>Dias Restantes</th>
                                    <th>Facturacion</th>
@@ -134,13 +135,14 @@
                                                 <img src="{{asset(str_replace('public','storage',@$es->service->cover))}}" class="img-thumbnail" style="width:75px; height:75px;">@endif {{$es->service->name}}        
                                             </td>
                                             <td>{{$es->account->email}}</td>
+                                            <td>{{$es->user->role_and_name}}</td>
                                             <td><a href="{{route('customers.edit',$es->customer->id)}}" target="_blank">{{$es->customer->name}}</a></td>
                                             <td>{{$es->last_days}}</td>
                                             <td>{{date('d/m/Y',strtotime($es->date_to))}}</td>
                                             <td>
                                                 <a href="#" class="btn btn-info copy_button" data-id='{{$es->id}}' title="Copiar Informacion de Expiracion"><i class="fas fa-copy"></i></a>
                                                 <a href="#" class="btn btn-success send-by-whatsapp" data-id='{{$es->id}}' data-phone="{{$es->customer->phone}}" title="Notificar por Whatsapp"><i class="fab fa-whatsapp"></i></a>
-                                                
+                                                <a href="#" data-id="{{$es->id}}" class="btn btn-warning btn-extend-account"><i class="fas fa-external-link-alt"></i></a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -182,133 +184,166 @@
                 </div>
 
                 @if(Auth::user()->role == 'super_admin')
-<div class="tab-pane fade" id="account_reports" role="tabpanel" aria-labelledby="account-reports-tab">
-    <div class="card">
-        <div class="card-body">
-            <table class="table table-bordered table-striped" id="table-account-reports">
-                <thead>
-                    <th>#</th>
-                    <th>Cuenta</th>
-                    <th>Vendedor</th>
-                    <th>Motivo</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
-                </thead>
-                <tbody>
-                    @foreach($reports as $report)
-                        <tr>
-                            <td>{{$report->id}}</td>
-                            <td>
-                                <a target="_blank" href="{{route('accounts.edit',$report->account_id)}}">
-                                    {{$report->account->email}} ({{$report->account->service->name}})
-                                </a>
-                            </td>
-                            <td>{{$report->user->role_and_name}}</td>
-                            <td>{{$report->about}}</td>
-                            <td>
-                                @switch($report->status)
-                                    @case('pending')
-                                        Pendiente
-                                    @break
-                                    @case('in_review')
-                                        En Revision
-                                    @break
-                                    @case('closed')
-                                        Cerrado
-                                    @break
-                                @endswitch
-                            </td>
-                            <td>
-                                <!-- Edit Button -->
-                                <button 
-                                    type="button" 
-                                    class="btn btn-warning" 
-                                    data-toggle="modal" 
-                                    data-target="#editReportModal{{$report->id}}"
-                                    title="Editar Reporte">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                            </td>
-                        </tr>
+                    <div class="tab-pane fade" id="account_reports" role="tabpanel" aria-labelledby="account-reports-tab">
+                        <div class="card">
+                            <div class="card-body">
+                                <table class="table table-bordered table-striped" id="table-account-reports">
+                                    <thead>
+                                        <th>#</th>
+                                        <th>Cuenta</th>
+                                        <th>Vendedor</th>
+                                        <th>Motivo</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($reports as $report)
+                                            <tr>
+                                                <td>{{$report->id}}</td>
+                                                <td>
+                                                    <a target="_blank" href="{{route('accounts.edit',$report->account_id)}}">
+                                                        {{$report->account->email}} ({{$report->account->service->name}})
+                                                    </a>
+                                                </td>
+                                                <td>{{$report->user->role_and_name}}</td>
+                                                <td>{{$report->about}}</td>
+                                                <td>
+                                                    @switch($report->status)
+                                                        @case('pending')
+                                                            Pendiente
+                                                        @break
+                                                        @case('in_review')
+                                                            En Revision
+                                                        @break
+                                                        @case('closed')
+                                                            Cerrado
+                                                        @break
+                                                    @endswitch
+                                                </td>
+                                                <td>
+                                                    <!-- Edit Button -->
+                                                    <button 
+                                                        type="button" 
+                                                        class="btn btn-warning" 
+                                                        data-toggle="modal" 
+                                                        data-target="#editReportModal{{$report->id}}"
+                                                        title="Editar Reporte">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
 
-                        <!-- Edit Modal -->
-                        <div class="modal fade" id="editReportModal{{$report->id}}" tabindex="-1" role="dialog" aria-labelledby="editReportModalLabel{{$report->id}}" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="editReportModalLabel{{$report->id}}">Editar Reporte #{{$report->id}}</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <form method="POST" action="{{route('edit_report')}}">
-                                        @csrf
-                                        @method('PUT')
-                                        <div class="modal-body">
-                                            <input type="hidden" name="id" value="{{$report->id}}">
-                                            
-                                            <div class="form-group">
-                                                <label for="about{{$report->id}}">Motivo</label>
-                                                <textarea 
-                                                    name="about" 
-                                                    id="about{{$report->id}}" 
-                                                    class="form-control" 
-                                                    rows="3" 
-                                                    required>{{$report->about}}</textarea>
-                                            </div>
+                                            <!-- Edit Modal -->
+                                            <div class="modal fade" id="editReportModal{{$report->id}}" tabindex="-1" role="dialog" aria-labelledby="editReportModalLabel{{$report->id}}" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="editReportModalLabel{{$report->id}}">Editar Reporte #{{$report->id}}</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <form method="POST" action="{{route('edit_report')}}">
+                                                            @csrf
+                                                            @method('PUT')
+                                                            <div class="modal-body">
+                                                                <input type="hidden" name="id" value="{{$report->id}}">
+                                                                
+                                                                <div class="form-group">
+                                                                    <label for="about{{$report->id}}">Motivo</label>
+                                                                    <textarea 
+                                                                        name="about" 
+                                                                        id="about{{$report->id}}" 
+                                                                        class="form-control" 
+                                                                        rows="3" 
+                                                                        required>{{$report->about}}</textarea>
+                                                                </div>
 
-                                            <div class="form-group">
-                                                <label for="message{{$report->id}}">Respuesta</label>
-                                                <textarea 
-                                                    name="message" 
-                                                    id="message{{$report->id}}" 
-                                                    class="form-control" 
-                                                    rows="3" 
-                                                    required>{{$report->messages}}</textarea>
-                                            </div>
-                                            
-                                            <div class="form-group">
-                                                <label for="status{{$report->id}}">Estado</label>
-                                                <select 
-                                                    name="status" 
-                                                    id="status{{$report->id}}" 
-                                                    class="form-control" 
-                                                    required>
-                                                    <option value="pending" {{$report->status == 'pending' ? 'selected' : ''}}>Pendiente</option>
-                                                    <option value="in_review" {{$report->status == 'in_review' ? 'selected' : ''}}>En Revision</option>
-                                                    <option value="closed" {{$report->status == 'closed' ? 'selected' : ''}}>Cerrado</option>
-                                                </select>
-                                            </div>
+                                                                <div class="form-group">
+                                                                    <label for="message{{$report->id}}">Respuesta</label>
+                                                                    <textarea 
+                                                                        name="message" 
+                                                                        id="message{{$report->id}}" 
+                                                                        class="form-control" 
+                                                                        rows="3" 
+                                                                        required>{{$report->messages}}</textarea>
+                                                                </div>
+                                                                
+                                                                <div class="form-group">
+                                                                    <label for="status{{$report->id}}">Estado</label>
+                                                                    <select 
+                                                                        name="status" 
+                                                                        id="status{{$report->id}}" 
+                                                                        class="form-control" 
+                                                                        required>
+                                                                        <option value="pending" {{$report->status == 'pending' ? 'selected' : ''}}>Pendiente</option>
+                                                                        <option value="in_review" {{$report->status == 'in_review' ? 'selected' : ''}}>En Revision</option>
+                                                                        <option value="closed" {{$report->status == 'closed' ? 'selected' : ''}}>Cerrado</option>
+                                                                    </select>
+                                                                </div>
 
-                                            <div class="form-group">
-                                                <label>Imagen Adjunta</label>
-                                                @if(!empty($report->image))
-                                                    <div>
-                                                        <img src="{{asset('storage/'.$report->image)}}" alt="Imagen Adjunta" style="width: 100%; max-width: 300px; height: auto;">
+                                                                <div class="form-group">
+                                                                    <label>Imagen Adjunta</label>
+                                                                    @if(!empty($report->image))
+                                                                        <div>
+                                                                            <img src="{{asset('storage/'.$report->image)}}" alt="Imagen Adjunta" style="width: 100%; max-width: 300px; height: auto;">
+                                                                        </div>
+                                                                    @else
+                                                                        <p>No hay imagen disponible</p>
+                                                                    @endif
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                                                            </div>
+                                                        </form>
                                                     </div>
-                                                @else
-                                                    <p>No hay imagen disponible</p>
-                                                @endif
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-                                        </div>
-                                    </form>
-                                </div>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
+                    </div>
 
                 @endif
             </div>
         </div>
+    </div>
+
+    <div class="modal fade" id="modal-extend">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">Extender la Facturacion</h5>
+            <button type="button" class="close close-modal-extend" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form action="{{route('extend_subscriptions')}}" method="POST">
+            @method('PUT')
+            @csrf
+              <div class="modal-body">
+                <input type="hidden" name="id" id="sub_id" />
+                <input type="hidden" name="page_from" value="dashboard" />
+                <div class="form-group">
+                    <label for="">Valor de la Facturacion:</label>
+                    <input type="number" step="0.01" name="amount" required class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="">Nueva Fecha Facturacion:</label>
+                    <input type="date" name="date_to" required class="form-control" />
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-success" id="save-modal-extend"><i class="fas fa-save"></i> Extender</button>
+                <button type="button" class="btn btn-danger close-modal-extend"><i class="fas fa-times"></i> Cancelar</button>
+              </div>
+          </form>
+        </div>
+      </div>
     </div>
 @stop
 
@@ -323,10 +358,21 @@
                 }
             });
 
-            $("#table-last_movements").DataTable({ order: [[0, 'desc']] });
-            $("#table-expirations_subscriptions").DataTable({ order: [[3, 'asc']] });
-            $("#table-expirations_accounts").DataTable({ order: [[2, 'asc']] });
-            $("#table-account-reports").DataTable({ order: [[0, 'desc']] });
+            $("#table-last_movements").DataTable({ order: [[0, 'desc']], responsive: true });
+            $("#table-expirations_subscriptions").DataTable({ order: [[3, 'asc']], responsive: true });
+            $("#table-expirations_accounts").DataTable({ order: [[2, 'asc']], responsive: true });
+            $("#table-account-reports").DataTable({ order: [[0, 'desc']], responsive: true });
+
+            $("body").on('click','a.btn-extend-account',function(){
+                let id = $(this).attr("data-id");
+                $("#sub_id").val(id);
+                $("#modal-extend").modal({backdrop: 'static', keyboard:false},'show');
+                return false;
+            });
+
+            $("button.close-modal-extend").click(function(){
+                $("#modal-extend").modal('hide');
+            });
 
             $("body").on('click','a.copy_button',function(){
                 let id = $(this).attr("data-id");

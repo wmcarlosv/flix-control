@@ -246,6 +246,9 @@ class SubscriptionController extends Controller
 
     public function extend_subscriptions(Request $request){
         $sub = Subscription::findorfail($request->id);
+        $page_from = @$request->page_from;
+
+
         $sub->date_to = $request->date_to;
         if($sub->update()){
             $payment = new Payment();
@@ -262,6 +265,10 @@ class SubscriptionController extends Controller
             Session::flash('success','Subscripcion Extendida con Exito!!');
         }else{
             Session::flash('error','Error al extender la Membresia!!');
+        }
+
+        if(!empty($page_from)){
+            return redirect()->route('dashboard');
         }
 
         return redirect()->route('subscriptions.index');

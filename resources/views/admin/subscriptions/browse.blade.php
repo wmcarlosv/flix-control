@@ -80,7 +80,7 @@
                 }
             });
 
-            $("a.btn-info").addClass('btn-warning').attr("title","Extender Facturacion").html('<i class="fas fa-external-link-alt"></>');
+            $("a.btn-info").addClass('btn-warning').attr("title","Extender Facturacion").html('<i class="fas fa-external-link-alt"></i>');
             $("body").on('click','a.btn-info',function(){
                 let id = $(this).attr("data-id");
                 $("input[name='id']").val(id);
