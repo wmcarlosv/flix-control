@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use App\Scopes\ByUserScope;
+use App\Models\Setting;
 
 class Subscription extends Model
 {
@@ -69,11 +70,14 @@ class Subscription extends Model
     }
 
     public function getRealStatus(){
+
+        $setting = Setting::first();
+
         if($this->status == 0){
             return "<span class='badge badge-danger'>Inactivo</span>";
         }else{
-            if($this->last_days <= 0){
-                return "<span class='badge badge-warning'>Vencido</span>";
+            if($this->last_days > 0 && $this->last_days <= $setting->expiration_days_subscriptions){
+                return "<span class='badge badge-warning'>Por Vencer</span>";
             }else{
                 return "<span class='badge badge-success'>Activo</span>";
             }
