@@ -52,7 +52,10 @@
                         @if($type=='new')
                             <div class="form-group">
                                 <label for="">Precio de Compra:</label>
-                                <input type="number" step="0.01" name="amount" class="form-control" />
+                                <input type="number" step="0.01" name="amount" class="form-control @error('amount') is-invalid @enderror" />
+                                @error('amount')
+                                   <span class="error invalid-feedback">{{ $message }}</span>
+                                @enderror
                             </div>
                         @endif
                         <div class="form-group">

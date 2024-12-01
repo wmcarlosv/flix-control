@@ -176,25 +176,12 @@ class SubscriptionController extends Controller
         }else{
             Session::flash('error','Ocurrio un error al tratar de eliminar al Registro!!');
         }
-        return redirect()->route('subscriptions.index');
+        return redirect()->back();
     }
 
     public function getAccounts($service_id){
         $cont=0;
         $data = [];
-        /*$attr = [
-            'table'=>'accounts',
-            'columns'=>[
-                'id',
-                'email'
-            ],
-            'compare'=>'service_id',
-            'compare_value'=>$service_id
-        ];
-        $response = Helper::getDataSelect($attr, true);
-        if($response){
-            $data = $response;
-        }*/
         $accounts = Account::with(['profiles'])->withoutGlobalScopes()
         ->where('user_id',Auth::user()->id)
         ->orWhereHas('profiles', function($query){

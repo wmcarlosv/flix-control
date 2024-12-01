@@ -121,7 +121,6 @@
                           <div class="table-responsive">
                               <table class="table table-bordered table-striped" id="table-expirations_subscriptions">
                                    <thead>
-                                       <th>Servicio</th>
                                        <th>Cuenta (email)</th>
                                        <th>Vendedor</th>
                                        <th>Cliente</th>
@@ -133,11 +132,9 @@
                                        @if($expirations_subscriptions)
                                         @foreach($expirations_subscriptions as $es)
                                             <tr>
-                                                <td>
-                                                    @if(!empty($es->service->cover))
-                                                    <img src="{{asset(str_replace('public','storage',@$es->service->cover))}}" class="img-thumbnail" style="width:75px; height:75px;">@endif {{$es->service->name}}        
                                                 </td>
-                                                <td>{{$es->account->email}}</td>
+                                                <td>@if(!empty($es->service->cover))
+                                                    <img src="{{asset(str_replace('public','storage',@$es->service->cover))}}" class="img-thumbnail" style="width:75px; height:75px;">@endif {{$es->service->name}} ({{$es->account->email}})</td>
                                                 <td>{{$es->user->role_and_name}}</td>
                                                 <td><a href="{{route('customers.edit',$es->customer->id)}}" target="_blank">{{$es->customer->name}}</a></td>
                                                 <td>{{$es->last_days}}</td>
@@ -146,6 +143,11 @@
                                                     <a href="#" class="btn btn-info copy_button" data-id='{{$es->id}}' title="Copiar Informacion de Expiracion"><i class="fas fa-copy"></i></a>
                                                     <a href="#" class="btn btn-success send-by-whatsapp" data-id='{{$es->id}}' data-phone="{{$es->customer->phone}}" title="Notificar por Whatsapp"><i class="fab fa-whatsapp"></i></a>
                                                     <a href="#" data-id="{{$es->id}}" class="btn btn-warning btn-extend-account"><i class="fas fa-external-link-alt"></i></a>
+                                                    <form style="display:inline-block;" method="POST" action="{{ route('subscriptions.destroy', $es->id) }}" id="form_{{$es->id}}">
+                                                        @method('DELETE')
+                                                        @csrf
+                                                        <button type="button" class="btn btn-danger delete-record" data-id="{{$es->id}}"><i class="fas fa-times"></i></button>
+                                                    </form>
                                                 </td>
                                             </tr>
                                         @endforeach

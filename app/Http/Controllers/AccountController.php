@@ -14,6 +14,9 @@ use App\Models\Subscription;
 use App\Helpers\Helper;
 use App\Models\Profile;
 use App\Models\User;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\AccountsImport;
+use App\Models\Report;
 
 class AccountController extends Controller
 {
@@ -135,6 +138,7 @@ class AccountController extends Controller
         $request->validate([
             'email'=>'required',
             'dateto'=>'required',
+            'amount'=>'required'
         ]);
 
         $element = new Account();
@@ -243,6 +247,7 @@ class AccountController extends Controller
         $element = Account::findorfail($id);
         Subscription::where('account_id',$id)->delete();
         Profile::where('account_id',$id)->delete();
+        Report::where('account_id', $id)->delete();
         if($element->delete()){
             Session::flash('success', 'Registro Eliminado con Exito!!');
         }else{
@@ -283,20 +288,14 @@ class AccountController extends Controller
 
     public function uploadCsv(Request $request)
     {
-        $request->validate([
-            'csvFile' => 'required|file|mimes:csv,txt|max:2048',
+        /*$request->validate([
+            'csvFile' => 'required|file|mimes:xlsx|max:2048',
         ]);
 
-        $file = $request->file('csvFile');
-        $rows = [];
-        if (($handle = fopen($file->getPathname(), 'r')) !== false) {
-            $header = fgetcsv($handle, 1000, ",");
-            while (($data = fgetcsv($handle, 1000, ",")) !== false) {
-                $rows[] = array_combine($header, $data);
-            }
-            fclose($handle);
-        }
-
+        $path1 = $request->file('csvFile')->store("temp");
+        $path=storage_path('app').'/'.$path1;  
+        $rows = Excel::import(new AccountsImport(), $path);*/
+        
         return response()->json([
             'success' => true,
             'data' => $rows,
