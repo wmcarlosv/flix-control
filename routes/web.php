@@ -96,5 +96,6 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth']], function(){
     Route::put('edit-report', [ReportController::class, 'edit_report'])->name('edit_report');
 
     Route::post('/accounts/upload', [AccountController::class, 'uploadCsv'])->name('accounts.upload');
-
+    Route::post('/accounts/import', [AccountController::class, 'importAccounts'])->name('accounts.imports');
+    Route::post('/accounts/move', [SubscriptionController::class, 'moveAccount'])->name('accounts.move');
 });

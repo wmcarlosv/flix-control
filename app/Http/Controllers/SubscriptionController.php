@@ -89,6 +89,11 @@ class SubscriptionController extends Controller
                 'type'=>'html'
             ],
             [
+                'title'=>'Mover Cuenta',
+                'key'=>'get_move_account_form',
+                'type'=>'html'
+            ],
+            [
                 'title'=>'Estado',
                 'key'=>'real_status',
                 'type'=>'html'
@@ -256,6 +261,24 @@ class SubscriptionController extends Controller
 
         if(!empty($page_from)){
             return redirect()->route('dashboard');
+        }
+
+        return redirect()->route('subscriptions.index');
+    }
+
+    public function moveAccount(Request $request){
+        $request->validate([
+            'account_id'=>'required'
+        ]);
+
+        $subscription = Subscription::find($request->sup_id);
+        $subscription->account_id = $request->account_id;
+        $subscription->profile_id = $request->profile_id;
+
+        if($subscription->update()){
+            Session::flash('success','Suscripcion Movida con Exito!!');
+        }else{
+            Session::flash('error','Error al mover la Suscripcion!!');
         }
 
         return redirect()->route('subscriptions.index');

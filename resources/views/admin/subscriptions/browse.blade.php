@@ -74,11 +74,56 @@
 
         $(document).ready(function(){
 
+            $(".select-2").select2();
+
+            $("body").on('click','button.move_account_modal', function(){
+                let id = $(this).data("id");
+                let element_id = $(this).data("element");
+                let account_id = $(this).data("account");
+                getAccounts(id, element_id, account_id);
+            });
+
+            $(".select-profile").change(function(){
+                let account_id = $(this).find(":selected").data("id");
+                let element = $(this).find(":selected").data("element");
+                getProfiles(account_id, element);
+            });
+
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 }
             });
+
+            function getAccounts(id, element_id, account_id){
+                $.get('/admin/get-accounts/'+id, function(response){
+                    let data = response.data;
+                    if(data.length > 0){
+                        $("#cuenta-"+element_id).html("<option value='' data-element='"+element_id+"'>-</option>");
+                        $.each(data, function(v,e){
+                            if(account_id != e.id){
+                                $("#cuenta-"+element_id).append("<option data-id='"+e.id+"' data-element='"+element_id+"' value='"+e.id+"'>"+e.email+"</option>");
+                            }
+                        });
+                    }
+                });
+            }
+
+            function getProfiles(id, element){
+                if(id){
+                   $.get('/admin/get-profiles/'+id, function(response){
+                        let data = response.data;
+                        $("#perfil-"+element).html("<option value=''>-</option>");
+                        $.each(data, function(v,e){
+                            $("#perfil-"+element).append("<option value='"+e.id+"'>"+e.name+" ("+(e.pin ? e.pin : 'Sin Pin')+")</option>");
+                        });
+
+                    }); 
+               }else{
+                $("#perfil-"+element).html("<option value=''></option>");
+               }
+                
+            }
 
             $("a.btn-info").addClass('btn-warning').attr("title","Extender Facturacion").html('<i class="fas fa-external-link-alt"></i>');
             $("body").on('click','a.btn-info',function(){

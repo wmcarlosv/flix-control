@@ -37,45 +37,48 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form id="csvUploadForm" enctype="multipart/form-data">
-                    @csrf
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label for="csvFile">Cargar Archivo CSV</label>
-                            <input type="file" name="csvFile" id="csvFile" class="form-control" accept=".csv" required>
-                        </div>
+                        <form id="csvUploadForm" enctype="multipart/form-data">
+                            @csrf
+                            <div class="form-group">
+                                <label for="csvFile">Cargar Archivo Excel</label>
+                                <input type="file" name="csvFile" id="csvFile" class="form-control" accept=".xlxs" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Cargar</button>
+                        </form>
                         <div id="csvPreview" style="margin-top: 20px; display: none;">
                             <h5>Contenido del Archivo:</h5>
                             <div class="table-responsive">
-                                <table class="table table-striped" id="csvTable">
-                                    <thead>
-                                        <tr>
-                                            <th>Servicio</th>
-                                            <th>Email</th>
-                                            <th>Clave Email</th>
-                                            <th>Clave Cuenta</th>
-                                            <th>Precio Compra</th>
-                                            <th>Precio Venta</th>
-                                            <th>Precio Venta Perfil</th>
-                                            <th>Facturacion</th>
-                                            <th>Vendedor</th>
-                                            <th>Vencimiento Vendedor</th>
-                                            <th>Visible en Tienda</th>
-                                            <th>Tipo de Venta</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <!-- CSV content will be inserted here -->
-                                    </tbody>
-                                </table>
+                                <form id="importForm" method="POST" action="{{route('accounts.imports')}}">
+                                    @csrf
+                                    <table class="table table-striped" id="csvTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Servicio</th>
+                                                <th>Email</th>
+                                                <th>Clave Email</th>
+                                                <th>Clave Cuenta</th>
+                                                <th>Precio Venta</th>
+                                                <th>Precio Venta Perfil</th>
+                                                <th>Facturacion</th>
+                                                <th>Vendedor</th>
+                                                <th>Vencimiento Vendedor</th>
+                                                <th>Visible en Tienda</th>
+                                                <th>Tipo de Venta</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- CSV content will be inserted here -->
+                                        </tbody>
+                                    </table>
+                                </form>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Cargar</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                         <button type="submit" id="importButton" style="display:none;" class="btn btn-primary">Importar</button>
+                        <button type="button" class="btn btn-secondary" id="close-import-modal">Cerrar</button>
                     </div>
-                </form>
             </div>
         </div>
     </div>
@@ -92,10 +95,21 @@
                 }
             });
 
+            $("#close-import-modal").click(function(){
+                $("#importModal").modal('hide');
+                $("#csvTable tbody").empty();
+                $("#csvPreview").hide();
+                $("#csvFile").val(null);
+            });
+
+            $("#importButton").click(function(){
+                $("#importForm").submit();
+            });
+
             $('#csvUploadForm').on('submit', function(e) {
                 e.preventDefault();
                 let formData = new FormData(this);
-
+                let tableBody = $('#csvTable tbody');
                 $.ajax({
                     url: '{{ route("accounts.upload") }}', // Update with your route
                     type: 'POST',
@@ -105,22 +119,21 @@
                     success: function(response) {
                         if (response.success) {
                             $('#csvPreview').show();
-                            let tableBody = $('#csvTable tbody');
+                            $("#importButton").show();
                             tableBody.empty();
                             response.data.forEach(row => {
                                 let rowHtml = `<tr>
-                                    <td>${row.Servicio}</td>
-                                    <td>${row.Email}</td>
-                                    <td>${row.ClaveEmail}</td>
-                                    <td>${row.ClaveCuenta}</td>
-                                    <td>${row.PrecioCompra}</td>
-                                    <td>${row.PrecioVenta}</td>
-                                    <td>${row.PrecioVentaPerfil}</td>
-                                    <td>${row.Facturacion}</td>
-                                    <td>${row.Vendedor}</td>
-                                    <td>${row.VencimientoVendedor}</td>
-                                    <td>${row.VisibleEnTienda}</td>
-                                    <td>${row.TipoDeVenta}</td>
+                                    <td><input type='hidden' name='data["servicio"]' value='${row.Servicio}' />${row.Servicio}</td>
+                                    <td><input type='hidden' name='data["email"]' value='${row.Email}' />${row.Email}</td>
+                                    <td><input type='hidden' name='data["clave_email"]' value='${row.ClaveEmail}' />${row.ClaveEmail}</td>
+                                    <td><input type='hidden' name='data["clave_cuenta"]' value='${row.ClaveCuenta}' />${row.ClaveCuenta}</td>
+                                    <td><input type='hidden' name='data["precio_venta"]' value='${row.PrecioVenta}' />${row.PrecioVenta}</td>
+                                    <td><input type='hidden' name='data["precio_venta_perfil"]' value='${row.PrecioVentaPerfil}' />${row.PrecioVentaPerfil}</td>
+                                    <td><input type='hidden' name='data["facturacion"]' value='${row.Facturacion}' />${row.Facturacion}</td>
+                                    <td><input type='hidden' name='data["vendedor"]' value='${row.Vendedor}' />${row.Vendedor}</td>
+                                    <td><input type='hidden' name='data["vencimiento_vendedor"]' value='${row.VencimientoVendedor}' />${row.VencimientoVendedor}</td>
+                                    <td><input type='hidden' name='data["visible_tienda"]' value='${row.VisibleEnTienda}' />${row.VisibleEnTienda}</td>
+                                    <td><input type='hidden' name='data["tipo_venta"]' value='${row.TipoDeVenta}' />${row.TipoDeVenta}</td>
                                 </tr>`;
                                 tableBody.append(rowHtml);
                             });

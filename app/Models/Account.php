@@ -135,14 +135,10 @@ class Account extends Model
         );
     }
 
-public function ReportForm(){
+    public function ReportForm(){
         // Fetch all reports for the current user
         $reports = $this->reports()->where('user_id', Auth::id())->orderBy('id','DESC')->get();
-
         $status = "";
-
-       
-
         $modal = '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#reportAccount_'.$this->id.'">Reportar</button>
                     <div class="modal fade" id="reportAccount_'.$this->id.'" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                       <div class="modal-dialog modal-lg">
@@ -219,49 +215,47 @@ public function ReportForm(){
             $modal .= '<tr><td colspan="5" class="text-center">No hay reportes disponibles.</td></tr>';
         }
 
-        $modal .= '
-                                  </tbody>
-                                </table>
-                                </div>
-                              </div>
-                              <!-- New Report Tab -->
-                              <div class="tab-pane fade" id="new-report-'.$this->id.'" role="tabpanel" aria-labelledby="new-report-tab">
-                                <form method="POST" action="'.route('add_report').'" enctype="multipart/form-data" class="mt-3">
-                                  '.csrf_field().'
-                                  '.method_field('POST').'
-                                  <input type="hidden" name="account_id" value="'.$this->id.'" />
-
-                                  <div class="form-group">
-                                    <label>Servicio:</label>
-                                    <input type="text" class="form-control" value="'.$this->service->name.'" readonly />
-                                  </div>
-
-                                  <div class="form-group">
-                                    <label>Cuenta:</label>
-                                    <input type="text" class="form-control" value="'.$this->email.'" readonly />
-                                  </div>
-                                  
-                                  <div class="form-group">
-                                    <label for="about">Motivo</label>
-                                    <textarea name="about" required id="about" class="form-control" rows="3"></textarea>
-                                  </div>
-                                  
-                                  <div class="form-group">
-                                    <label for="image">Cargar Imagen Adjunta:</label>
-                                    <input type="file" name="image" id="image" class="form-control-file" accept="image/*">
-                                  </div>
-                                  
-                                  <div class="form-group">
-                                    <button type="submit" class="btn btn-primary">Enviar Reporte</button>
-                                  </div>
-                                </form>
-                              </div>
-                            </div>
-                          </div>
+        $modal .= '</tbody>
+                        </table>
                         </div>
                       </div>
-                    </div>';
+                      <!-- New Report Tab -->
+                      <div class="tab-pane fade" id="new-report-'.$this->id.'" role="tabpanel" aria-labelledby="new-report-tab">
+                        <form method="POST" action="'.route('add_report').'" enctype="multipart/form-data" class="mt-3">
+                          '.csrf_field().'
+                          '.method_field('POST').'
+                          <input type="hidden" name="account_id" value="'.$this->id.'" />
 
+                          <div class="form-group">
+                            <label>Servicio:</label>
+                            <input type="text" class="form-control" value="'.$this->service->name.'" readonly />
+                          </div>
+
+                          <div class="form-group">
+                            <label>Cuenta:</label>
+                            <input type="text" class="form-control" value="'.$this->email.'" readonly />
+                          </div>
+                          
+                          <div class="form-group">
+                            <label for="about">Motivo</label>
+                            <textarea name="about" required id="about" class="form-control" rows="3"></textarea>
+                          </div>
+                          
+                          <div class="form-group">
+                            <label for="image">Cargar Imagen Adjunta:</label>
+                            <input type="file" name="image" id="image" class="form-control-file" accept="image/*">
+                          </div>
+                          
+                          <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Enviar Reporte</button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>';
         return $modal;
     }
 }
