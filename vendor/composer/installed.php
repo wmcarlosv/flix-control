@@ -3,7 +3,7 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => 'a4f78cf7ef45cc7b63f1d17f0bd2403974d2dfbc',
+        'reference' => '06cd69326b4fd201606f44b4e646ed3ef2f4a840',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -418,7 +418,7 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => 'a4f78cf7ef45cc7b63f1d17f0bd2403974d2dfbc',
+            'reference' => '06cd69326b4fd201606f44b4e646ed3ef2f4a840',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -488,9 +488,9 @@
             'dev_requirement' => false,
         ),
         'league/commonmark' => array(
-            'pretty_version' => '2.5.3',
-            'version' => '2.5.3.0',
-            'reference' => 'b650144166dfa7703e62a22e493b853b58d874b0',
+            'pretty_version' => '2.6.0',
+            'version' => '2.6.0.0',
+            'reference' => 'd150f911e0079e90ae3c106734c93137c184f932',
             'type' => 'library',
             'install_path' => __DIR__ . '/../league/commonmark',
             'aliases' => array(),
@@ -674,9 +674,9 @@
             'dev_requirement' => true,
         ),
         'phpoffice/phpspreadsheet' => array(
-            'pretty_version' => '1.29.5',
-            'version' => '1.29.5.0',
-            'reference' => '727cb704d5479fe4ddc291497ee471c4ec08f1b6',
+            'pretty_version' => '1.29.6',
+            'version' => '1.29.6.0',
+            'reference' => '08597725b84570cd6f32bf0ea92e75a803ef28c2',
             'type' => 'library',
             'install_path' => __DIR__ . '/../phpoffice/phpspreadsheet',
             'aliases' => array(),
@@ -847,8 +847,8 @@
         'psr/log-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '1.0|2.0|3.0',
-                1 => '3.0.0',
+                0 => '3.0.0',
+                1 => '1.0|2.0|3.0',
             ),
         ),
         'psr/simple-cache' => array(
@@ -867,9 +867,9 @@
             ),
         ),
         'psy/psysh' => array(
-            'pretty_version' => 'v0.12.5',
-            'version' => '0.12.5.0',
-            'reference' => '36a03ff27986682c22985e56aabaf840dd173cb5',
+            'pretty_version' => 'v0.12.6',
+            'version' => '0.12.6.0',
+            'reference' => '3b5ea0efaa791cd1c65ecc493aec3e2aa55ff57c',
             'type' => 'library',
             'install_path' => __DIR__ . '/../psy/psysh',
             'aliases' => array(),
