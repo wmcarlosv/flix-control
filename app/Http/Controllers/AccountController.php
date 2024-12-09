@@ -14,7 +14,6 @@ use App\Models\Subscription;
 use App\Helpers\Helper;
 use App\Models\Profile;
 use App\Models\User;
-use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\AccountsImport;
 use App\Models\Report;
 
@@ -293,37 +292,7 @@ class AccountController extends Controller
         ]);
 
         $path = $request->file('csvFile')->getRealPath();
-        // Cargar el archivo en un array
-        $rows = Excel::toArray([], $request->file('csvFile'));
-
-        if (empty($rows) || count($rows[0]) === 0) {
-            throw new \Exception('El archivo está vacío o no tiene un formato válido.');
-        }
-        
-        
-        $data = $rows[0];
         $previewData = [];
-
-        foreach ($data as $index => $row) {
-
-            if ($index === 0) {
-                continue;
-            }
-
-            $previewData[] = [
-                'Servicio'=>$row[0],
-                'Email'=>$row[1],
-                'ClaveEmail'=>$row[2],
-                'ClaveCuenta'=>$row[3],
-                'PrecioVenta'=>$row[4],
-                'PrecioVentaPerfil'=>$row[5],
-                'Facturacion'=>\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[6])->format('Y-m-d'),
-                'Vendedor'=>$row[7],
-                'VencimientoVendedor'=>\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[8])->format('Y-m-d'),
-                'VisibleEnTienda'=>$row[9],
-                'TipoDeVenta'=>empty($row[10]) ? '' : $row[10] 
-            ];
-        }
 
         return response()->json([
             'success' => true,
@@ -332,6 +301,6 @@ class AccountController extends Controller
     }
 
     public function importAccounts(Request $request){
-       print_r($request->data);
+       
     }
 }
